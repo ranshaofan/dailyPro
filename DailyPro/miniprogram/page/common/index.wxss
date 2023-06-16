@@ -1,0 +1,103 @@
+.flexCenter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.purple{
+  color: #15399C;
+}
+.page{
+  width: 100vw;
+  height: 100vh;
+  padding: 0 30px;
+  box-sizing: border-box;
+  overflow: scroll;
+}
+/* 日历开始 */
+.calendarView{
+  width: 100%;
+  border: 1px solid #D1CECE;
+  border-radius: 15px;
+  white-space: nowrap;
+  padding: 12px 12px 8px 12px;
+  box-sizing: border-box;
+  margin: 30px 0;
+  box-shadow: 0 0 99px rgba(231,205,241,0.47);
+}
+.calenList{
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    padding: 0 0 4px 0;
+    border-radius: 14px;
+  }
+  .chosen{
+  background-color: #7857D2;
+  color: #fff;
+}
+.pointY{
+  display: inline-block;
+  background-color: #E0E53B;
+  width: 4px;
+  height: 4px;
+  border-radius: 20px;
+}
+/* cost */
+.costBox{
+  position: relative;
+  height: 74px;
+  border-radius: 16px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  margin-bottom: 20px;
+}
+.costImgView{
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  border: 1px solid #70707042;
+  background-color: #fff;
+  margin-right: 20x;
+}
+.costTxt{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: 16px;
+}
+.costtype{
+  color: #3D1467;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.costcon{
+  font-size: 13px;
+  color: #655B6F;
+}
+.moreImgView{
+  position: absolute;
+  right: 18px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+.costImgView{
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  border: 1px solid #70707042;
+  background-color: #fff;
+  margin-right: 20x;
+}
+.costImgView image{
+  width: 32px;
+  height: 32px;
+}

@@ -1,0 +1,249 @@
+@import "../common/index.wxss";
+.tcpage{
+    background: linear-gradient(#fff ,#fff,#fff,rgb(248, 241, 230));
+  }
+/**按钮**/
+#tcAddBtn{
+    width: 80vw;
+    height: 47px;
+    color: #fff;
+    border-radius: 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right,#7857D2 ,#C6A8E8);
+}
+#tcAddBtn image{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0 !important;
+}
+/* task竖条 */
+.vBar{
+    width: 10%;
+    position: absolute;
+    top: 0;
+    left: -10px;
+}
+.beginCircle span{
+    display: inline-block;
+}
+.beginCOut{
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 4px solid #861883;
+    position: relative;
+}
+.beginCIn{
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #861883;
+}
+.stickBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.stick{
+    display: inline-block;
+    width: 3px;
+    height: 68px;
+    margin: 10px 0;
+    background-color: #861883;
+    border-radius: 20px;
+}
+.bcircle{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 3px solid #861883;
+    position: relative;
+}
+.taskView{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+}
+.taskList{
+    width: 90%;
+    position: absolute;
+    right: 0;
+}
+.bg0{
+    background-color: #FFEEE7;
+}
+.bg1{
+    background-color: #F9EFF7;
+}
+.bg2{
+    background-color: #EFFAF7;
+}
+.bg3{
+    background-color: #F1F1F1;
+}
+.taskbox{
+    border-radius: 18px;
+    height: 78px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+.tbtop{
+    position: relative;
+    height: 24px;
+}
+.tbtopLeft{
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #3D1467;
+    font-size: 19px;
+    font-weight: 700;
+}
+.tbtopRight{
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 14x;
+    color: #89868C;
+}
+.tbCon{
+    height: 24px;
+    font-size: 14x;
+    color: #89868C;
+}
+.mark{
+    position: fixed;
+    left: -1px;
+    /* bottom: 50px; */
+}
+.mark0{
+    bottom: 100px;
+}
+.mark1{
+    bottom: 50px;
+}
+.mark image{
+    width: 35px;
+    height: 98px;
+}
+/* cost */
+.costCard{
+    width: 100%;
+    height: 97px;
+    background: linear-gradient(45deg,#8675D6 ,#9E91D9,#CFC4FE,#B2A3F8);
+    border-radius: 11px;
+    position: relative;
+}
+.cardBtn{
+    background-color: #7857D2;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 88px;
+    height: 80px;
+    border-radius: 32px;
+    box-shadow: 1px 1px 2px #1D1D1D;
+    color: #fff;
+    font-size: 13px;
+    font-style: italic;
+}
+.cardLeft{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+    box-sizing: border-box;
+}
+.cardType{
+    font-size: 12px;
+    font-weight: 700;
+    color: #F0F0F1;
+}
+.total{
+    font-size: 17px;
+    font-weight: 700;
+    color: #FEFEFF;
+}
+.limit{
+    font-size: 10px;
+    font-style: italic;
+    color: #E7E7EB;
+}
+.titlecost{
+    font-size: 19px;
+    font-weight: 700;
+    color: #5C5F5E;
+    margin: 20px 0;
+}
+/* 弹框 */
+#addDlg{
+    position: fixed;
+    top: 20%;
+    background-color: #f0f0f0;
+    z-index: 19961009;
+    width: 80%;
+    border-radius: 10px;
+}
+.dlgTitle{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 15px;
+    color: #f1f1f1;
+    font-style: italic;
+    border-radius: 10px 10px 0 0;
+    padding-left: 20px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    background: linear-gradient(to bottom,#c5a8d7 ,#7b618b);
+}
+.addDlgTop .timepicker{
+    width: 40%;
+    height: 40px;
+    border:1px solid #E7E7EB;
+    background-color: #fcf7ff;
+    border-radius: 5px;
+    color: #777676;
+}
+.addDlgbottom{
+    margin-top: 10px;
+}
+.addDlgbottom .typepicker{
+    width: 30%;
+    height: 40px;
+    border:1px solid #E7E7EB;
+    background-color: #fcf7ff;
+    border-radius: 5px;
+    color: #777676;
+}
+.addInput{
+    width: 60%;
+    height: 40px;
+    border:1px solid #E7E7EB;
+    background-color: #fcf7ff;
+    border-radius: 5px;
+    color: #777676;
+}
+.addBtn button{
+    background: linear-gradient(to bottom,#a892b6 ,#c5a8d7,#c5a8d7,#a892b6);
+
+}

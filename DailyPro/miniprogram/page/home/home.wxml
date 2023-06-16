@@ -1,0 +1,65 @@
+<view class="page homePage">
+  <!-- begin -->
+  <view class="begin">
+    <view class="beginLeft">
+      <view class="title">Good Morning!</view>
+      <view class="name">Roxane</view>
+    </view>
+    <view class="beginRImg">
+      <image src="./resources/pic/sun.png" mode="widthFix"></image>
+    </view>
+  </view>
+  <!-- 日历 -->
+  <scroll-view class="calendarView" scroll-x="true" scroll-y="false" scrollbar="none" scroll-into-view="{{cLChosen}}">
+    <view class="calenList {{item.classChosen}}" id="cL{{item.index}}" wx:for="{{calendar}}" wx:key="index" wx:for-item="item">
+      <!-- 星期 -->
+      <view class="calenX">{{item.X}}</view>
+      <!-- 日期 -->
+      <view class="calenD">{{item.day}}</view>
+      <span class="pointY" wx:if="{{item.classChosen=='chosen'}}"></span>
+    </view>
+  </scroll-view>
+  <!-- task模块 -->
+  <view class="task">
+    <view class="tctitle">
+      <view class="taskTitleLeft">Today task</view>
+      <span class="taskTitleAdd">+</span>
+    </view>
+    <view class="taskContent">
+      <scroll-view class="taskView" scroll-x="true" scroll-y="false" scrollbar="none">
+        <view class="taskBox taskBoxColor{{item.index}}" wx:for="{{tasks}}" wx:key="index" wx:for-item="item">
+          <image class="taskbgc" src="./resources/pic/Tbgc.png" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
+          <view class="tasktype">{{item.type}}</view>
+          <view class="taskcon">{{item.con}}</view>
+          <view class="taskpics">
+            <view class="flexCenter" wx:for="{{item.pics}}" wx:key="i" wx:for-item="picItem" wx:for-index="i" style="left:{{i*24}}px;">
+              <image class="taskBoxImg" src="{{picItem}}" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+  <!-- cost模块 -->
+  <view class="cost">
+    <view class="tctitle">
+      <view class="costTitleLeft">Today cost</view>
+      <span class="costTitleAdd">+</span>
+    </view>
+    <view class="costContent">
+      <view class="costBox costBoxColor{{item.index}}" wx:for="{{costs}}" wx:key="index" wx:for-item="item">
+        <view class="costImgView flexCenter">
+          <image class="costBoxImg" src="{{item.pic}}" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
+        </view>
+        <view class="costTxt">
+          <view class="costtype">{{item.type}}</view>
+          <view class="costcon">{{item.con}}</view>
+        </view>
+        <view class="moreImgView flexCenter">
+          <image class="" src="./resources/pic/more.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="">
+          </image>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,44 @@
+{
+  "light": {
+    "navigationBarTextStyle": "white",
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#fff",
+
+    "tabBarColor": "#7A7E83",
+    "tabBarSelectedColor": "#3cc51f",
+    "tabBarBorderStyle": "white",
+    "tabBarBackgroundColor": "#fff",
+
+    "iconHomeGray": "image/homeGray.png",
+    "selectedIconHome": "image/homePurple.png",
+    "iconTimeGray": "image/time.png",
+    "selectedIconTime": "image/timePruple.png",
+    "iconTask": "image/tasksG.png",
+    "selectedIconTask": "image/tasksP.png",
+    "iconMine": "image/mineG.png",
+    "selectedIconMine": "image/mineP.png",
+
+    "backgroundTextStyle": "dark"
+  },
+  "dark": {
+    "navigationBarTextStyle": "white",
+    "navigationBarBackgroundColor": "#1F1F1F",
+    "backgroundColor": "#1F1F1F",
+
+    "tabBarColor": "#FFFFFFCC",
+    "tabBarSelectedColor": "#51A937",
+    "tabBarBorderStyle": "white",
+    "tabBarBackgroundColor": "#1F1F1F",
+
+    "iconHomeGray": "image/homeGray.png",
+    "selectedIconHome": "image/homePurple.png",
+    "iconTimeGray": "image/time.png",
+    "selectedIconTime": "image/timePruple.png",
+    "iconTask": "image/tasksG.png",
+    "selectedIconTask": "image/tasksP.png",
+    "iconMine": "image/mineG.png",
+    "selectedIconMine": "image/mineP.png",
+
+    "backgroundTextStyle": "light"
+  }
+}

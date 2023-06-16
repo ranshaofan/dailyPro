@@ -1,0 +1,54 @@
+/* 
+此文件为开发者工具生成，生成时间: 2023/5/6下午6:36:46
+使用方法：
+在 home.wxss 文件末尾引入样式
+```
+```
+ */
+
+@media (prefers-color-scheme: dark) {
+    .title {
+        color: rgb(178, 184, 255);
+    }
+
+    .name {
+        color: rgb(175, 179, 178);
+    }
+
+    .calendarView {
+        border: rgb(0, 0, 0);
+    }
+
+    .chosen {
+        background-color: rgb(159, 122, 250);
+        color: rgb(17, 17, 17);
+    }
+
+    .pointY {
+        background-color: rgb(42, 46, 0);
+    }
+
+    .taskTitleAdd {
+        border: rgb(0, 0, 0);
+    }
+
+    .taskBoxColor1 {
+        background-color: rgb(35, 24, 19);
+    }
+
+    .taskBoxColor2 {
+        background-color: rgb(16, 25, 22);
+    }
+
+    .taskBoxColor3 {
+        background-color: rgb(27, 27, 27);
+    }
+
+    .tasktype {
+        color: rgb(253, 199, 255);
+    }
+
+    .taskcon {
+        color: rgb(164, 153, 175);
+    }
+}

@@ -1,0 +1,13 @@
+/* 
+此文件为开发者工具生成，生成时间: 2023/5/6下午6:36:46
+使用方法：
+在 index.wxss 文件末尾引入样式
+```
+```
+ */
+
+@media (prefers-color-scheme: dark) {
+    .purple {
+        color: rgb(178, 184, 255);
+    }
+}

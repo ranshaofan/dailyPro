@@ -1,0 +1,18 @@
+<!-- <template name="head">
+  <view class="page-head">
+    <view class="page-head-title">{{title}}</view>
+    <view class="page-head-line"></view>
+    <view wx:if="{{desc}}" class="page-head-desc">{{desc}}</view>
+  </view>
+</template> -->
+<template name="calendar">
+  <scroll-view class="calendarView" scroll-x="true" scroll-y="false" scrollbar="none" scroll-into-view="{{cLChosen}}">
+    <view class="calenList {{item.classChosen}}" id="cL{{item.index}}" wx:for="{{calendar}}" wx:key="this" wx:for-item="item">
+      <!-- 星期 -->
+      <view class="calenX">{{item.X}}</view>
+      <!-- 日期 -->
+      <view class="calenD">{{item.day}}</view>
+      <span class="pointY" wx:if="{{item.classChosen=='chosen'}}"></span>
+    </view>
+  </scroll-view>
+</template>
