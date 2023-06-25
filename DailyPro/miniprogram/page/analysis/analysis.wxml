@@ -68,11 +68,43 @@
   </view>
 </view> -->
 <view class="page">
-  <button class="generateBtn" bindtap="listToCanvas">生成</button>
-  <canvas id="timeCanvas" type="2d" style="width: 100vw; height: 100vw" />
-  <view class="left">
+  <!-- <button class="generateBtn" bindtap="listToCanvas">生成</button> -->
+  <!-- 标题部分 -->
+  <view class="analysisTitle">
+    <span wx:if="{{ifTask}}">Task</span>
+    <span wx:else>Cost</span>
+    <picker mode="selector" range="{{array}}" bindchange="bindPickerChange">
+      <view class="picker">{{array[index]}}</view>
+    </picker>
+    <view class="beginBtn flexCenter" bindtap="listToCanvas">
+      generation
+    </view>
   </view>
-  <view class="right">
-    
+  <!-- 扇形图模块 -->
+  <view class="fanChart chart">
+    <view wx:if="{{ifTask}}">
+      <canvas id="timeCanvas" type="2d" style="width: 100%; height: 100vw" />
+    </view>
+    <view wx:else>
+    </view>
+  </view>
+  <!-- 折现图模块 -->
+  <view class="lineChart chart">
+    <view wx:if="{{ifTask}}">
+    </view>
+    <view wx:else>
+    </view>
+  </view>
+  <!-- task页面 -->
+  <view wx:if="{{ifTask}}"></view>
+  <!-- cost页面 -->
+  <view wx:else></view>
+  <!-- 标签页定位 task -->
+  <view class="mark0 mark" bindtap="changePageTask">
+    <image class="" src="../common/img/bq{{ifTask}}.png" mode="aspectFit" lazy-load="false" binderror="" bindload=""></image>
+  </view>
+  <!-- 标签页定位 cost -->
+  <view class="mark1 mark" bindtap="changePageCost">
+    <image class="" src="../common/img/bq{{ifCost}}.png" mode="aspectFit" lazy-load="false" binderror="" bindload=""></image>
   </view>
 </view>

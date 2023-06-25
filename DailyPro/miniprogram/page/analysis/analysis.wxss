@@ -1,7 +1,62 @@
 @import "../common/index.wxss";
 @import "../common/common.wxss";
-
-.weui-agree__link {
-  display: inline;
-  color: var(--weui-LINK);
+.analysisTitle{
+  width: 100vw;
+  height: 30px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 10px;
+}
+.analysisTitle span{
+  margin-right: 20px;
+  color: #193C9D;
+  font-style: italic;
+}
+.analysisTitle picker{
+  color: #9FA0A2;
+  font-size: 17px;
+  font-style: italic;
+  border-radius: 15px;
+  border: 0.1px solid #dedddd;
+  padding: 0 8px;
+  margin-right: 20px;
+}
+.beginBtn{
+  padding: 0 10px;
+  color: aliceblue;
+  background-color: #acbff4;
+  background: linear-gradient(to left top,#193C9D,#acbff4,#6b86d1);
+  border-radius: 15px;
+  border: 1px solid #dedddd;
+}
+.page{
+  padding: 0;
+}
+.mark{
+  position: fixed;
+  left: -1px;
+  /* bottom: 50px; */
+}
+.mark0{
+  bottom: 100px;
+}
+.mark1{
+  bottom: 50px;
+}
+.mark image{
+  width: 35px;
+  height: 98px;
+}
+/* 扇形图模块 */
+.chart{
+  width: 90vw;
+  height: 90vw;
+  margin: 0 5vw;
+  border-radius: 28px;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 10px rgba(141,8,245,0.16);
+}
+.fanChart{
+  margin-bottom: 10px;
 }

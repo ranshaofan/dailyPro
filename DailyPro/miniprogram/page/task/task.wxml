@@ -15,9 +15,9 @@
         </view>
       </view>
     </view> -->
-<!-- /**弹框**/ -->
-<view id="addDlg" wx:if="{{adddlgShow}}">
-  <view class="dlgTitle">Create New Task</view>
+<!-- /**Task弹框**/ -->
+<view id="addTaskDlg" class="addDlg" wx:if="{{addTaskdlgShow}}">
+  <view class="dlgTitle">Create New Task <span bindtap="closeAddDlg" data-type="task">×</span></view>
   <view class="addDlgTop flexCenter">
     <picker class="timepicker pickerbgc flexCenter" id="timepickerS" mode="time" value="{{time}}" start="06:00" end="23:59" bindchange="onTimeStartChange">
       <view class="picker flexCenter">{{dlgStTime}}</view>
@@ -31,10 +31,28 @@
     <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
       <view class="picker flexCenter">{{typeArr[typeIndex]}}</view>
     </picker>
-    <input type="text" class="addInput" bindinput="onInput" value="{{inputValue}}" />
+    <input type="text" class="addTaskInput addInput" bindinput="onInput" value="{{inputValue}}" data-type="taskCon"/>
   </view>
   <view class="addBtn">
-    <button class="pickerbgc flexCenter" bindtap="addDlgBtn">确定</button>
+    <button class="pickerbgc flexCenter" bindtap="addDlgBtn" data-type="task">确定</button>
+  </view>
+</view>
+<!-- /**Cost弹框**/ -->
+<view id="addCostDlg" class="addDlg" wx:if="{{addCostdlgShow}}">
+  <view class="dlgTitle">Create New Cost <span bindtap="closeAddDlg" data-type="cost">×</span></view>
+  <view class="addDlgbottom flexCenter pickerbgc addCostDlgT">
+    <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
+      <view class="picker flexCenter">{{typeArr[typeIndex]}}</view>
+    </picker>
+    <span>金额：</span>
+    <input type="text" class="addInput" bindinput="onInput" value="{{inputNum}}" data-type="costNum"/>
+  </view>
+  <view>
+    <input class="addInput addDlgCostBeizhu" placeholder="备注" value="{{inputCon}}"  bindinput="onInput"  data-type="costCon" />
+  </view>
+    
+  <view class="addBtn">
+    <button class="pickerbgc flexCenter" bindtap="addDlgBtn" data-type="cost">确定</button>
   </view>
 </view>
 <view class="tcpage page">
@@ -63,7 +81,7 @@
         </view>
       </view>
     </view>
-    <!-- 右侧内容列表 -->
+    <!-- 右侧内容列表 bbb-->
     <view class="taskList">
       <view class="taskbox bg{{item.i}}" wx:for="{{tasks}}">
         <view class="tbtop">
@@ -103,15 +121,15 @@
         <view class="costtype">{{item.type}}</view>
         <view class="costcon">{{item.con}}</view>
       </view>
-      <view class="moreImgView flexCenter">¥ 200</view>
+      <view class="moreImgView flexCenter">¥{{item.cost}}</view>
     </view>
   </view>
   <!-- 标签页定位 task -->
   <view class="mark0 mark" bindtap="changePageTask">
-    <image class="" src="./images/bq{{ifTask}}.png" mode="aspectFit" lazy-load="false" binderror="" bindload=""></image>
+    <image class="" src="../common/img/bq{{ifTask}}.png" mode="aspectFit" lazy-load="false" binderror="" bindload=""></image>
   </view>
   <!-- 标签页定位 cost -->
   <view class="mark1 mark" bindtap="changePageCost">
-    <image class="" src="./images/bq{{ifCost}}.png" mode="aspectFit" lazy-load="false" binderror="" bindload=""></image>
+    <image class="" src="../common/img/bq{{ifCost}}.png" mode="aspectFit" lazy-load="false" binderror="" bindload=""></image>
   </view>
 </view>
