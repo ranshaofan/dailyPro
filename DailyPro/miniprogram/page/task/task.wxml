@@ -83,7 +83,9 @@
     </view>
     <!-- 右侧内容列表 bbb-->
     <view class="taskList">
-      <view class="taskbox bg{{item.i}}" wx:for="{{tasks}}">
+      <view class="taskbox bg{{item.i}}" wx:for="{{tasks}}" 
+      bind:longpress="handleLongPress"
+      style="transform:scale({{scale}});">
         <view class="tbtop">
           <view class="tbtopLeft">{{item.type}}</view>
           <view class="tbtopRight">{{item.st}}~{{item.et}}</view>

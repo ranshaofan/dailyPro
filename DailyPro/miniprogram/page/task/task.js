@@ -205,5 +205,16 @@ CustomPage({
         addCostdlgShow:0
       });
     }
-  }
+  },
+  handleLongPress(event) {
+    // const { pageX, pageY } = event.touches[0];
+    this.setData({
+      isLongPress: true,
+      // translateX: pageX,
+      // startY: pageY,
+      scale:1.1
+    });
+
+    wx.vibrateShort(); // 触发震动效果
+  },
 })

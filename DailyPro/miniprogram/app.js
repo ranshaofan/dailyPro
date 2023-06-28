@@ -76,6 +76,7 @@ App({
     hasLogin: false,
     openid: null,
     todayTasks:[],
+    todayCosts:[],
     days:['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     colorobj:{"娱乐":"pink","工作":"black","学习":"yellow","兴趣":"purple"},
     iconTabbar: '/page/weui/example/images/icon_tabbar.png',

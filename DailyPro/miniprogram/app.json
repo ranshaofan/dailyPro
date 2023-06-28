@@ -89,5 +89,6 @@
   "frameset": true,
   "requiredBackgroundModes": ["audio", "location"],
   "embeddedAppIdList": ["wxfdcee92a299bcaf1"],
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "permission": {"scope.userLocation": {"desc": "用于触发震动效果"}}
 }
