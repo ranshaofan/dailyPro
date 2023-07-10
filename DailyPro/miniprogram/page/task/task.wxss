@@ -101,6 +101,10 @@
     height: 78px;
     margin-bottom: 20px;
     padding: 10px;
+    /* width: 100%; */
+    /* position: absolute; */
+    /* left: 0; */
+
 }
 .tbtop{
     position: relative;
@@ -273,4 +277,12 @@
 .addDlgCostBeizhu{
     width: 90%;
     margin: auto;
+}
+.delete{
+    position: fixed;
+    
+}
+.delete image{
+    width: 60px;
+    height: 40px;
 }

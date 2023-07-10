@@ -207,14 +207,43 @@ CustomPage({
     }
   },
   handleLongPress(event) {
-    // const { pageX, pageY } = event.touches[0];
+    const { pageX, pageY } = event.touches[0];
     this.setData({
       isLongPress: true,
-      // translateX: pageX,
-      // startY: pageY,
-      scale:1.1
+      startX: pageX,
+      startY: pageY,
+      scale:1.1,
+      key:event.currentTarget.dataset.index
     });
 
     wx.vibrateShort(); // 触发震动效果
   },
+
+  handleTouchMove(event) {
+    if (!this.data.isLongPress) {
+      return;
+    }
+
+    const { pageX, pageY } = event.touches[0];
+    const translateX = pageX - this.data.startX;
+    const translateY = pageY - this.data.startY;
+
+    this.setData({
+      translateX,
+      translateY
+    });
+  },
+
+  handleTouchEnd() {
+    if (!this.data.isLongPress) {
+      return;
+    }
+
+    this.setData({
+      isLongPress: false,
+      translateX: 0,
+      translateY: 0,
+      scale:1
+    });
+  }
 })

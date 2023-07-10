@@ -17,7 +17,10 @@
     </view> -->
 <!-- /**Task弹框**/ -->
 <view id="addTaskDlg" class="addDlg" wx:if="{{addTaskdlgShow}}">
-  <view class="dlgTitle">Create New Task <span bindtap="closeAddDlg" data-type="task">×</span></view>
+  <view class="dlgTitle">
+    Create New Task
+    <span bindtap="closeAddDlg" data-type="task">×</span>
+  </view>
   <view class="addDlgTop flexCenter">
     <picker class="timepicker pickerbgc flexCenter" id="timepickerS" mode="time" value="{{time}}" start="06:00" end="23:59" bindchange="onTimeStartChange">
       <view class="picker flexCenter">{{dlgStTime}}</view>
@@ -31,7 +34,7 @@
     <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
       <view class="picker flexCenter">{{typeArr[typeIndex]}}</view>
     </picker>
-    <input type="text" class="addTaskInput addInput" bindinput="onInput" value="{{inputValue}}" data-type="taskCon"/>
+    <input type="text" class="addTaskInput addInput" bindinput="onInput" value="{{inputValue}}" data-type="taskCon" />
   </view>
   <view class="addBtn">
     <button class="pickerbgc flexCenter" bindtap="addDlgBtn" data-type="task">确定</button>
@@ -39,18 +42,20 @@
 </view>
 <!-- /**Cost弹框**/ -->
 <view id="addCostDlg" class="addDlg" wx:if="{{addCostdlgShow}}">
-  <view class="dlgTitle">Create New Cost <span bindtap="closeAddDlg" data-type="cost">×</span></view>
+  <view class="dlgTitle">
+    Create New Cost
+    <span bindtap="closeAddDlg" data-type="cost">×</span>
+  </view>
   <view class="addDlgbottom flexCenter pickerbgc addCostDlgT">
     <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
       <view class="picker flexCenter">{{typeArr[typeIndex]}}</view>
     </picker>
     <span>金额：</span>
-    <input type="text" class="addInput" bindinput="onInput" value="{{inputNum}}" data-type="costNum"/>
+    <input type="text" class="addInput" bindinput="onInput" value="{{inputNum}}" data-type="costNum" />
   </view>
   <view>
-    <input class="addInput addDlgCostBeizhu" placeholder="备注" value="{{inputCon}}"  bindinput="onInput"  data-type="costCon" />
+    <input class="addInput addDlgCostBeizhu" placeholder="备注" value="{{inputCon}}" bindinput="onInput" data-type="costCon" />
   </view>
-    
   <view class="addBtn">
     <button class="pickerbgc flexCenter" bindtap="addDlgBtn" data-type="cost">确定</button>
   </view>
@@ -81,18 +86,31 @@
         </view>
       </view>
     </view>
-    <!-- 右侧内容列表 bbb-->
+    <!-- 右侧内容列表 bbb -->
     <view class="taskList">
-      <view class="taskbox bg{{item.i}}" wx:for="{{tasks}}" 
-      bind:longpress="handleLongPress"
-      style="transform:scale({{scale}});">
-        <view class="tbtop">
-          <view class="tbtopLeft">{{item.type}}</view>
-          <view class="tbtopRight">{{item.st}}~{{item.et}}</view>
+      <view wx:for="{{tasks}}" wx:for-index="index" data-index='{{index}}' bind:longpress="handleLongPress" bind:touchend="handleTouchEnd">
+        <view wx:if="{{key==index}}" class="taskbox bg{{item.i}}" style="scale:{{scale}};">
+          <view class="tbtop">
+            <view class="tbtopLeft">{{item.type}}</view>
+            <view class="tbtopRight">{{item.st}}~{{item.et}}</view>
+          </view>
+          <view class="tbCon">{{item.con}}</view>
         </view>
-        <view class="tbCon">{{item.con}}</view>
+        <view class="taskbox bg{{item.i}}" wx:else>
+          <view class="tbtop">
+            <view class="tbtopLeft">{{item.type}}</view>
+            <view class="tbtopRight">{{item.st}}~{{item.et}}</view>
+          </view>
+          <view class="tbCon">{{item.con}}</view>
+        </view>
       </view>
     </view>
+    <!-- 删除标签 -->
+    <view class="delete">
+      <image class="" src="./images/delete.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="">
+      </image>
+    </view>
+      
   </view>
   <!-- cost模块列表 -->
   <view wx:else>
