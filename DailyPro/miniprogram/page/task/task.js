@@ -14,7 +14,7 @@ CustomPage({
     ifCost:1,
     calendar:[],
     cLChosen:"",
-    costs:[{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:1,cost:200},{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:2,cost:200},{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:3,cost:20}],
+    costs:[{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:1,cost:200,conLeft:0},{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:2,cost:200,conLeft:0},{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:3,cost:20,conLeft:0}],
     tasks:[{type:"Work",con:"that's all bullshit",st:"11:00",et:"12:00",i:0},{type:"Work",con:"that's all bullshit",st:"11:00",et:"12:00",i:1}],
     today:dateFormat('yyyy-MM-dd',new Date()),
     timePicker: null,
@@ -108,13 +108,13 @@ CustomPage({
       }
       //获取手指触摸的是哪一个item
       var index = e.currentTarget.dataset.index;
-      var list = that.data.contents;
+      var list = that.data.costs;
       //将拼接好的样式设置到当前item中
       list[index].conLeft = left;
       // //更新列表的状态
-      app.globalData.todayTasks = list;
+      app.globalData.todayCosts = list;
       this.setData({
-        contents: list
+        costs: list
       });
     }
   },
@@ -130,24 +130,22 @@ CustomPage({
       var left = disX > delBtnWidth / 2 ? delBtnWidth*(-1) : 0;
       //获取手指触摸的是哪一项
       var index = e.currentTarget.dataset.index;
-      var list = that.data.contents;
+      var list = that.data.costs;
       //将拼接好的样式设置到当前item中
       list[index].conLeft = left;
       // //更新列表的状态
-      app.globalData.todayTasks = list;
+      app.globalData.todayCosts = list;
       this.setData({
-        contents: list
+        costs: list
       });
     }
   },
-  delItem(e){//删除按钮
+  costDelete(e){//删除按钮
     var index = e.currentTarget.dataset.index;
-    console.log(index);
-    var list = this.data.contents;
-    list.splice(index,1);
-    app.globalData.todayTasks = list;
+    this.data.costs.splice(index,1);
+    app.globalData.todayCosts = this.data.costs;
     this.setData({
-      contents:list
+      costs:this.data.costs
     });
   },
   //悬浮addDLg确定按钮的click
@@ -207,43 +205,57 @@ CustomPage({
     }
   },
   handleLongPress(event) {
+    //长按某一个task 在对应位置出现删除标签
     const { pageX, pageY } = event.touches[0];
     this.setData({
       isLongPress: true,
-      startX: pageX,
-      startY: pageY,
       scale:1.1,
+      pageX,
+      pageY,
       key:event.currentTarget.dataset.index
     });
 
     wx.vibrateShort(); // 触发震动效果
   },
-
-  handleTouchMove(event) {
-    if (!this.data.isLongPress) {
-      return;
-    }
-
-    const { pageX, pageY } = event.touches[0];
-    const translateX = pageX - this.data.startX;
-    const translateY = pageY - this.data.startY;
-
-    this.setData({
-      translateX,
-      translateY
-    });
-  },
-
-  handleTouchEnd() {
-    if (!this.data.isLongPress) {
-      return;
-    }
-
+  clickTask:function(event){
     this.setData({
       isLongPress: false,
-      translateX: 0,
-      translateY: 0,
+      scale:1,
+      key:event.currentTarget.dataset.index
+    });
+  },
+  taskDelete:function(){
+    console.log(this.data.key);
+    this.data.tasks.splice(this.data.key,1)
+    this.setData({
+      tasks:this.data.tasks,
+      isLongPress:false,
       scale:1
     });
   }
+
+  // handleTouchMove(event) {
+  //   if (!this.data.isLongPress) {
+  //     return;
+  //   }
+
+  //   const { pageX, pageY } = event.touches[0];
+  //   const translateX = pageX - this.data.startX;
+  //   const translateY = pageY - this.data.startY;
+
+  //   this.setData({
+  //     translateX,
+  //     translateY
+  //   });
+  // },
+
+  // handleTouchEnd() {
+  //   if (!this.data.isLongPress) {
+  //     return;
+  //   }
+  //   this.setData({
+  //     isLongPress: false,
+  //     scale:1
+  //   });
+  // }
 })

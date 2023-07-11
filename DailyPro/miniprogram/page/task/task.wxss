@@ -133,6 +133,7 @@
 .mark{
     position: fixed;
     left: -1px;
+    z-index: 99;
     /* bottom: 50px; */
 }
 .mark0{
@@ -286,3 +287,16 @@
     width: 60px;
     height: 40px;
 }
+.delCost{
+    position: absolute;
+    right: 0;
+    background-color: rgb(158, 66, 140);
+    height: 100%;
+    width: 50px;
+    font-size: 19px;
+    color: #fff;
+    border-radius: 0 16px 16px 0;
+    z-index: 1;
+}
+
+  

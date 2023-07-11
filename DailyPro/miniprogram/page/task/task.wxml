@@ -1,20 +1,4 @@
 <import src="../common/head.wxml" />
-<!-- 记录内容 -->
-<!-- <view class="content">
-      <view wx:for="{{contents}}" wx:key="id" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE" class="conLine flexCenter" data-index="{{index}}">
-        <view class="conDetail flexCenter" style="left:{{item.conLeft}}px;" data-index="{{index}}">
-          <view class="conLeft conview flexCenter">{{item.starttime}}~{{item.endtime}}</view>
-          <view class="conMiddle conview flexCenter">{{item.type}}</view>
-          <view class="conRight conview flexCenter">{{item.con}}</view>
-        </view>
-        // 这里是左滑按钮部分
-        <view class="delitem flexCenter">
-          <view class="del flexCenter" catchtap="delItem" data-index="{{index}}">
-            删除
-          </view>
-        </view>
-      </view>
-    </view> -->
 <!-- /**Task弹框**/ -->
 <view id="addTaskDlg" class="addDlg" wx:if="{{addTaskdlgShow}}">
   <view class="dlgTitle">
@@ -88,15 +72,15 @@
     </view>
     <!-- 右侧内容列表 bbb -->
     <view class="taskList">
-      <view wx:for="{{tasks}}" wx:for-index="index" data-index='{{index}}' bind:longpress="handleLongPress" bind:touchend="handleTouchEnd">
-        <view wx:if="{{key==index}}" class="taskbox bg{{item.i}}" style="scale:{{scale}};">
+      <view wx:for="{{tasks}}" wx:key="index" wx:for-index="index" data-index='{{index}}' bind:longpress="handleLongPress" bindtap="clickTask">
+        <view wx:if="{{key==index}}" class="taskbox bg{{index%4}}" style="scale:{{scale}};">
           <view class="tbtop">
             <view class="tbtopLeft">{{item.type}}</view>
             <view class="tbtopRight">{{item.st}}~{{item.et}}</view>
           </view>
           <view class="tbCon">{{item.con}}</view>
         </view>
-        <view class="taskbox bg{{item.i}}" wx:else>
+        <view class="taskbox bg{{index%4}}" wx:else>
           <view class="tbtop">
             <view class="tbtopLeft">{{item.type}}</view>
             <view class="tbtopRight">{{item.st}}~{{item.et}}</view>
@@ -106,11 +90,9 @@
       </view>
     </view>
     <!-- 删除标签 -->
-    <view class="delete">
-      <image class="" src="./images/delete.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="">
-      </image>
+    <view class="delete" style="left:{{pageX-30}}px;top:{{pageY-40}}px;" wx:if="{{isLongPress}}" bindtap="taskDelete">
+      <image class="" src="./images/delete.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
     </view>
-      
   </view>
   <!-- cost模块列表 -->
   <view wx:else>
@@ -133,15 +115,21 @@
     <!-- todayCost -->
     <view class="titlecost">Today Cost</view>
     <!-- cost内容列表 -->
-    <view class="costBox bg{{item.index}}" wx:for="{{costs}}" wx:key="index" wx:for-item="item">
-      <view class="costImgView flexCenter">
-        <image class="costBoxImg" src="{{item.pic}}" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
+    <view class="costBox bg{{index%4}}" wx:for="{{costs}}" wx:key="index" wx:for-item="item" data-index="{{index}}" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE">
+      <view class="costBoxin bg{{index%4}}" style="left:{{item.conLeft}}px;">
+        <view class="costImgView flexCenter">
+          <image class="costBoxImg" src="{{item.pic}}" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
+        </view>
+        <view class="costTxt">
+          <view class="costtype">{{item.type}}</view>
+          <view class="costcon">{{item.con}}</view>
+        </view>
+        <view class="moreImgView flexCenter">¥{{item.cost}}</view>
       </view>
-      <view class="costTxt">
-        <view class="costtype">{{item.type}}</view>
-        <view class="costcon">{{item.con}}</view>
+       <!-- 这里是左滑按钮部分 -->
+      <view class="delCost flexCenter" bindtap="costDelete" data-index="{{index}}">
+        <view class="flexCenter" catchtap="costDelete" data-index="{{index}}">删除</view>
       </view>
-      <view class="moreImgView flexCenter">¥{{item.cost}}</view>
     </view>
   </view>
   <!-- 标签页定位 task -->
