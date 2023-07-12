@@ -60,3 +60,11 @@
 .fanChart{
   margin-bottom: 10px;
 }
+.anaCanvas{
+  width: 66%;
+  height: 66%;
+}
+.fanChart view{
+  width: 100%;
+  height: 100%;
+}

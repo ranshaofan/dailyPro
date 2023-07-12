@@ -187,7 +187,6 @@ Page({
         const canvas = res[0].node
         // 渲染上下文
         const ctx = canvas.getContext('2d');
-
         // Canvas 画布的实际绘制宽高
         const width = res[0].width;
         const height = res[0].height;
@@ -199,19 +198,29 @@ Page({
         ctx.scale(dpr, dpr);
         ctx.clearRect(0, 0, width, height);
         //计算圆心
-        var rx = width / 2;
-        var ry = height / 2;
-        var r = Number(ry-20)/2
+        var rx = width/2;
+        var ry = height/2;
+        var r = Number(ry);
         for (let i = 0; i < gCanvaslist.length; i++) {
           //  let angle = 2 * Math.PI * gCanvaslist[i].ratio;
           // drawFan(ctx,rx,ry,ry-20,gCanvaslist[i].ratio,app.globalData.colorobj[gCanvaslist[i].type]);
+          //画比例扇形
           ctx.beginPath();
-          ctx.moveTo(rx, ry)
-          ctx.arc(rx, ry, r,gCanvaslist[i].startAngle,gCanvaslist[i].endAngle);
-          ctx.lineTo(rx, ry)
-          ctx.fillStyle = app.globalData.colorobj[gCanvaslist[i].type];
+          ctx.moveTo(rx, ry);
+          var rw = i%3==0?0:(i%3==1?5:-5);
+          ctx.arc(rx, ry, r+rw,gCanvaslist[i].startAngle,gCanvaslist[i].endAngle);
+          ctx.lineTo(rx, ry);
+          ctx.fillStyle = app.globalData.colorobj[gCanvaslist[i].type]?app.globalData.colorobj[gCanvaslist[i].type]:"#E77171";
           ctx.fill();
         }
+        //画内部透明圆形
+        ctx.beginPath();
+        ctx.moveTo(rx, ry);
+        ctx.arc(rx, ry, 50,0,180);
+        ctx.lineTo(rx, ry);
+        ctx.fillStyle = "#fff";
+        ctx.setGlobalAlpha = 0.5;
+        ctx.fill();
       })
 
   },

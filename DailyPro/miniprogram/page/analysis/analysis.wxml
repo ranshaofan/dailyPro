@@ -83,7 +83,7 @@
   <!-- 扇形图模块 -->
   <view class="fanChart chart">
     <view wx:if="{{ifTask}}">
-      <canvas id="timeCanvas" type="2d" style="width: 100%; height: 100vw" />
+      <canvas id="timeCanvas" type="2d" class="anaCanvas"/>
     </view>
     <view wx:else>
     </view>

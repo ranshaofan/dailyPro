@@ -78,7 +78,7 @@ App({
     todayTasks:[],
     todayCosts:[],
     days:['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    colorobj:{"娱乐":"pink","工作":"black","学习":"yellow","兴趣":"purple"},
+    colorobj:{"娱乐":"#C3ACEB","工作":"#EB974F","学习":"#B4EBA1","兴趣":"#EA90BA"},
     iconTabbar: '/page/weui/example/images/icon_tabbar.png',
   },
   // lazy loading openid
