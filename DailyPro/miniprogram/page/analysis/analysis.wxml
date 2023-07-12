@@ -1,3 +1,4 @@
+<wxs module="filters" src="../../util/filter.wxs"></wxs>
 <!-- <set-tab-bar wx:if="{{isSetTabBarPage}}" bindunmount="leaveSetTabBarPage"></set-tab-bar>
 <view wx:else class="index page" data-weui-theme="{{theme}}">
   <view class="index-hd">
@@ -81,12 +82,31 @@
     </view>
   </view>
   <!-- 扇形图模块 -->
-  <view class="fanChart chart">
-    <view wx:if="{{ifTask}}">
+  <view class="fanChart chart"  wx:if="{{ifTask}}">
+    <view class="canvasbox">
       <canvas id="timeCanvas" type="2d" class="anaCanvas"/>
     </view>
-    <view wx:else>
+    <!-- 文字说明 -->
+    <view class="FanTxtBox">
+      <view class="colorTxt flexCenter">
+        <view wx:for="{{gCanvaslist}}" wx:key="index">
+          <view>
+            <span style="background-color:{{item.color?item.color:'#E77171'}};" class="psCircle"></span>
+            <span>{{item.type}}</span>
+          </view>
+          <view>
+            {{filters.toFix(item.ratio*100)}}%
+          </view>
+        </view>
+      </view>
+      <view>
+        <p>您今日的总支配时间为：{{totaltime}}小时</p>
+        <p>其中占比最高的:</p>
+      </view>
     </view>
+  </view>
+  <view wx:else>
+    
   </view>
   <!-- 折现图模块 -->
   <view class="lineChart chart">

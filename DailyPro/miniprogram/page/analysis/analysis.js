@@ -207,7 +207,7 @@ Page({
           //画比例扇形
           ctx.beginPath();
           ctx.moveTo(rx, ry);
-          var rw = i%3==0?0:(i%3==1?5:-5);
+          var rw = i%3==0?0:(i%3==1?-5:-10);
           ctx.arc(rx, ry, r+rw,gCanvaslist[i].startAngle,gCanvaslist[i].endAngle);
           ctx.lineTo(rx, ry);
           ctx.fillStyle = app.globalData.colorobj[gCanvaslist[i].type]?app.globalData.colorobj[gCanvaslist[i].type]:"#E77171";
@@ -216,13 +216,24 @@ Page({
         //画内部透明圆形
         ctx.beginPath();
         ctx.moveTo(rx, ry);
-        ctx.arc(rx, ry, 50,0,180);
+        ctx.arc(rx, ry, r/2,0,180);
         ctx.lineTo(rx, ry);
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
         ctx.setGlobalAlpha = 0.5;
         ctx.fill();
+        //画内部实体圆形
+        ctx.beginPath();
+        ctx.moveTo(rx, ry);
+        ctx.arc(rx, ry, r/2/4*3,0,180);
+        ctx.lineTo(rx, ry);
+        ctx.fillStyle = "rgba(255, 255, 255)";
+        ctx.setGlobalAlpha = 1;
+        ctx.fill();
+        this.setData({
+          gCanvaslist,
+          totaltime:allT/60
+        });
       })
-
   },
   changePageTask(){
     this.setData({
