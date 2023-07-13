@@ -229,8 +229,16 @@ Page({
         ctx.fillStyle = "rgba(255, 255, 255)";
         ctx.setGlobalAlpha = 1;
         ctx.fill();
+        gCanvaslist.sort(function(a,b){
+          return b.ratio - a.ratio
+        });
+        var taskResultStr = "";
+        gCanvaslist.forEach(g=>{
+          taskResultStr += g.type + " " + (allT*g.ratio/60).toFixed(1) + "h " 
+        });
         this.setData({
           gCanvaslist,
+          taskResultStr,
           totaltime:allT/60
         });
       })

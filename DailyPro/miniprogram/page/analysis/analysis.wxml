@@ -82,12 +82,12 @@
     </view>
   </view>
   <!-- 扇形图模块 -->
-  <view class="fanChart chart"  wx:if="{{ifTask}}">
+  <view class="fanChart chart" style="height:{{ifTask?'100%':'0'}}px;padding:{{ifTask?'10':'0'}}px;">
     <view class="canvasbox">
       <canvas id="timeCanvas" type="2d" class="anaCanvas"/>
     </view>
     <!-- 文字说明 -->
-    <view class="FanTxtBox">
+    <view class="FanTxtBox" wx:if="{{ifTask}}">
       <view class="colorTxt flexCenter">
         <view wx:for="{{gCanvaslist}}" wx:key="index">
           <view>
@@ -101,11 +101,11 @@
       </view>
       <view>
         <p>您今日的总支配时间为：{{totaltime}}小时</p>
-        <p>其中占比最高的:</p>
+        <p>其中 {{taskResultStr}}</p>
       </view>
     </view>
   </view>
-  <view wx:else>
+  <view  style="height:{{ifTask?'0':'100%'}}px;">
     
   </view>
   <!-- 折现图模块 -->
