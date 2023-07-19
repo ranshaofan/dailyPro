@@ -29,7 +29,7 @@
         "text": "接口"
       },
       {
-        "pagePath": "page/cloud/index",
+        "pagePath": "page/mine/mine",
         "iconPath": "image/icon_cloud_HL.png",
         "selectedIconPath": "image/icon_cloud_dark.png",
         "text": "云开发"

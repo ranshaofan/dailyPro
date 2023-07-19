@@ -1,0 +1,13 @@
+@import "../common/index.wxss";
+@import "../common/common.wxss";
+
+/* .weui-agree__link {
+  display: inline;
+  color: var(--weui-LINK);
+} */
+page{
+  background-color: #fff;
+}
+.mine{
+  background: linear-gradient(to right,#EFFAF7 ,#FEFDFF,#fff,rgb(246,234,227));
+}

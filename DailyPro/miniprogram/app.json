@@ -2,7 +2,7 @@
   "pages": [
     "page/home/home",
     "page/analysis/analysis",
-    "page/cloud/index",
+    "page/mine/mine",
     "page/task/task"
   ],
   "preloadRule": {
@@ -18,7 +18,7 @@
         "packageAPI"
       ]
     },
-    "page/cloud/index": {
+    "page/mine/mine": {
       "network": "all",
       "packages": [
         "packageCloud"
@@ -58,7 +58,7 @@
         "selectedIconPath": "@selectedIconTime"
       },
       {
-        "pagePath": "page/cloud/index",
+        "pagePath": "page/mine/mine",
         "iconPath": "@iconMine",
         "selectedIconPath": "@selectedIconMine"
       }
