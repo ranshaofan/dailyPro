@@ -173,7 +173,6 @@ function initCalendar(){
       cs.push({ xq: curX, day: curD, X: curX.substr(0, 1), classChosen: cc, index: i });
       i++;
     }
-    console.log(cs);
     return {"calendar":cs,"cLChosen":"cL" + (todayIndex-3)}
 }
 module.exports = {

@@ -1,13 +1,107 @@
 @import "../common/index.wxss";
-@import "../common/common.wxss";
 
 /* .weui-agree__link {
   display: inline;
   color: var(--weui-LINK);
 } */
-page{
-  background-color: #fff;
+.page{
+  background-color: #fcfcfc;
+  padding: 0 !important;
 }
 .mine{
-  background: linear-gradient(to right,#EFFAF7 ,#FEFDFF,#fff,rgb(246,234,227));
+  width: 100vw;
+  height: 240px;
+  position: relative;
+  background: linear-gradient(to right,#EFFAF7 ,#FEFDFF,#FAF8FE,#F0F0FF);
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+.ava{
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #fff;
+  overflow: hidden;
+  margin-right: 20px;
+  border: 3px solid #676666;
+}
+.ava image{
+  width: 70px;
+  height: 70px;
+}
+.cardM{
+  position: absolute;
+  top: 50px;
+  left: 50px;
+}
+.name{
+  color: #6D572C;
+  font-size: 17px;
+}
+.block{
+  font-size: 20px;
+  color: #5a4620;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 40px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin: 10px 0;
+  background: linear-gradient(to right,#FAF8FE);
+}
+
+/* 弹窗背景 */
+.dialog {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 弹窗内容 */
+.dialog-content {
+  background-color: #fff; /* 弹窗背景颜色 */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+}
+
+/* 输入框样式 */
+input[type="number"] {
+  width: 84%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* 确定按钮样式 */
+button {
+  display: block;
+  width: 100%;
+  background-color: #4d4d4e; /* 按钮背景颜色 */
+  color: #fff; /* 按钮文字颜色 */
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* 取消按钮样式 */
+button.cancel {
+  background-color: #ccc;
+}
+
+/* 弹窗文本样式 */
+text {
+  font-size: 16px;
+  margin-bottom: 10px;
 }

@@ -203,24 +203,25 @@
 .addDlg{
     position: fixed;
     top: 20%;
-    background-color: #f0f0f0;
+    background-color: #fff;
     z-index: 19961009;
     width: 80%;
-    border-radius: 10px;
+    border-radius: 12px;
+    border: 1px solid #541A69;
+    box-shadow: rgba(146, 143, 146, 0.8) 5px 5px 5px;
 }
 .dlgTitle{
     position: relative;
     width: 100%;
-    height: 40px;
-    line-height: 40px;
+    height: 50px;
+    line-height: 50px;
     font-size: 15px;
-    color: #f1f1f1;
-    font-style: italic;
+    font-weight: 700;
+    color: #fff;
     border-radius: 10px 10px 0 0;
-    padding-left: 20px;
     box-sizing: border-box;
     margin-bottom: 10px;
-    background: linear-gradient(to bottom,#c5a8d7 ,#7b618b);
+    background: rgba(74, 31, 74, 0.65);
 }
 .dlgTitle span{
     width: 30px;
@@ -230,6 +231,20 @@
     font-weight: 700;
     font-style:normal;
     text-align: end;
+}
+.dlgName{
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+.dlgClose{
+    position: absolute;
+    right: 10px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
 }
 .addDlgTop .timepicker{
     width: 40%;
@@ -246,38 +261,50 @@
     width: 30%;
     height: 40px;
     border:1px solid #E7E7EB;
-    background-color: #fcf7ff;
-    border-radius: 5px;
+    background-color: #fff;
+    border-radius: 12px;
     color: #777676;
+}
+.eventTypePicker{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
 }
 .addInput{
     height: 40px;
-    border:1px solid #E7E7EB;
-    background-color: #fcf7ff;
-    border-radius: 5px;
-    color: #777676;
+    border:1px solid #3D1560;
+    background-color: #fff;
+    border-radius: 12px;
+    color: 3D1560;
     padding: 0 10px;
     box-sizing: border-box;
+    font-size: 14px;
+    width: 60%;
 }
 .addTaskInput{
     width: 60%;
 }
 .addBtn button{
-    background: linear-gradient(to bottom,#a892b6 ,#c5a8d7,#c5a8d7,#a892b6);
-
+    background-color: #896D89;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    border: 1px solid #3D1560;
+    border-radius: 12px;
 }
-.addCostDlgT span{
+.addEventDlgT span{
     width: 20%;
     display: inline-flex;
     justify-content: flex-end;
     align-items: center;
+    background-color: #fff;
 }
-.addCostDlgT input{
+.addEventDlgT input{
     width: 40%;
 }
-.addDlgCostBeizhu{
-    width: 90%;
-    margin: auto;
+.addDlgTimeBeizhu{
+    width: 60%;
+    height: 80px;
 }
 .delete{
     position: fixed;
@@ -298,5 +325,24 @@
     border-radius: 0 16px 16px 0;
     z-index: 1;
 }
-
-  
+.timepicker{
+    color: #4F185A;
+    background-color: #fff;
+    border: 2px solid #4F185A;
+    border-radius: 20px;
+    padding: 0 10PX;
+    height: 26px;
+    line-height: 26px;
+    font-size: 15px;
+}
+.timeDlgLine{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.timeDlgLineName{
+    color: #3D184C;
+    font-size: 14px;
+    margin-right: 14px;
+}

@@ -69,7 +69,7 @@
   </view>
 </view> -->
 <view class="page">
-  <!-- <button class="generateBtn" bindtap="listToCanvas">生成</button> -->
+  <!-- <button class="generateBtn" bindtap="listToTimeCanvas">生成</button> -->
   <!-- 标题部分 -->
   <view class="analysisTitle">
     <span wx:if="{{ifTask}}">Task</span>
@@ -77,14 +77,12 @@
     <picker mode="selector" range="{{array}}" bindchange="bindPickerChange">
       <view class="picker">{{array[index]}}</view>
     </picker>
-    <view class="beginBtn flexCenter" bindtap="listToCanvas">
-      generation
-    </view>
+    <view class="beginBtn flexCenter" bindtap="listToTimeCanvas">generation</view>
   </view>
   <!-- 扇形图模块 -->
   <view class="fanChart chart" style="height:{{ifTask?'100%':'0'}}px;padding:{{ifTask?'10':'0'}}px;">
     <view class="canvasbox">
-      <canvas id="timeCanvas" type="2d" class="anaCanvas"/>
+      <canvas id="timeCanvas" type="2d" class="anaCanvas" />
     </view>
     <!-- 文字说明 -->
     <view class="FanTxtBox" wx:if="{{ifTask}}">
@@ -94,9 +92,7 @@
             <span style="background-color:{{item.color?item.color:'#E77171'}};" class="psCircle"></span>
             <span>{{item.type}}</span>
           </view>
-          <view>
-            {{filters.toFix(item.ratio*100)}}%
-          </view>
+          <view>{{filters.toFix(item.ratio*100)}}%</view>
         </view>
       </view>
       <view>
@@ -105,15 +101,15 @@
       </view>
     </view>
   </view>
-  <view  style="height:{{ifTask?'0':'100%'}}px;">
-    
-  </view>
+  <view style="height:{{ifTask?'0':'100%'}}px;"></view>
   <!-- 折现图模块 -->
   <view class="lineChart chart">
     <view wx:if="{{ifTask}}">
+      <view class="canvasbox">
+        <canvas id="polyCanvas" type="2d" class="anaCanvas" />
+      </view>
     </view>
-    <view wx:else>
-    </view>
+    <view wx:else></view>
   </view>
   <!-- task页面 -->
   <view wx:if="{{ifTask}}"></view>

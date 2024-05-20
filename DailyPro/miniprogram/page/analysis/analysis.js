@@ -109,7 +109,7 @@ Page({
     //     this.setData({ theme })
     //   })
     // }
-    // this.listToCanvas(app.globalData.todayTasks);
+    // this.listToTimeCanvas(app.globalData.todayTasks);
     // ctx.draw()
 
     // const ctx = wx.createCanvasContext('timeCanvas');
@@ -135,7 +135,7 @@ Page({
 
   },
   //把list分类整体并且图形化
-  listToCanvas() {//list:[{starttime,endtime,type,con,id}]
+  listToTimeCanvas() {//list:[{starttime,endtime,type,con,id}]
     // list.sort(function(a,b){
     //   return new Date("2023-1-11 "+a.time) - new Date("2023-1-11 "+b.time);
     // });
@@ -157,7 +157,6 @@ Page({
         gatherList[item.type].sumTime += min;
       }
     });
-    console.log(gatherList,"gatherList");
     //根据gatherList计算每个type所占的角度
     var gCanvaslist = [];//[{type,ratio,color}]
     //首先计算全部的分钟数
@@ -242,6 +241,10 @@ Page({
           totaltime:allT/60
         });
       })
+  },
+  listtoPolyCanvas(){
+    var list = app.globalData.todayTasks;
+
   },
   changePageTask(){
     this.setData({

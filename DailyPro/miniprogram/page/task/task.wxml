@@ -1,8 +1,8 @@
 <import src="../common/head.wxml" />
-<!-- /**Task弹框**/ -->
-<view id="addTaskDlg" class="addDlg" wx:if="{{addTaskdlgShow}}">
+<!-- /**时间弹框**/ -->
+<view id="addTaskDlg" class="addDlg" wx:if="{{addTimeDlgShow}}">
   <view class="dlgTitle">
-    Create New Task
+    <view class="dlgName">新增时间</view>
     <span bindtap="closeAddDlg" data-type="task">×</span>
   </view>
   <view class="addDlgTop flexCenter">
@@ -24,34 +24,62 @@
     <button class="pickerbgc flexCenter" bindtap="addDlgBtn" data-type="task">确定</button>
   </view>
 </view>
-<!-- /**Cost弹框**/ -->
-<view id="addCostDlg" class="addDlg" wx:if="{{addCostdlgShow}}">
-  <view class="dlgTitle">
-    Create New Cost
-    <span bindtap="closeAddDlg" data-type="cost">×</span>
+<!-- /**事件弹框**/ -->
+<view id="addEventDlg" class="addDlg" wx:if="{{addEventDlgShow}}">
+  <view class="dlgTitle flexCenter">
+    <view class="dlgName">新增事件</view>
+    <picker mode="date" value="{{ currentDate }}" start="{{ startDate }}" end="{{ endDate }}" bindchange="onDateChange">
+    <view class="timepicker">
+      {{ currentDate }}
+    </view>
+  </picker>
+    <view bindtap="closeAddDlg" data-type="cost"  class="dlgClose">×</view>
   </view>
-  <view class="addDlgbottom flexCenter pickerbgc addCostDlgT">
-    <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
+  <!-- <view class="addDlgbottom flexCenter pickerbgc addEventDlgT"> -->
+    <!-- <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
       <view class="picker flexCenter">{{typeArr[typeIndex]}}</view>
-    </picker>
-    <span>金额：</span>
-    <input type="text" class="addInput" bindinput="onInput" value="{{inputNum}}" data-type="costNum" />
+    </picker> -->
+  <!-- </view> -->
+  <view class="timeDlgLine">
+    <view class="timeDlgLineName">
+      事件名称
+    </view>
+    <input class="addInput" placeholder="事件名称" value="{{inputCon}}" bindinput="onInput" data-type="costCon" />
   </view>
-  <view>
-    <input class="addInput addDlgCostBeizhu" placeholder="备注" value="{{inputCon}}" bindinput="onInput" data-type="costCon" />
+  <view class="timeDlgLine">
+    <view class="timeDlgLineName">
+      事件类型
+    </view>
+    <picker mode="selector"  class="addInput"  value="{{typeIndex}}" range="{{typeArr}}"  bindchange="onTypeChange">
+      <view class="eventTypePicker">{{typeArr[typeIndex]}}</view>
+    </picker>
+  </view>
+  <view class="timeDlgLine">
+    <view class="timeDlgLineName">
+      详细备注
+    </view>
+    <input class="addInput addDlgTimeBeizhu" placeholder="备注" value="{{inputCon}}" bindinput="onInput" data-type="costCon" />
+  </view>
+  <view class="timeDlgLine">
+    <view class="timeDlgLineName">
+      事件评价
+    </view>
+    <picker mode="selector"  class="addInput"  value="{{jugeIndex}}" range="{{jugeArr}}"  bindchange="onJugeChange">
+      <view class="eventTypePicker">{{jugeArr[jugeIndex]}}</view>
+    </picker>
   </view>
   <view class="addBtn">
-    <button class="pickerbgc flexCenter" bindtap="addDlgBtn" data-type="cost">确定</button>
+    <button class="flexCenter confirm" bindtap="addDlgBtn" data-type="event">确定</button>
   </view>
 </view>
 <view class="tcpage page">
-  <button id="tcAddBtn" wx:if="{{ifTask}}">
-    <image bindtap="showAddDlg" class="" data-btn="task" src="./images/addTaskImg.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
-    Add Task
+  <!-- <template is="calendar" data="{{calendar}}" /> -->
+  <button id="tcAddBtn" wx:if="{{ifTime}}" >
+    <image bindtap="showAddTimeDlg" class="" data-btn="task" src="./images/addTaskImg.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
+      新增时间
   </button>
-  <template is="calendar" data="{{calendar}}" />
-  <!-- task模块的内容列表 -->
-  <view wx:if="{{ifTask}}" class="taskView flexCenter">
+  <!-- 时间列表 -->
+  <view wx:if="{{ifTime}}" class="taskView flexCenter">
     <!-- 左侧时间轴竖条 -->
     <view class="vBar">
       <!-- 竖条开始的圆点 -->
@@ -94,28 +122,32 @@
       <image class="" src="./images/delete.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
     </view>
   </view>
-  <!-- cost模块列表 -->
+  <!-- 事件模块列表 -->
   <view wx:else>
+    <button id="tcAddBtn">
+    <image bindtap="showAddEventDlg" class="" data-btn="task" src="./images/addTaskImg.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
+    新增事件
+  </button>
     <!-- 卡片 -->
-    <view class="costCard">
+    <!-- <view class="costCard">
       <view class="cardLeft">
         <view class="cardType">Monthly balance</view>
         <view class="total">
           <span>￥</span>
-          600.23
+          {{userInfo.balanceAmount}}
         </view>
         <view class="limit">
           Limit
           <span>￥</span>
-          800
+          {{userInfo.limitAmount}}
         </view>
       </view>
       <view class="cardBtn flexCenter" bindtap="showAddDlg" data-btn="cost">ADD COST</view>
-    </view>
+    </view> -->
     <!-- todayCost -->
-    <view class="titlecost">Today Cost</view>
+    <view class="titlecost">事件分类</view>
     <!-- cost内容列表 -->
-    <view class="costBox bg{{index%4}}" wx:for="{{costs}}" wx:key="index" wx:for-item="item" data-index="{{index}}" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE">
+    <view class="costBox bg{{index%4}}" wx:for="{{events}}" wx:key="index" wx:for-item="item" data-index="{{index}}" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE">
       <view class="costBoxin bg{{index%4}}" style="left:{{item.conLeft}}px;">
         <view class="costImgView flexCenter">
           <image class="costBoxImg" src="{{item.pic}}" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
@@ -134,10 +166,10 @@
   </view>
   <!-- 标签页定位 task -->
   <view class="mark0 mark" bindtap="changePageTask">
-    <image class="" src="../common/img/bq{{ifTask}}.png" mode="aspectFit" lazy-load="false" binderror="" bindload=""></image>
+    <image class="" src="../common/img/bq{{ifTime}}.png" mode="aspectFit" lazy-load="false" binderror="" bindload=""></image>
   </view>
   <!-- 标签页定位 cost -->
   <view class="mark1 mark" bindtap="changePageCost">
-    <image class="" src="../common/img/bq{{ifCost}}.png" mode="aspectFit" lazy-load="false" binderror="" bindload=""></image>
+    <image class="" src="../common/img/bq{{ifEvent}}.png" mode="aspectFit" lazy-load="false" binderror="" bindload=""></image>
   </view>
 </view>

@@ -1,6 +1,7 @@
 import CustomPage from './base/CustomPage'
-import {dateFormat,initCalendar} from '../../util/util'
-const app = getApp()
+import { dateFormat, initCalendar } from '../../util/util'
+const app = getApp();
+const db = wx.cloud.database();//获取数据库引用
 CustomPage({
   onShareAppMessage() {
     return {
@@ -9,37 +10,42 @@ CustomPage({
     }
   },
   data: {
-    Type_Pic:{"娱乐":"phoneG","工作":"phoneG"},//type和图片对应的数据表
-    ifTask:0,
-    ifCost:1,
-    calendar:[],
-    cLChosen:"",
-    costs:[{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:1,cost:200,conLeft:0},{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:2,cost:200,conLeft:0},{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:3,cost:20,conLeft:0}],
-    tasks:[{type:"Work",con:"that's all bullshit",st:"11:00",et:"12:00",i:0},{type:"Work",con:"that's all bullshit",st:"11:00",et:"12:00",i:1}],
-    today:dateFormat('yyyy-MM-dd',new Date()),
+    Type_Pic: { "娱乐": "phoneG", "工作": "phoneG" },//type和图片对应的数据表
+    ifTime: 0,
+    ifEvent: 1,
+    calendar: [],
+    currentDate:'2024-5-20',
+    cLChosen: "",
+    events: [],
+    // events:[{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:1,cost:200,conLeft:0},{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:2,cost:200,conLeft:0},{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:3,cost:20,conLeft:0}],
+    tasks: [{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00", i: 0 }, { type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00", i: 1 }],
+    today: dateFormat('yyyy-MM-dd', new Date()),
     timePicker: null,
     dlgStTime: "08:00",
     dlgEtTime: "08:00",
-    addTaskdlgShow: 0,
-    addCostdlgShow: 0,
+    addTimeDlgShow: 0,
+    addEventDlgShow: 0,
     typeIndex: 0,
-    startX:0,//滑动时的起始坐标
-    typeArr: ["娱乐","工作","学习"],
+    startX: 0,//滑动时的起始坐标
+    typeArr: ["娱乐", "工作", "学习","饮食"],
+    jugeArr: ["优秀", "普通", "差劲"],
     contents: [],
     inputValue: "",
-    inputCon:"",
-    inputNum:""
+    inputCon: "",
+    inputNum: "",
+    userInfo: { balanceAmount: 3000, limitAmount: 1000 },
+    curEvent:{name:'',type:'',notes:'',juge:''}
   },
-  changePageTask(){
+  changePageTask() {
     this.setData({
-      ifTask:1,
-      ifCost:0
+      ifTime: 1,
+      ifEvent: 0
     });
   },
-  changePageCost(){
+  changePageCost() {
     this.setData({
-      ifTask:0,
-      ifCost:1
+      ifTime: 0,
+      ifEvent: 1
     });
   },
   onTimeStartChange(e) {
@@ -57,22 +63,40 @@ CustomPage({
       typeIndex: e.detail.value
     })
   },
+  onJugeChange(e){
+    this.setData({
+      jugeIndex: e.detail.value
+    })
+  },
   onLoad() {
     var cs = initCalendar();
     console.log(cs);
     this.setData({
       calendar: cs.calendar,
-      cLChosen: cs.cLChosen
+      cLChosen: cs.cLChosen,
+      events: app.globalData.events
     })
+    if (app.globalData.userInfo && app.globalData.userInfo.avatarUrl) {
+      this.setData({
+        userInfo: app.globalData.userInfo
+      })
+    }
+  },
+  onshow() {
+    if (JSON.stringify(app.globalData.events) != JSON.stringify(events)) {
+      this.setData({
+        events: app.globalData.events
+      })
+    }
   },
   //addDlg弹框的input事件
   onInput(event) {
     var type = event.currentTarget.dataset.type;
-    if(type == "costNum"){
+    if (type == "costNum") {
       this.data.inputNum = event.detail.value;
-    }else if(type=="costCon"){
+    } else if (type == "costCon") {
       this.data.inputCon = event.detail.value;
-    }else{
+    } else {
       this.data.inputValue = event.detail.value;
     }
   },
@@ -100,7 +124,7 @@ CustomPage({
       if (disX == 0 || disX < 0) {//如果移动距离小于等于0，文本层位置不变
         left = 0;
       } else if (disX > 0) {//移动距离大于0，文本层left值等于手指移动距离
-        left = disX* (-1);
+        left = disX * (-1);
         if (disX >= delBtnWidth) {
           //控制手指移动距离最大值为删除按钮的宽度
           left = delBtnWidth * (-1);
@@ -108,13 +132,13 @@ CustomPage({
       }
       //获取手指触摸的是哪一个item
       var index = e.currentTarget.dataset.index;
-      var list = that.data.costs;
+      var list = that.data.events;
       //将拼接好的样式设置到当前item中
       list[index].conLeft = left;
       // //更新列表的状态
       app.globalData.todayCosts = list;
       this.setData({
-        costs: list
+        events: list
       });
     }
   },
@@ -127,110 +151,141 @@ CustomPage({
       var disX = that.data.startX - endX;
       var delBtnWidth = 58;
       //如果距离小于删除按钮的1/2，不显示删除按钮
-      var left = disX > delBtnWidth / 2 ? delBtnWidth*(-1) : 0;
+      var left = disX > delBtnWidth / 2 ? delBtnWidth * (-1) : 0;
       //获取手指触摸的是哪一项
       var index = e.currentTarget.dataset.index;
-      var list = that.data.costs;
+      var list = that.data.events;
       //将拼接好的样式设置到当前item中
       list[index].conLeft = left;
       // //更新列表的状态
       app.globalData.todayCosts = list;
       this.setData({
-        costs: list
+        events: list
       });
     }
   },
-  costDelete(e){//删除按钮
+  costDelete(e) {//删除按钮
     var index = e.currentTarget.dataset.index;
-    this.data.costs.splice(index,1);
-    app.globalData.todayCosts = this.data.costs;
+    var delArr = this.data.events.splice(index, 1);
+    app.globalData.todayCosts = this.data.events;
     this.setData({
-      costs:this.data.costs
+      events: this.data.events
+    });
+    db.collection('events').where({
+      _id: delArr[0]._id
+    }).remove({
+      success: function(res) {
+      }
     });
   },
   //悬浮addDLg确定按钮的click
   addDlgBtn(event) {
+    var that = this;
     var type = event.currentTarget.dataset.type;
-    if(type=="task"){
+    if (type == "task") {
       var st = this.data.dlgStTime;
       var et = this.data.dlgEtTime;
       var type = this.data.typeArr[this.data.typeIndex];
       var con = this.data.inputValue;
       var cons = this.data.tasks;
-      this.data.tasks.push({ st,et, type, con, id: cons.length,conLeft:0,i:cons.length%3 });
+      this.data.tasks.push({ st, et, type, con, id: cons.length, conLeft: 0, i: cons.length % 3 });
       app.globalData.todayTasks = cons;
       this.setData({
-        addTaskdlgShow: 0,
+        addTimeDlgShow: 0,
         tasks: cons
       });
-    }else{//Cost
-      var type = this.data.typeArr[this.data.typeIndex];
-      var con = this.data.inputCon;
-      var pic = "../common/img/"+this.data.Type_Pic[type]+".png";
-      var list = this.data.costs;
+    } else {//event
+      var type = this.data.curEvent[this.data.typeIndex];
+      var notes = this.data.curEvent.notes;
+      var list = this.data.events;
       var cost = this.data.inputNum;
-      this.data.costs.push({ type, cost,pic,con, id: list.length,conLeft:0,i:list.length%3 });
-      app.globalData.todayCost = list;
-      this.setData({
-        addCostdlgShow: 0,
-        costs: list
-      });
-      console.log(list);
+      // this.data.events.push({ type, cost,pic,con, id: list.length,conLeft:0,i:list.length%3 });
+      // app.globalData.todayCost = list;
+      // this.setData({
+      //   addEventDlgShow: 0,
+      //   events: list
+      // });
+      // console.log(list);
+
+      //向数据库中添加数据
+      db.collection('events').add({
+        data: {
+          type: type,
+          cost: cost,
+          beizhu: con,
+          date: that.data.today,
+          user_id: app.globalData.userInfo._id,
+          conLeft: 0,
+          pic: pic
+        },
+        success: res => {
+          console.log(res);
+          var events = db.collection('events');
+          events.get().then(res => {
+            if (res.data) {
+              this.globalData.events = res.data;
+              that.setData({
+                events: res.data
+              });
+            }
+          }).catch(err => {
+            console.error('查询失败:', err);
+          });
+        }
+      })
     }
   },
-  showAddDlg(event){
-    var button = event.currentTarget.dataset.btn;
-    if (button === "task") {
-      this.setData({
-        addTaskdlgShow: 1,
-        addCostdlgShow:0
-      });
-    } else if (button === "cost") {
-      this.setData({
-        addTaskdlgShow: 0,
-        addCostdlgShow:1
-      });
-    }
+  showAddTimeDlg(){
+    this.setData({
+      addTimeDlgShow: 1,
+      addEventDlgShow: 0
+    });
   },
-  closeAddDlg(event){
-    var type=event.currentTarget.dataset.type;
-    if(type=="task"){
+  showAddEventDlg(){
+    this.setData({
+      addTimeDlgShow: 0,
+      addEventDlgShow: 1
+    });
+  },
+  closeAddDlg(event) {
       this.setData({
-        addTaskdlgShow:0
+        addTimeDlgShow: 0,
+        addEventDlgShow:0
       });
-    }else{
-      this.setData({
-        addCostdlgShow:0
-      });
-    }
   },
   handleLongPress(event) {
     //长按某一个task 在对应位置出现删除标签
     const { pageX, pageY } = event.touches[0];
     this.setData({
       isLongPress: true,
-      scale:1.1,
+      scale: 1.1,
       pageX,
       pageY,
-      key:event.currentTarget.dataset.index
+      key: event.currentTarget.dataset.index
     });
 
     wx.vibrateShort(); // 触发震动效果
   },
-  clickTask:function(event){
+  clickTask: function (event) {
     this.setData({
       isLongPress: false,
-      scale:1,
-      key:event.currentTarget.dataset.index
+      scale: 1,
+      key: event.currentTarget.dataset.index
     });
   },
-  taskDelete:function(){
+  taskDelete: function () {
     console.log(this.data.key);
-    this.data.tasks.splice(this.data.key,1)
+    this.data.tasks.splice(this.data.key, 1)
     this.setData({
-      tasks:this.data.tasks,
-      isLongPress:false,
-      scale:1
+      tasks: this.data.tasks,
+      isLongPress: false,
+      scale: 1
+    });
+  },
+  onDateChange: function(e) {
+    console.log('选择的日期为：', e.detail.value);
+    this.setData({
+      currentDate: e.detail.value
     });
   }
 
