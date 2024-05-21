@@ -29,10 +29,10 @@
   <view class="dlgTitle flexCenter">
     <view class="dlgName">新增事件</view>
     <picker mode="date" value="{{ currentDate }}" start="{{ startDate }}" end="{{ endDate }}" bindchange="onDateChange">
-    <view class="timepicker">
-      {{ currentDate }}
-    </view>
-  </picker>
+      <view class="timepicker">
+        {{ currentDate }}
+      </view>
+    </picker>
     <view bindtap="closeAddDlg" data-type="cost"  class="dlgClose">×</view>
   </view>
   <!-- <view class="addDlgbottom flexCenter pickerbgc addEventDlgT"> -->
@@ -44,7 +44,7 @@
     <view class="timeDlgLineName">
       事件名称
     </view>
-    <input class="addInput" placeholder="事件名称" value="{{inputCon}}" bindinput="onInput" data-type="costCon" />
+    <input class="addInput" placeholder="事件名称" value="{{inputCon}}" bindinput="onInput" data-type="eventName" />
   </view>
   <view class="timeDlgLine">
     <view class="timeDlgLineName">
@@ -58,7 +58,7 @@
     <view class="timeDlgLineName">
       详细备注
     </view>
-    <input class="addInput addDlgTimeBeizhu" placeholder="备注" value="{{inputCon}}" bindinput="onInput" data-type="costCon" />
+    <input class="addInput addDlgTimeBeizhu" placeholder="备注" value="{{inputName}}" bindinput="onInput" data-type="eventCon" />
   </view>
   <view class="timeDlgLine">
     <view class="timeDlgLineName">
@@ -73,12 +73,28 @@
   </view>
 </view>
 <view class="tcpage page">
-  <!-- <template is="calendar" data="{{calendar}}" /> -->
+  <!-- 时间列表 -->
   <button id="tcAddBtn" wx:if="{{ifTime}}" >
     <image bindtap="showAddTimeDlg" class="" data-btn="task" src="./images/addTaskImg.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
       新增时间
   </button>
-  <!-- 时间列表 -->
+  <button id="tcAddBtn" wx:else>
+      <image bindtap="showAddEventDlg" class="" data-btn="task" src="./images/addTaskImg.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
+      新增事件
+  </button>
+  <view class='timerangeView flexCenter'>
+    <picker mode="date" value="{{sdate}}" start="{{ startDate }}" end="{{ endDate }}" bindchange="onSDateChange">
+        <view class="timepicker flexCenter">
+          {{ sdate }}
+        </view>
+    </picker>
+    <span>——</span>
+    <picker mode="date" value="{{edate}}" start="{{ startDate }}" end="{{ endDate }}" bindchange="onEDateChange">
+        <view class="timepicker flexCenter">
+          {{ edate }}
+        </view>
+    </picker>
+  </view>
   <view wx:if="{{ifTime}}" class="taskView flexCenter">
     <!-- 左侧时间轴竖条 -->
     <view class="vBar">
@@ -124,10 +140,6 @@
   </view>
   <!-- 事件模块列表 -->
   <view wx:else>
-    <button id="tcAddBtn">
-    <image bindtap="showAddEventDlg" class="" data-btn="task" src="./images/addTaskImg.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
-    新增事件
-  </button>
     <!-- 卡片 -->
     <!-- <view class="costCard">
       <view class="cardLeft">
@@ -145,18 +157,35 @@
       <view class="cardBtn flexCenter" bindtap="showAddDlg" data-btn="cost">ADD COST</view>
     </view> -->
     <!-- todayCost -->
-    <view class="titlecost">事件分类</view>
-    <!-- cost内容列表 -->
+    <view class="titleevent flexCenter">
+      <view class="typeEventSelector titleeventleft epicker">
+        <picker mode="selector"  class="addInput"  value="{{typeEventIndex}}" range="{{typeData}}"  bindchange="onTypeEventChange">
+          <view class="eventTypePicker">{{typeData[typeEventIndex].type}}</view>
+        </picker>
+      </view>
+      <view class="titleeventright flexCenter">
+        <view class="eventspan">
+          当日评价
+        </view>
+        <view class="eventValueSelector epicker">
+          <picker mode="selector"  class="addInput"  value="{{valueEventIndex}}" range="{{evaluation}}"  bindchange="onEventValueChange">
+            <view class="eventTypePicker">{{evaluation[valueEventIndex]}}</view>
+          </picker>
+        </view>
+      </view>
+        
+    </view>
+    <!-- cost内容列表 --> 
     <view class="costBox bg{{index%4}}" wx:for="{{events}}" wx:key="index" wx:for-item="item" data-index="{{index}}" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE">
       <view class="costBoxin bg{{index%4}}" style="left:{{item.conLeft}}px;">
         <view class="costImgView flexCenter">
           <image class="costBoxImg" src="{{item.pic}}" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
         </view>
         <view class="costTxt">
-          <view class="costtype">{{item.type}}</view>
-          <view class="costcon">{{item.con}}</view>
+          <view class="costtype">{{item.name}}</view>
+          <view class="costcon">{{item.notes}}</view>
         </view>
-        <view class="moreImgView flexCenter">¥{{item.cost}}</view>
+        <view class="moreImgView flexCenter">{{item.evaluation}}</view>
       </view>
        <!-- 这里是左滑按钮部分 -->
       <view class="delCost flexCenter" bindtap="costDelete" data-index="{{index}}">

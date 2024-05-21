@@ -193,11 +193,39 @@
     font-style: italic;
     color: #E7E7EB;
 }
-.titlecost{
+.titleevent{
     font-size: 19px;
     font-weight: 700;
     color: #5C5F5E;
     margin: 20px 0;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 0;
+}
+.epicker{
+}
+.epicker picker{
+    width: 100%;
+}
+.typeEventSelector{
+    width: 80px;
+}
+.eventValueSelector{
+    width: 80px;
+}
+.titleeventleft{
+    position: absolute;
+    left: 0;
+}
+.titleeventright{
+    position: absolute;
+    right: 0;
+}
+.eventspan{
+    font-size: 16px;
+    width: 70px;
+    height: 100%;
 }
 /* 弹框 */
 .addDlg{
@@ -345,4 +373,12 @@
     color: #3D184C;
     font-size: 14px;
     margin-right: 14px;
+}
+.timerangeView{
+    padding: 0 0 10px 0;
+}
+.timerangeView picker{
+    width: 40%;
+    color: #3D1560;
+    margin: 0 5px;
 }

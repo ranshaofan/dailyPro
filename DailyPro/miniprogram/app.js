@@ -17,19 +17,19 @@ App({
 
     // 获取集合的引用
     const userInfoCollection = db.collection('userInfo');
-    const costs = db.collection('events');
+    const events = db.collection('events');
 
     // 查询数据
-    // userInfoCollection.get().then(res => {
-    //   // 查询成功，res.data 包含了查询结果
-    //   if(res.data[0])this.globalData.userInfo = res.data[0];
-    // }).catch(err => {
-    //   // 查询失败
-    //   console.error('查询失败:', err);
-    // });
-    costs.get().then(res => {
+    userInfoCollection.get().then(res => {
       // 查询成功，res.data 包含了查询结果
-      if(res.data)this.globalData.costs = res.data;
+      if(res.data[0])this.globalData.userInfo = res.data[0];
+    }).catch(err => {
+      // 查询失败
+      console.error('查询失败:', err);
+    });
+    events.get().then(res => {
+      // 查询成功，res.data 包含了查询结果
+      if(res.data)this.globalData.events = res.data;
     }).catch(err => {
       // 查询失败
       console.error('查询失败:', err);
@@ -76,8 +76,10 @@ App({
     openid: null,
     todayTasks: [],
     todayCosts: [],
-    costs:[],
+    events:[],
+    evaluation:["干得漂亮","正常水平","差点意思","烂透了"],
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    typeData:[{type:"所有",pic:"",color:""},{type:"娱乐",pic:"",color:""},{type:"学习",pic:"",color:""}],
     colorobj: { "娱乐": "#C3ACEB", "工作": "#EB974F", "学习": "#B4EBA1", "兴趣": "#EA90BA" },
     iconTabbar: '/page/weui/example/images/icon_tabbar.png',
   },

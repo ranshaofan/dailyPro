@@ -14,9 +14,15 @@ CustomPage({
     ifTime: 0,
     ifEvent: 1,
     calendar: [],
+    typeData:[],
+    evaluation:[],
+    valueEventIndex:0,
+    typeEventIndex:0,
     currentDate:'2024-5-20',
+    sdate:'2024-5-20',
+    edate:'2024-5-20',
     cLChosen: "",
-    events: [],
+    events: [{eventtime:'2024-5-20',name:'喝咖啡',type:'饮食',notes:'不应该',evaluation:'普通',inittime:'',userid:'',index:1,conLeft:0}],
     // events:[{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:1,cost:200,conLeft:0},{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:2,cost:200,conLeft:0},{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:3,cost:20,conLeft:0}],
     tasks: [{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00", i: 0 }, { type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00", i: 1 }],
     today: dateFormat('yyyy-MM-dd', new Date()),
@@ -32,6 +38,7 @@ CustomPage({
     contents: [],
     inputValue: "",
     inputCon: "",
+    inputName: "",
     inputNum: "",
     userInfo: { balanceAmount: 3000, limitAmount: 1000 },
     curEvent:{name:'',type:'',notes:'',juge:''}
@@ -68,13 +75,24 @@ CustomPage({
       jugeIndex: e.detail.value
     })
   },
+  onEventValueChange(e){
+    this.setData({
+      valueEventIndex: e.detail.value
+    })
+  },
+  onTypeEventChange(e){
+    this.setData({
+      typeEventIndex: e.detail.value
+    })
+  },
   onLoad() {
     var cs = initCalendar();
-    console.log(cs);
     this.setData({
       calendar: cs.calendar,
       cLChosen: cs.cLChosen,
-      events: app.globalData.events
+      events: app.globalData.events,
+      evaluation:app.globalData.evaluation,
+      typeData: app.globalData.typeData
     })
     if (app.globalData.userInfo && app.globalData.userInfo.avatarUrl) {
       this.setData({
@@ -94,9 +112,11 @@ CustomPage({
     var type = event.currentTarget.dataset.type;
     if (type == "costNum") {
       this.data.inputNum = event.detail.value;
-    } else if (type == "costCon") {
+    } else if (type == "eventCon") {
       this.data.inputCon = event.detail.value;
-    } else {
+    } else if (type == "eventName") {
+      this.data.inputName = event.detail.value;
+    }else {
       this.data.inputValue = event.detail.value;
     }
   },
@@ -195,10 +215,11 @@ CustomPage({
         tasks: cons
       });
     } else {//event
-      var type = this.data.curEvent[this.data.typeIndex];
-      var notes = this.data.curEvent.notes;
-      var list = this.data.events;
-      var cost = this.data.inputNum;
+      var type = this.data.typeArr[this.data.typeIndex];
+      var notes = this.data.inputCon;
+      var name = this.data.inputName;
+      var evaluation = this.data.jugeArr[this.data.jugeIndex];
+      var eventtime = this.data.currentDate;
       // this.data.events.push({ type, cost,pic,con, id: list.length,conLeft:0,i:list.length%3 });
       // app.globalData.todayCost = list;
       // this.setData({
@@ -211,19 +232,18 @@ CustomPage({
       db.collection('events').add({
         data: {
           type: type,
-          cost: cost,
-          beizhu: con,
-          date: that.data.today,
+          notes: notes,
+          name: name,
+          evaluation: evaluation,
           user_id: app.globalData.userInfo._id,
-          conLeft: 0,
-          pic: pic
+          eventtime: eventtime
         },
         success: res => {
           console.log(res);
           var events = db.collection('events');
           events.get().then(res => {
             if (res.data) {
-              this.globalData.events = res.data;
+              app.globalData.events = res.data;
               that.setData({
                 events: res.data
               });
@@ -283,9 +303,18 @@ CustomPage({
     });
   },
   onDateChange: function(e) {
-    console.log('选择的日期为：', e.detail.value);
     this.setData({
       currentDate: e.detail.value
+    });
+  },
+  onSDateChange: function(e) {
+    this.setData({
+      sdate: e.detail.value
+    });
+  },
+  onEDateChange: function(e) {
+    this.setData({
+      edate: e.detail.value
     });
   }
 
