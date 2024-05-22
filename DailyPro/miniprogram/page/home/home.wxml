@@ -19,15 +19,15 @@
       <span class="pointY" wx:if="{{item.classChosen=='chosen'}}"></span>
     </view>
   </scroll-view>
-  <!-- task模块 -->
+  <!-- 时间模块 -->
   <view class="task">
     <view class="tctitle">
       <view class="taskTitleLeft">今日时间</view>
-      <span class="taskTitleAdd">+</span>
+      <span class="taskTitleAdd" bindtap="showAddTimeDlg">+</span>
     </view>
     <view class="taskContent">
       <scroll-view class="taskView" scroll-x="true" scroll-y="false" scrollbar="none">
-        <view class="taskBox taskBoxColor{{item.index}}" wx:for="{{tasks}}" wx:key="index" wx:for-item="item">
+        <view class="taskBox taskBoxColor{{index%3}}" wx:for="{{slots}}"  data-index="{{index}}" wx:key="index" wx:for-item="item">
           <image class="taskbgc" src="./resources/pic/Tbgc.png" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
           <view class="tasktype">{{item.type}}</view>
           <view class="taskcon">{{item.con}}</view>

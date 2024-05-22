@@ -24,6 +24,9 @@ Page({
     inputCon: "",
     inputName: "",
     inputNum: "",
+    //时间
+    slots: [{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }, { type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' },{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }],
+
   },
   onLoad() {
     var cs = initCalendar();
@@ -235,6 +238,13 @@ Page({
     }).remove({
       success: function (res) {
       }
+    });
+  },
+  //时间
+  showAddTimeDlg(){
+    this.setData({
+      addTimeDlgShow: 1,
+      addEventDlgShow: 0
     });
   },
 })

@@ -84,16 +84,16 @@
   padding: 14px;
   box-sizing: border-box;
 }
-.taskBoxColor1,.costBoxColor2{
+.taskBoxColor0,.costBoxColor2{
   background-color: #FFEEE7;
 }
-.taskBoxColor2,.costBoxColor3{
+.taskBoxColor1,.costBoxColor3{
   background-color: #EFFAF7;
 }
-.taskBoxColor3,.costBoxColor4{
+.taskBoxColor2,.costBoxColor4{
   background-color: #F1F1F1;
 }
-.costBoxColor1{
+.taskBoxColor3{
   background-color: #E9E4F2;
 }
 .tasktype,.costtype{
