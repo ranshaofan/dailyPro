@@ -11,7 +11,7 @@
   </view>
   <!-- 日历 -->
   <scroll-view class="calendarView" scroll-x="true" scroll-y="false" scrollbar="none" scroll-into-view="{{cLChosen}}">
-    <view class="calenList {{item.classChosen}}" id="cL{{item.index}}" wx:for="{{calendar}}" wx:key="index" wx:for-item="item">
+    <view class="calenList {{item.classChosen}}" id="cL{{item.index}}" wx:for="{{calendar}}" wx:key="index" data-index="{{item.index}}" wx:for-item="item" bindtap='canlenChosen'>
       <!-- 星期 -->
       <view class="calenX">{{item.X}}</view>
       <!-- 日期 -->
@@ -22,7 +22,7 @@
   <!-- task模块 -->
   <view class="task">
     <view class="tctitle">
-      <view class="taskTitleLeft">Today task</view>
+      <view class="taskTitleLeft">今日时间</view>
       <span class="taskTitleAdd">+</span>
     </view>
     <view class="taskContent">
@@ -40,14 +40,14 @@
       </scroll-view>
     </view>
   </view>
-  <!-- cost模块 -->
+  <!-- events模块 -->
   <view class="cost">
     <view class="tctitle">
-      <view class="costTitleLeft">Today cost</view>
-      <span class="costTitleAdd">+</span>
+      <view class="costTitleLeft">今日事件</view>
+      <span class="costTitleAdd" bindtap='showAddEventDlg'>+</span>
     </view>
     <view class="costContent">
-      <view class="costBox costBoxColor{{item.index}}" wx:for="{{costs}}" wx:key="index" wx:for-item="item">
+      <!-- <view class="costBox costBoxColor{{item.index}}" wx:for="{{events}}" wx:key="index" wx:for-item="item">
         <view class="costImgView flexCenter">
           <image class="costBoxImg" src="{{item.pic}}" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
         </view>
@@ -59,7 +59,97 @@
           <image class="" src="./resources/pic/more.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="">
           </image>
         </view>
+      </view> -->
+      <view class="costBox bg{{index%4}}" wx:for="{{events}}" wx:key="index" wx:for-item="item" data-index="{{index}}" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE">
+        <view class="costBoxin bg{{index%4}}" style="left:{{item.conLeft}}px;">
+          <view class="costImgView flexCenter">
+            <image class="costBoxImg" src="{{item.pic}}" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
+          </view>
+          <view class="costTxt">
+            <view class="costtype">{{item.name}}</view>
+            <view class="costcon">{{item.notes}}</view>
+          </view>
+          <view class="moreImgView flexCenter">{{item.evaluation}}</view>
+        </view>
+        <!-- 这里是左滑按钮部分 -->
+        <view class="delCost flexCenter" bindtap="costDelete" data-index="{{index}}">
+          <view class="flexCenter" catchtap="costDelete" data-index="{{index}}">删除</view>
+        </view>
       </view>
     </view>
+  </view>
+</view>
+
+<!-- /**时间弹框**/ -->
+<view id="addTaskDlg" class="addDlg" wx:if="{{addTimeDlgShow}}">
+  <view class="dlgTitle">
+    <view class="dlgName">新增时间</view>
+    <span bindtap="closeAddDlg" data-type="task">×</span>
+  </view>
+  <view class="addDlgTop flexCenter">
+    <picker class="timepicker pickerbgc flexCenter" id="timepickerS" mode="time" value="{{time}}" start="06:00" end="23:59" bindchange="onTimeStartChange">
+      <view class="picker flexCenter">{{dlgStTime}}</view>
+    </picker>
+    ~
+    <picker class="timepicker pickerbgc flexCenter" id="timepickerE" mode="time" value="{{time}}" start="06:00" end="23:59" bindchange="onTimeEndChange">
+      <view class="picker flexCenter">{{dlgEtTime}}</view>
+    </picker>
+  </view>
+  <view class="addDlgbottom flexCenter pickerbgc">
+    <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
+      <view class="picker flexCenter">{{typeArr[typeIndex]}}</view>
+    </picker>
+    <input type="text" class="addTaskInput addInput" bindinput="onInput" value="{{inputValue}}" data-type="taskCon" />
+  </view>
+  <view class="addBtn">
+    <button class="pickerbgc flexCenter" bindtap="addDlgBtn" data-type="task">确定</button>
+  </view>
+</view>
+<!-- /**事件弹框**/ -->
+<view id="addEventDlg" class="addDlg" wx:if="{{addEventDlgShow}}">
+  <view class="dlgTitle flexCenter">
+    <view class="dlgName">新增事件</view>
+    <picker mode="date" value="{{ currentDate }}" start="{{ startDate }}" end="{{ endDate }}" bindchange="onDateChange">
+      <view class="timepicker">
+        {{ currentDate }}
+      </view>
+    </picker>
+    <view bindtap="closeAddDlg" data-type="cost"  class="dlgClose">×</view>
+  </view>
+  <!-- <view class="addDlgbottom flexCenter pickerbgc addEventDlgT"> -->
+    <!-- <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
+      <view class="picker flexCenter">{{typeArr[typeIndex]}}</view>
+    </picker> -->
+  <!-- </view> -->
+  <view class="timeDlgLine">
+    <view class="timeDlgLineName">
+      事件名称
+    </view>
+    <input class="addInput" placeholder="事件名称" value="{{inputCon}}" bindinput="onInput" data-type="eventName" />
+  </view>
+  <view class="timeDlgLine">
+    <view class="timeDlgLineName">
+      事件类型
+    </view>
+    <picker mode="selector"  class="addInput"  value="{{typeIndex}}" range="{{typeArr}}"  bindchange="onTypeChange">
+      <view class="eventTypePicker">{{typeArr[typeIndex]}}</view>
+    </picker>
+  </view>
+  <view class="timeDlgLine">
+    <view class="timeDlgLineName">
+      详细备注
+    </view>
+    <input class="addInput addDlgTimeBeizhu" placeholder="备注" value="{{inputName}}" bindinput="onInput" data-type="eventCon" />
+  </view>
+  <view class="timeDlgLine">
+    <view class="timeDlgLineName">
+      事件评价
+    </view>
+    <picker mode="selector"  class="addInput"  value="{{jugeIndex}}" range="{{jugeArr}}"  bindchange="onJugeChange">
+      <view class="eventTypePicker">{{jugeArr[jugeIndex]}}</view>
+    </picker>
+  </view>
+  <view class="addBtn">
+    <button class="flexCenter confirm" bindtap="addDlgBtn" data-type="event">确定</button>
   </view>
 </view>

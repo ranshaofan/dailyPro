@@ -1,5 +1,5 @@
 import CustomPage from './base/CustomPage'
-import { dateFormat, initCalendar } from '../../util/util'
+import { dateFormat, initCalendar,loginIn } from '../../util/util'
 const app = getApp();
 const db = wx.cloud.database();//获取数据库引用
 CustomPage({
@@ -239,17 +239,20 @@ CustomPage({
           eventtime: eventtime
         },
         success: res => {
-          console.log(res);
           var events = db.collection('events');
           events.get().then(res => {
             if (res.data) {
               app.globalData.events = res.data;
               that.setData({
-                events: res.data
+                events: res.data,
+                addEventDlgShow:0
               });
             }
           }).catch(err => {
             console.error('查询失败:', err);
+            that.setData({
+              addEventDlgShow:0
+            });
           });
         }
       })
@@ -262,10 +265,14 @@ CustomPage({
     });
   },
   showAddEventDlg(){
-    this.setData({
-      addTimeDlgShow: 0,
-      addEventDlgShow: 1
-    });
+    if(JSON.stringify(app.globalData.userInfo)=="{}"){
+      loginIn();
+    }else{
+      this.setData({
+        addTimeDlgShow: 0,
+        addEventDlgShow: 1
+      });
+    }
   },
   closeAddDlg(event) {
       this.setData({

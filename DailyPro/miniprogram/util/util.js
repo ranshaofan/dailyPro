@@ -175,6 +175,40 @@ function initCalendar(){
     }
     return {"calendar":cs,"cLChosen":"cL" + (todayIndex-3)}
 }
+function loginIn(){
+  wx.getUserProfile({
+    desc: '获取用户信息',
+    success: res => {
+      var user = res.userInfo;
+      //设置全局用户信息
+      app.globalData.userInfo = res.userInfo
+      //检查之前是否已经授权登录
+      db.collection('userInfo').where({
+        _id: app.globalData.userInfo._id
+      }).get({
+        success: res => {
+          //原先没有添加，这里添加
+          if (!res.data[0]) {
+            //将数据添加到数据库
+            var info = db.collection('userInfo').add({
+              data: {
+                avatarUrl: user.avatarUrl,
+                nickName: user.nickName
+              },
+              success: res => {
+                app.globalData.user_id = res._id;
+              }
+            })
+
+          } else {
+            //已经添加过了
+            app.globalData.userInfo = res.data[0];
+          }
+        }
+      })
+    }
+  })
+}
 module.exports = {
   formatTime,
   formatLocation,
@@ -184,5 +218,6 @@ module.exports = {
   drawLine,
   drawTimeline,
   dateFormat,
-  initCalendar
+  initCalendar,
+  loginIn
 }

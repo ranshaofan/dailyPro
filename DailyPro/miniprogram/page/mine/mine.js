@@ -177,5 +177,12 @@ Page({
         userInfo:app.globalData.userInfo
       })
     }
+  },
+  onShow(){
+    if(app.globalData.userInfo && app.globalData.userInfo.avatarUrl){
+      this.setData({
+        userInfo:app.globalData.userInfo
+      })
+    }
   }
 })

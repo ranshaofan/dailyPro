@@ -3,15 +3,17 @@ const themeListeners = [];
 global.isDemo = true
 App({
 
-  onLaunch(opts, data) {
+  onLaunch: function (opts, data) {
+    const that = this;
     if (!wx.cloud) {
-      console.error('请使用 2.2.3 或以上的基础库以使用云能力')
+      console.error('请使用 2.2.3 或以上的基础库以使用云能力');
     } else {
       wx.cloud.init({
         env: config.envId,
         traceUser: true,
-      })
+      });
     }
+    
     // 获取数据库引用
     const db = wx.cloud.database();
 
@@ -19,21 +21,44 @@ App({
     const userInfoCollection = db.collection('userInfo');
     const events = db.collection('events');
 
+    // 用于跟踪数据加载状态
+    this.dataLoadStatus = {
+      userInfoLoaded: false,
+      eventsLoaded: false
+    };
+
     // 查询数据
     userInfoCollection.get().then(res => {
       // 查询成功，res.data 包含了查询结果
-      if(res.data[0])this.globalData.userInfo = res.data[0];
+      if (res.data[0]) this.globalData.userInfo = res.data[0];
+      this.dataLoadStatus.userInfoLoaded = true;
+      this.checkDataReady();
     }).catch(err => {
       // 查询失败
       console.error('查询失败:', err);
     });
+
     events.get().then(res => {
       // 查询成功，res.data 包含了查询结果
-      if(res.data)this.globalData.events = res.data;
+      if (res.data) {
+        that.globalData.events = res.data;
+        that.globalData.evaluation = res.data.evaluation;  // 假设 evaluation 和 typeData 是 events 数据的一部分
+        that.globalData.typeData = res.data.typeData;      // 假设 typeData 是 events 数据的一部分
+      }
+      this.dataLoadStatus.eventsLoaded = true;
+      this.checkDataReady();
     }).catch(err => {
       // 查询失败
       console.error('查询失败:', err);
     });
+  },
+
+  checkDataReady: function () {
+    if (this.dataLoadStatus.userInfoLoaded && this.dataLoadStatus.eventsLoaded) {
+      if (this.dataReadyCallback) {
+        this.dataReadyCallback();
+      }
+    }
   },
 
 
