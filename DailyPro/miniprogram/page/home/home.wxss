@@ -77,12 +77,13 @@
 .taskBox{
   position: relative;
   width: 40%;
-  height: 180px;
+  height: 186px;
   border-radius: 9px;
   margin-right: 20px;
   display: inline-block;
   padding: 14px;
   box-sizing: border-box;
+  vertical-align: top;
 }
 .taskBoxColor0,.costBoxColor2{
   background-color: #FFEEE7;
@@ -97,14 +98,67 @@
   background-color: #E9E4F2;
 }
 .tasktype,.costtype{
-  color: #3D1467;
+  color: #3d1467;
   font-size: 16px;
   font-weight: 700;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
-.taskcon,.costcon{
+.taskdate{
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  width: 80px;
+  text-align: center;
+  border-radius: 20px;
+  background-color: rgba(197, 185, 208, 0.5);
+}
+.taskdatetime{
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 3px;
+  width: 90px;
+  text-align: center;
+  border-radius: 20px;
+  background-color: rgb(253, 176, 125);
+}
+.taskcon{
+  /* white-space: nowrap; */
+  color: #2d0f4b;
+  font-size: 14px;
+  height: 20px;
+  margin-bottom: 8px;
+}
+.costdate{
+  font-weight: 500;
+  font-size: 13px;
+  background-color: rgba(233, 230, 236, 0.5);
+  border-radius: 10px;
+  padding: 0 6px;
+  color: #9888a5;
+}
+.costname{
+  margin-right: 6px;
+}
+.costcon{
   font-size: 13px;
   color: #655B6F;
+}
+.delSlot{
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 25px;
+  height: 30px;
+  padding: 5px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background-color: #5b2656;
+}
+.delSlot image{
+  width: 100%;
+  height: 100%;
 }
 .taskbgc{
   width: 100%;

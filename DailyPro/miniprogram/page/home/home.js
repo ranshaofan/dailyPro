@@ -4,7 +4,7 @@ const db = wx.cloud.database();//获取数据库引用
 Page({
   data: {
     calendar: [],
-    tasks: [{ type: "娱乐", con: "Today", pics: ["../common/img/phone.png", "../common/img/puke.png", "../common/img/phoneG.png"], index: 1 }, { type: "娱乐", con: "Today", pics: [], index: 2 }, { type: "娱乐", con: "Today", pics: [], index: 3 }],
+    // slots: [{ type: "娱乐", con: "Today", pics: ["../common/img/phone.png", "../common/img/puke.png", "../common/img/phoneG.png"], index: 1 }, { type: "娱乐", con: "Today", pics: [], index: 2 }, { type: "娱乐", con: "Today", pics: [], index: 3 }],
     events: [{ eventtime: '2024-5-20', name: '喝咖啡', type: '饮食', notes: '不应该', evaluation: '普通', inittime: '', userid: '', index: 1, conLeft: 0 }],
     cLChosen: "",
     evaluation: [],
@@ -25,7 +25,10 @@ Page({
     inputName: "",
     inputNum: "",
     //时间
-    slots: [{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }, { type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' },{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }],
+    slots:[],
+    // slots: [{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }, { type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' },{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }],
+    dlgStTime: "08:00",
+    dlgEtTime: "08:00"
 
   },
   onLoad() {
@@ -40,6 +43,7 @@ Page({
     if (app.globalData.events.length > 0) {
       this.setData({
         events: app.globalData.events,
+        slots: app.globalData.slots,
         evaluation: app.globalData.evaluation,
         typeData: app.globalData.typeData
       })
@@ -47,6 +51,7 @@ Page({
       app.dataReadyCallback = function () {
         that.setData({
           events: app.globalData.events,
+          slots: app.globalData.slots,
           evaluation: app.globalData.evaluation,
           typeData: app.globalData.typeData
         });
@@ -56,18 +61,44 @@ Page({
   addDlgBtn(event) {
     var that = this;
     var type = event.currentTarget.dataset.type;
-    if (type == "task") {
+    if (type == "slots") {//时间
       var st = this.data.dlgStTime;
       var et = this.data.dlgEtTime;
       var type = this.data.typeArr[this.data.typeIndex];
       var con = this.data.inputValue;
-      var cons = this.data.tasks;
-      this.data.tasks.push({ st, et, type, con, id: cons.length, conLeft: 0, i: cons.length % 3 });
-      app.globalData.todayTasks = cons;
-      this.setData({
-        addTimeDlgShow: 0,
-        tasks: cons
-      });
+      var datetime = this.data.currentDate;
+      //向数据库中添加数据
+      db.collection('slots').add({
+        data: {
+          type: type,
+          con: con,
+          stime: st,
+          etime: et,
+          user_id: app.globalData.userInfo._id,
+          datetime: datetime
+        },
+        success: res => {
+          var slots = db.collection('slots');
+          slots.get().then(res => {
+            if (res.data) {
+              app.globalData.slots = res.data;
+              that.setData({
+                slots: res.data,
+                addTimeDlgShow: 0
+              });
+            }
+          }).catch(err => {
+            console.error('查询失败:', err);
+            that.setData({
+              addTimeDlgShow: 0
+            });
+          });
+        }
+      })
+      // this.setData({
+      //   addTimeDlgShow: 0,
+      //   slots: cons
+      // });
     } else {//event
       var type = this.data.typeArr[this.data.typeIndex];
       var notes = this.data.inputCon;
@@ -121,8 +152,8 @@ Page({
   //addDlg弹框的input事件
   onInput(event) {
     var type = event.currentTarget.dataset.type;
-    if (type == "costNum") {
-      this.data.inputNum = event.detail.value;
+    if (type == "slotCon") {
+      this.data.inputValue = event.detail.value;
     } else if (type == "eventCon") {
       this.data.inputCon = event.detail.value;
     } else if (type == "eventName") {
@@ -130,6 +161,17 @@ Page({
     }else {
       this.data.inputValue = event.detail.value;
     }
+  },
+  //时间弹框事件
+  onTimeStartChange(e) {
+    this.setData({
+      dlgStTime: e.detail.value
+    })
+  },
+  onTimeEndChange(e) {
+    this.setData({
+      dlgEtTime: e.detail.value
+    })
   },
   onTypeChange(e) {
     this.setData({
@@ -198,7 +240,7 @@ Page({
       //将拼接好的样式设置到当前item中
       list[index].conLeft = left;
       // //更新列表的状态
-      app.globalData.todayCosts = list;
+      app.globalData.events = list;
       this.setData({
         events: list
       });
@@ -220,7 +262,7 @@ Page({
       //将拼接好的样式设置到当前item中
       list[index].conLeft = left;
       // //更新列表的状态
-      app.globalData.todayCosts = list;
+      app.globalData.events = list;
       this.setData({
         events: list
       });
@@ -229,11 +271,25 @@ Page({
   costDelete(e) {//删除按钮
     var index = e.currentTarget.dataset.index;
     var delArr = this.data.events.splice(index, 1);
-    app.globalData.todayCosts = this.data.events;
+    app.globalData.events = this.data.events;
     this.setData({
       events: this.data.events
     });
     db.collection('events').where({
+      _id: delArr[0]._id
+    }).remove({
+      success: function (res) {
+      }
+    });
+  },
+  delSlot: function(e) {
+    var index = e.currentTarget.dataset.index;
+    var delArr = this.data.slots.splice(index, 1);
+    app.globalData.slots = this.data.slots;
+    this.setData({
+      slots: this.data.slots
+    });
+    db.collection('slots').where({
       _id: delArr[0]._id
     }).remove({
       success: function (res) {
@@ -247,4 +303,19 @@ Page({
       addEventDlgShow: 0
     });
   },
+  onDateChange: function(e) {
+    this.setData({
+      currentDate: e.detail.value
+    });
+  },
+  onSDateChange: function(e) {
+    this.setData({
+      sdate: e.detail.value
+    });
+  },
+  onEDateChange: function(e) {
+    this.setData({
+      edate: e.detail.value
+    });
+  }
 })

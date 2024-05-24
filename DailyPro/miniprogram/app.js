@@ -20,6 +20,7 @@ App({
     // 获取集合的引用
     const userInfoCollection = db.collection('userInfo');
     const events = db.collection('events');
+    const slots = db.collection('slots'); 
 
     // 用于跟踪数据加载状态
     this.dataLoadStatus = {
@@ -46,6 +47,20 @@ App({
         that.globalData.typeData = res.data.typeData;      // 假设 typeData 是 events 数据的一部分
       }
       this.dataLoadStatus.eventsLoaded = true;
+      this.checkDataReady();
+    }).catch(err => {
+      // 查询失败
+      console.error('查询失败:', err);
+    });
+
+    slots.get().then(res => {
+      // 查询成功，res.data 包含了查询结果
+      if (res.data) {
+        that.globalData.slots = res.data;
+        that.globalData.evaluation = res.data.evaluation;  
+        that.globalData.typeData = res.data.typeData;     
+      }
+      this.dataLoadStatus.slotsLoaded = true;
       this.checkDataReady();
     }).catch(err => {
       // 查询失败
@@ -100,8 +115,9 @@ App({
     hasLogin: false,
     openid: null,
     todayTasks: [],
-    todayCosts: [],
+    // todayCosts: [],
     events:[],
+    slots:[],
     evaluation:["干得漂亮","正常水平","差点意思","烂透了"],
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     typeData:[{type:"所有",pic:"",color:""},{type:"娱乐",pic:"",color:""},{type:"学习",pic:"",color:""}],

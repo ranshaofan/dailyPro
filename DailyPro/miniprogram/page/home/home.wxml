@@ -26,14 +26,25 @@
       <span class="taskTitleAdd" bindtap="showAddTimeDlg">+</span>
     </view>
     <view class="taskContent">
-      <scroll-view class="taskView" scroll-x="true" scroll-y="false" scrollbar="none">
-        <view class="taskBox taskBoxColor{{index%3}}" wx:for="{{slots}}"  data-index="{{index}}" wx:key="index" wx:for-item="item">
+      <scroll-view class="taskView flexCenter" scroll-x="true" scroll-y="false" scrollbar="none">
+        <view class="taskBox taskBoxColor{{index%3}}" wx:for="{{slots}}" data-index="{{index}}" wx:key="index" wx:for-item="item">
           <image class="taskbgc" src="./resources/pic/Tbgc.png" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
-          <view class="tasktype">{{item.type}}</view>
-          <view class="taskcon">{{item.con}}</view>
-          <view class="taskpics">
-            <view class="flexCenter" wx:for="{{item.pics}}" wx:key="i" wx:for-item="picItem" wx:for-index="i" style="left:{{i*24}}px;">
-              <image class="taskBoxImg" src="{{picItem}}" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
+          <view class="delSlot flexCenter" bindtap='delSlot' data-index="{{index}}">
+            <image class="" src="./resources/pic/delwhite.png" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
+          </view>
+          <view>
+            <view class="tasktype">{{item.type}}</view>
+            <view class="taskcon">{{item.con}}</view>
+            <view class="taskdatetime flexCenter">
+              <view>{{item.stime}}</view>
+              <view>~</view>
+              <view>{{item.etime}}</view>
+            </view>
+            <view class="taskdate">{{item.datetime}}</view>
+            <view class="taskpics">
+              <view class="flexCenter" wx:key="i" wx:for-item="picItem" wx:for-index="i">
+                <!-- <image class="taskBoxImg" src="" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image> -->
+              </view>
             </view>
           </view>
         </view>
@@ -66,7 +77,10 @@
             <image class="costBoxImg" src="{{item.pic}}" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
           </view>
           <view class="costTxt">
-            <view class="costtype">{{item.name}}</view>
+            <view class="costtype flexCenter">
+              <view class="costname">{{item.name}}</view>
+              <view class="costdate">{{item.eventtime}}</view>
+            </view>
             <view class="costcon">{{item.notes}}</view>
           </view>
           <view class="moreImgView flexCenter">{{item.evaluation}}</view>
@@ -79,12 +93,14 @@
     </view>
   </view>
 </view>
-
 <!-- /**时间弹框**/ -->
 <view id="addTaskDlg" class="addDlg" wx:if="{{addTimeDlgShow}}">
-  <view class="dlgTitle">
+  <view class="dlgTitle flexCenter">
     <view class="dlgName">新增时间</view>
-    <span bindtap="closeAddDlg" data-type="task">×</span>
+    <picker mode="date" value="{{ currentDate }}" start="{{ startDate }}" end="{{ endDate }}" bindchange="onDateChange">
+      <view class="timepicker">{{ currentDate }}</view>
+    </picker>
+    <view bindtap="closeAddDlg" data-type="task" class="dlgClose">×</view>
   </view>
   <view class="addDlgTop flexCenter">
     <picker class="timepicker pickerbgc flexCenter" id="timepickerS" mode="time" value="{{time}}" start="06:00" end="23:59" bindchange="onTimeStartChange">
@@ -99,10 +115,10 @@
     <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
       <view class="picker flexCenter">{{typeArr[typeIndex]}}</view>
     </picker>
-    <input type="text" class="addTaskInput addInput" bindinput="onInput" value="{{inputValue}}" data-type="taskCon" />
+    <input type="text" class="addTaskInput addInput" bindinput="onInput" value="{{inputValue}}" data-type="slotCon" />
   </view>
   <view class="addBtn">
-    <button class="pickerbgc flexCenter" bindtap="addDlgBtn" data-type="task">确定</button>
+    <button class="pickerbgc flexCenter" bindtap="addDlgBtn" data-type="slots">确定</button>
   </view>
 </view>
 <!-- /**事件弹框**/ -->
@@ -110,42 +126,32 @@
   <view class="dlgTitle flexCenter">
     <view class="dlgName">新增事件</view>
     <picker mode="date" value="{{ currentDate }}" start="{{ startDate }}" end="{{ endDate }}" bindchange="onDateChange">
-      <view class="timepicker">
-        {{ currentDate }}
-      </view>
+      <view class="timepicker">{{ currentDate }}</view>
     </picker>
-    <view bindtap="closeAddDlg" data-type="cost"  class="dlgClose">×</view>
+    <view bindtap="closeAddDlg" data-type="cost" class="dlgClose">×</view>
   </view>
   <!-- <view class="addDlgbottom flexCenter pickerbgc addEventDlgT"> -->
-    <!-- <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
+  <!-- <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
       <view class="picker flexCenter">{{typeArr[typeIndex]}}</view>
     </picker> -->
   <!-- </view> -->
   <view class="timeDlgLine">
-    <view class="timeDlgLineName">
-      事件名称
-    </view>
+    <view class="timeDlgLineName">事件名称</view>
     <input class="addInput" placeholder="事件名称" value="{{inputCon}}" bindinput="onInput" data-type="eventName" />
   </view>
   <view class="timeDlgLine">
-    <view class="timeDlgLineName">
-      事件类型
-    </view>
-    <picker mode="selector"  class="addInput"  value="{{typeIndex}}" range="{{typeArr}}"  bindchange="onTypeChange">
+    <view class="timeDlgLineName">事件类型</view>
+    <picker mode="selector" class="addInput" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
       <view class="eventTypePicker">{{typeArr[typeIndex]}}</view>
     </picker>
   </view>
   <view class="timeDlgLine">
-    <view class="timeDlgLineName">
-      详细备注
-    </view>
+    <view class="timeDlgLineName">详细备注</view>
     <input class="addInput addDlgTimeBeizhu" placeholder="备注" value="{{inputName}}" bindinput="onInput" data-type="eventCon" />
   </view>
   <view class="timeDlgLine">
-    <view class="timeDlgLineName">
-      事件评价
-    </view>
-    <picker mode="selector"  class="addInput"  value="{{jugeIndex}}" range="{{jugeArr}}"  bindchange="onJugeChange">
+    <view class="timeDlgLineName">事件评价</view>
+    <picker mode="selector" class="addInput" value="{{jugeIndex}}" range="{{jugeArr}}" bindchange="onJugeChange">
       <view class="eventTypePicker">{{jugeArr[jugeIndex]}}</view>
     </picker>
   </view>
