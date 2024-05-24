@@ -2,8 +2,8 @@
   <!-- begin -->
   <view class="begin">
     <view class="beginLeft">
-      <view class="title">Good Morning!</view>
-      <view class="name">Roxane</view>
+      <view class="title">{{sayhello}}</view>
+      <view class="name">{{nickName}}</view>
     </view>
     <view class="beginRImg">
       <image src="./resources/pic/sun.png" mode="widthFix"></image>
@@ -11,12 +11,13 @@
   </view>
   <!-- 日历 -->
   <scroll-view class="calendarView" scroll-x="true" scroll-y="false" scrollbar="none" scroll-into-view="{{cLChosen}}">
-    <view class="calenList {{item.classChosen}}" id="cL{{item.index}}" wx:for="{{calendar}}" wx:key="index" data-index="{{item.index}}" wx:for-item="item" bindtap='canlenChosen'>
+    <view class="calenList {{item.isToday ? 'calenToday' : ''}} {{item.classChosen}}" id="cL{{item.index}}" wx:for="{{calendar}}" wx:key="index" data-index="{{item.index}}" wx:for-item="item" bindtap='canlenChosen'>
       <!-- 星期 -->
       <view class="calenX">{{item.X}}</view>
       <!-- 日期 -->
       <view class="calenD">{{item.day}}</view>
-      <span class="pointY" wx:if="{{item.classChosen=='chosen'}}"></span>
+      <!-- <span class="pointY" wx:if="{{item.classChosen=='chosen'}}"></span> -->
+      <span class="pointY" wx:if="{{item.isToday}}"></span>
     </view>
   </scroll-view>
   <!-- 时间模块 -->

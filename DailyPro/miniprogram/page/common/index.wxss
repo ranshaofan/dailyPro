@@ -34,15 +34,20 @@
     border-radius: 14px;
   }
   .chosen{
-  background-color: #7857D2;
+  background-color: #7857D2 !important;
   color: #fff;
 }
 .pointY{
   display: inline-block;
-  background-color: #E0E53B;
+  background-color: #ffde5a;
   width: 4px;
   height: 4px;
   border-radius: 20px;
+}
+.calenToday{
+  background-color: #f6f3fe;
+  border-radius: 10px ;
+
 }
 /* cost */
 .costBox{

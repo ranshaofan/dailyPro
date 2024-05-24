@@ -7,6 +7,8 @@ Page({
     // slots: [{ type: "娱乐", con: "Today", pics: ["../common/img/phone.png", "../common/img/puke.png", "../common/img/phoneG.png"], index: 1 }, { type: "娱乐", con: "Today", pics: [], index: 2 }, { type: "娱乐", con: "Today", pics: [], index: 3 }],
     events: [{ eventtime: '2024-5-20', name: '喝咖啡', type: '饮食', notes: '不应该', evaluation: '普通', inittime: '', userid: '', index: 1, conLeft: 0 }],
     cLChosen: "",
+    nickName: "",
+    sayhello: "",
     evaluation: [],
     typeData: [],
     startX: 0,
@@ -25,7 +27,7 @@ Page({
     inputName: "",
     inputNum: "",
     //时间
-    slots:[],
+    slots: [],
     // slots: [{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }, { type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' },{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }],
     dlgStTime: "08:00",
     dlgEtTime: "08:00"
@@ -33,10 +35,20 @@ Page({
   },
   onLoad() {
     var cs = initCalendar();
+    const currentHour = new Date().getHours();
+    let sayhello;
+    if (currentHour < 12) {
+      sayhello = "早上好呀~";
+    } else if (currentHour < 18) {
+      sayhello = "中午好呀~";
+    } else {
+      sayhello = "晚上好呀~";
+    }
     this.setData({
       calendar: cs.calendar,
-      cLChosen: cs.cLChosen
-    })
+      cLChosen: cs.cLChosen,
+      sayhello:sayhello
+    });
   },
   onShow() {
     const that = this;
@@ -47,6 +59,11 @@ Page({
         evaluation: app.globalData.evaluation,
         typeData: app.globalData.typeData
       })
+      if (JSON.stringify(app.globalData.userInfo) != "{}") {
+        this.setData({
+          nickName: app.globalData.userInfo.nickName
+        });
+      }
     } else {
       app.dataReadyCallback = function () {
         that.setData({
@@ -55,6 +72,11 @@ Page({
           evaluation: app.globalData.evaluation,
           typeData: app.globalData.typeData
         });
+        if (JSON.stringify(app.globalData.userInfo) != "{}") {
+          that.setData({
+            nickName: app.globalData.userInfo.nickName
+          });
+        }
       }
     }
   },
@@ -158,7 +180,7 @@ Page({
       this.data.inputCon = event.detail.value;
     } else if (type == "eventName") {
       this.data.inputName = event.detail.value;
-    }else {
+    } else {
       this.data.inputValue = event.detail.value;
     }
   },
@@ -186,10 +208,14 @@ Page({
   showAddEventDlg() {
     if (JSON.stringify(app.globalData.userInfo) == "{}") {
       loginIn();
+      this.setData({
+        nickName: app.globalData.userInfo.nickName
+      });
     } else {
       this.setData({
         addTimeDlgShow: 0,
-        addEventDlgShow: 1
+        addEventDlgShow: 1,
+        nickName: app.globalData.userInfo.nickName
       });
     }
   },
@@ -282,7 +308,7 @@ Page({
       }
     });
   },
-  delSlot: function(e) {
+  delSlot: function (e) {
     var index = e.currentTarget.dataset.index;
     var delArr = this.data.slots.splice(index, 1);
     app.globalData.slots = this.data.slots;
@@ -297,23 +323,23 @@ Page({
     });
   },
   //时间
-  showAddTimeDlg(){
+  showAddTimeDlg() {
     this.setData({
       addTimeDlgShow: 1,
       addEventDlgShow: 0
     });
   },
-  onDateChange: function(e) {
+  onDateChange: function (e) {
     this.setData({
       currentDate: e.detail.value
     });
   },
-  onSDateChange: function(e) {
+  onSDateChange: function (e) {
     this.setData({
       sdate: e.detail.value
     });
   },
-  onEDateChange: function(e) {
+  onEDateChange: function (e) {
     this.setData({
       edate: e.detail.value
     });

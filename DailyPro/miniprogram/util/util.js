@@ -160,6 +160,7 @@ function initCalendar(){
     endDay.setDate(endDay.getDate() + 7); // 将日期设置为当前日期加上 7 天
     var i = 0;
     var todayIndex = 0;
+    var isToday = 0;
     for (var day = beginDay; day.getTime() <= endDay.getTime(); day.setDate(day.getDate() + 1)) {
       var curX = app.globalData.days[day.getDay()];//当前星期
       var curD = day.getDate();
@@ -167,10 +168,13 @@ function initCalendar(){
       //如果是今天就设置选中的Class
       var today = dateFormat('yyyy-MM-dd', new Date());
       if (day.getTime() == new Date(today).getTime()) {
+        isToday = 1;
         todayIndex = i;
         cc = "chosen";
+      }else{
+        isToday = 0;
       }
-      cs.push({ xq: curX, day: curD, X: curX.substr(0, 1), classChosen: cc, index: i });
+      cs.push({ xq: curX, day: curD, X: curX.substr(0, 1), classChosen: cc, index: i,isToday });
       i++;
     }
     return {"calendar":cs,"cLChosen":"cL" + (todayIndex-3)}
