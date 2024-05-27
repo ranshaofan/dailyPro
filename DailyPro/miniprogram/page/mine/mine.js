@@ -81,97 +81,52 @@ Page({
       return;
     }
     var that = this;
-    wx.getSetting({
+    wx.getUserProfile({
+      desc: '获取用户信息', // 必填，显示在授权弹框中
       success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-          wx.getUserInfo({
-            success: res => {
-              var user = res.userInfo;
-              // 设置全局用户信息
-              app.globalData.userInfo = user;
+        var user = res.userInfo;
+        // 设置全局用户信息
+        app.globalData.userInfo = user;
     
-              // 后续的数据库操作
-              db.collection('userInfo').where({
-                _id: app.globalData.userInfo._id
-              }).get({
-                success: res => {
-                  if (res.data.length === 0) {
-                    // 将数据添加到数据库
-                    db.collection('userInfo').add({
-                      data: {
-                        avatarUrl: user.avatarUrl,
-                        nickName: user.nickName
-                      },
-                      success: res => {
-                        app.globalData.user_id = res._id;
-                        that.setData({
-                          userInfo: user
-                        });
-                      }
-                    });
-                  } else {
-                    that.setData({
-                      userInfo: res.data[0]
-                    });
-                    app.globalData.userInfo = res.data[0];
-                  }
+        // 检查之前是否已经授权登录
+        db.collection('userInfo').where({
+          _id: app.globalData.userInfo._id
+        }).get({
+          success: res => {
+            // 原先没有添加，这里添加
+            if (res.data.length === 0) {
+              // 将数据添加到数据库
+              db.collection('userInfo').add({
+                data: {
+                  avatarUrl: user.avatarUrl,
+                  nickName: user.nickName
                 },
-                fail: err => {
-                  console.error('查询用户信息失败', err);
+                success: res => {
+                  app.globalData.user_id = res._id;
+                  that.setData({
+                    userInfo: user
+                  });
                 }
               });
-            }
-          });
-        } else {
-          // 没有授权，需要调用 getUserProfile 进行授权
-          wx.getUserProfile({
-            desc: '获取用户信息',
-            success: res => {
-              var user = res.userInfo;
-              // 设置全局用户信息
-              app.globalData.userInfo = user;
-    
-              // 后续的数据库操作
-              db.collection('userInfo').where({
-                _id: app.globalData.userInfo._id
-              }).get({
-                success: res => {
-                  if (res.data.length === 0) {
-                    // 将数据添加到数据库
-                    db.collection('userInfo').add({
-                      data: {
-                        avatarUrl: user.avatarUrl,
-                        nickName: user.nickName
-                      },
-                      success: res => {
-                        app.globalData.user_id = res._id;
-                        that.setData({
-                          userInfo: user
-                        });
-                      }
-                    });
-                  } else {
-                    that.setData({
-                      userInfo: res.data[0]
-                    });
-                    app.globalData.userInfo = res.data[0];
-                  }
-                },
-                fail: err => {
-                  console.error('查询用户信息失败', err);
-                }
+            } else {
+              // 已经添加过了
+              that.setData({
+                userInfo: res.data[0]
               });
-            },
-            fail: err => {
-              console.error('获取用户信息失败', err);
-              wx.showToast({
-                title: '授权失败，请重新授权',
-                icon: 'none'
-              });
+              app.globalData.userInfo = res.data[0];
             }
-          });
-        }
+          },
+          fail: err => {
+            console.error('查询用户信息失败', err);
+          }
+        });
+      },
+      fail: err => {
+        console.error('获取用户信息失败', err);
+        wx.showToast({
+          title: '授权失败，请重新授权',
+          icon: 'none'
+        });
       }
     });
   },
