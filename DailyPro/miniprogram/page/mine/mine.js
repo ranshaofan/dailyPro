@@ -96,6 +96,7 @@ Page({
             // 原先没有添加，这里添加
             if (res.data.length === 0) {
               // 将数据添加到数据库
+              console.log(user.avatarUrl);
               db.collection('userInfo').add({
                 data: {
                   avatarUrl: user.avatarUrl,
@@ -115,6 +116,7 @@ Page({
               });
               app.globalData.userInfo = res.data[0];
             }
+            console.log(app.globalData.userInfo);
           },
           fail: err => {
             console.error('查询用户信息失败', err);
