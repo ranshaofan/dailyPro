@@ -108,7 +108,7 @@
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 8px;
-  width: 80px;
+  width: 90px;
   text-align: center;
   border-radius: 20px;
   background-color: rgba(197, 185, 208, 0.5);
