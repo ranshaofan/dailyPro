@@ -1,6 +1,7 @@
-const config = require('./config')
+const config = require('./config');
 const themeListeners = [];
 global.isDemo = true
+const util = require('./util/util.js');
 App({
 
   onLaunch: function (opts, data) {
@@ -16,7 +17,7 @@ App({
     
     // 获取数据库引用
     const db = wx.cloud.database();
-
+    var day = util.dateFormat('yyyy-MM-dd', new Date());
     // 获取集合的引用
     const userInfoCollection = db.collection('userInfo');
     const events = db.collection('events');
@@ -34,38 +35,42 @@ App({
       if (res.data[0]) this.globalData.userInfo = res.data[0];
       this.dataLoadStatus.userInfoLoaded = true;
       this.checkDataReady();
+
+      //查询userinfo以后才查询对应的数据
+      events.where({
+        eventtime: day,
+        user_id:this.globalData.userInfo._id
+      }).get().then(res => {
+        // 查询成功，res.data 包含了查询结果
+        if (res.data) {
+          that.globalData.events = res.data;
+        }
+        this.dataLoadStatus.eventsLoaded = true;
+        this.checkDataReady();
+      }).catch(err => {
+        // 查询失败
+        console.error('查询失败:', err);
+      });
+  
+      slots.where({
+        datetime: day,
+        user_id:this.globalData.userInfo._id
+      }).get().then(res => {
+        // 查询成功，res.data 包含了查询结果
+        if (res.data) {
+          that.globalData.slots = res.data;
+        }
+        this.dataLoadStatus.slotsLoaded = true;
+        this.checkDataReady();
+      }).catch(err => {
+        // 查询失败
+        console.error('查询失败:', err);
+      });
     }).catch(err => {
       // 查询失败
       console.error('查询失败:', err);
     });
 
-    events.get().then(res => {
-      // 查询成功，res.data 包含了查询结果
-      if (res.data) {
-        that.globalData.events = res.data;
-        that.globalData.evaluation = res.data.evaluation;  // 假设 evaluation 和 typeData 是 events 数据的一部分
-        that.globalData.typeData = res.data.typeData;      // 假设 typeData 是 events 数据的一部分
-      }
-      this.dataLoadStatus.eventsLoaded = true;
-      this.checkDataReady();
-    }).catch(err => {
-      // 查询失败
-      console.error('查询失败:', err);
-    });
-
-    slots.get().then(res => {
-      // 查询成功，res.data 包含了查询结果
-      if (res.data) {
-        that.globalData.slots = res.data;
-        that.globalData.evaluation = res.data.evaluation;  
-        that.globalData.typeData = res.data.typeData;     
-      }
-      this.dataLoadStatus.slotsLoaded = true;
-      this.checkDataReady();
-    }).catch(err => {
-      // 查询失败
-      console.error('查询失败:', err);
-    });
   },
 
   checkDataReady: function () {
@@ -120,6 +125,7 @@ App({
     slots:[],
     evaluation:["干得漂亮","正常水平","差点意思","烂透了"],
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    zwdays: ['日', '一', '二', '三', '四', '五', '六'],
     typeData:[{type:"所有",pic:"",color:""},{type:"娱乐",pic:"",color:""},{type:"学习",pic:"",color:""}],
     colorobj: { "娱乐": "#C3ACEB", "工作": "#EB974F", "学习": "#B4EBA1", "兴趣": "#EA90BA" },
     iconTabbar: '/page/weui/example/images/icon_tabbar.png',

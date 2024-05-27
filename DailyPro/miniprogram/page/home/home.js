@@ -9,6 +9,7 @@ Page({
     cLChosen: "",
     nickName: "",
     sayhello: "",
+    helloPic: 'sun',
     evaluation: [],
     typeData: [],
     startX: 0,
@@ -20,7 +21,7 @@ Page({
     typeIndex: 0,
     jugeIndex: 0,
     typeArr: ["娱乐", "工作", "学习", "饮食"],
-    jugeArr: ["优秀", "普通", "差劲"],
+    // jugeArr: ["优秀", "普通", "差劲"],
     contents: [],
     inputValue: "",
     inputCon: "",
@@ -30,24 +31,32 @@ Page({
     slots: [],
     // slots: [{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }, { type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' },{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }],
     dlgStTime: "08:00",
-    dlgEtTime: "08:00"
+    dlgEtTime: "08:00",
+    isToday:1
 
   },
   onLoad() {
     var cs = initCalendar();
     const currentHour = new Date().getHours();
     let sayhello;
+    let helloPic = "";
     if (currentHour < 12) {
       sayhello = "早上好呀~";
-    } else if (currentHour < 18) {
-      sayhello = "中午好呀~";
+      helloPic = "sun";
+    } else if (currentHour < 19) {
+      sayhello = "下午好呀~";
+      helloPic = "afternoon";
     } else {
       sayhello = "晚上好呀~";
+      helloPic = "moon";
     }
     this.setData({
       calendar: cs.calendar,
       cLChosen: cs.cLChosen,
-      sayhello:sayhello
+      sayhello,
+      helloPic,
+      isToday:1,
+      currentDate:dateFormat('yyyy-MM-dd', new Date())
     });
   },
   onShow() {
@@ -97,11 +106,14 @@ Page({
           stime: st,
           etime: et,
           user_id: app.globalData.userInfo._id,
-          datetime: datetime
+          datetime: dateFormat('yyyy-MM-dd', new Date(datetime))
         },
         success: res => {
           var slots = db.collection('slots');
-          slots.get().then(res => {
+          slots.where({
+            datetime: that.data.currentDate,
+            user_id:app.globalData.userInfo._id
+          }).get().then(res => {
             if (res.data) {
               app.globalData.slots = res.data;
               that.setData({
@@ -125,7 +137,7 @@ Page({
       var type = this.data.typeArr[this.data.typeIndex];
       var notes = this.data.inputCon;
       var name = this.data.inputName;
-      var evaluation = this.data.jugeArr[this.data.jugeIndex];
+      var evaluation = this.data.evaluation[this.data.jugeIndex];
       var eventtime = this.data.currentDate;
       // this.data.events.push({ type, cost,pic,con, id: list.length,conLeft:0,i:list.length%3 });
       // app.globalData.todayCost = list;
@@ -143,11 +155,14 @@ Page({
           name: name,
           evaluation: evaluation,
           user_id: app.globalData.userInfo._id,
-          eventtime: eventtime
+          eventtime: dateFormat('yyyy-MM-dd', new Date(eventtime))
         },
         success: res => {
           var events = db.collection('events');
-          events.get().then(res => {
+          events.where({
+            eventtime: that.data.currentDate,
+            user_id:app.globalData.userInfo._id
+          }).get().then(res => {
             if (res.data) {
               app.globalData.events = res.data;
               that.setData({
@@ -205,29 +220,49 @@ Page({
       jugeIndex: e.detail.value
     })
   },
-  showAddEventDlg() {
-    if (JSON.stringify(app.globalData.userInfo) == "{}") {
-      loginIn();
-      this.setData({
-        nickName: app.globalData.userInfo.nickName
-      });
-    } else {
-      this.setData({
-        addTimeDlgShow: 0,
-        addEventDlgShow: 1,
-        nickName: app.globalData.userInfo.nickName
-      });
-    }
-  },
   canlenChosen: function (event) {
+    var that = this;
     var index = event.currentTarget.dataset.index;
+    var day = event.currentTarget.dataset.day;
+    var isToday = dateFormat('yyyy-MM-dd', new Date())==dateFormat('yyyy-MM-dd', new Date(day))?1:0;
     let calendar = this.data.calendar.map(item => {
       item.classChosen = item.index === index ? 'chosen' : '';
       return item;
     });
-    this.setData({
+    //查询events
+    db.collection('events').where({
+      eventtime: day,
+      user_id:app.globalData.userInfo._id
+    }).get().then(res => {
+      if (res.data) {
+        app.globalData.events = res.data;
+        that.setData({
+          events: res.data
+        });
+      }
+    }).catch(err => {
+      console.error('查询失败:', err);
+    });
+    //查询slots
+    db.collection('slots').where({
+      datetime: day,
+      user_id:app.globalData.userInfo._id
+    }).get().then(res => {
+      if (res.data) {
+        app.globalData.slots = res.data;
+        that.setData({
+          slots: res.data
+        });
+      }
+    }).catch(err => {
+      console.error('查询失败:', err);
+    });
+    // 更新数据到前端
+    that.setData({
       calendar: calendar,
-      cLChosen: 'cL' + index
+      currentDate:day,
+      isToday,
+      cLChosen: 'cL' + index,
     });
   },
   //手指刚放到屏幕触发
@@ -324,10 +359,32 @@ Page({
   },
   //时间
   showAddTimeDlg() {
-    this.setData({
-      addTimeDlgShow: 1,
-      addEventDlgShow: 0
-    });
+    if (JSON.stringify(app.globalData.userInfo) == "{}") {
+      loginIn();
+      this.setData({
+        nickName: app.globalData.userInfo.nickName
+      });
+    } else {
+      this.setData({
+        addTimeDlgShow: 1,
+        addEventDlgShow: 0,
+        nickName: app.globalData.userInfo.nickName
+      });
+    }
+  },
+  showAddEventDlg() {
+    if (JSON.stringify(app.globalData.userInfo) == "{}") {
+      loginIn();
+      this.setData({
+        nickName: app.globalData.userInfo.nickName
+      });
+    } else {
+      this.setData({
+        addTimeDlgShow: 0,
+        addEventDlgShow: 1,
+        nickName: app.globalData.userInfo.nickName
+      });
+    }
   },
   onDateChange: function (e) {
     this.setData({

@@ -153,32 +153,35 @@ function dateFormat(fmt,date){
           fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
   return fmt;
 }
-function initCalendar(){
-    var cs = [];
-    var beginDay = new Date('2023-05-01');
-    var endDay = new Date(); // 创建修改后的日期对象
-    endDay.setDate(endDay.getDate() + 7); // 将日期设置为当前日期加上 7 天
-    var i = 0;
-    var todayIndex = 0;
-    var isToday = 0;
-    for (var day = beginDay; day.getTime() <= endDay.getTime(); day.setDate(day.getDate() + 1)) {
-      var curX = app.globalData.days[day.getDay()];//当前星期
+function initCalendar() {
+  var zwdays = ['日', '一', '二', '三', '四', '五', '六'];
+  var cs = [];
+  var endDay = new Date();
+  var beginDay = new Date();
+  beginDay.setDate(beginDay.getDate() - 9); // 将日期设置为当前日期减去 6 天
+  var i = 0;
+  var todayIndex = 0;
+  var isToday = 0;
+  var today = dateFormat('yyyy-MM-dd', new Date()); // 格式化当前日期
+  for (var day = new Date(beginDay); day.getTime() <= endDay.getTime(); day.setDate(day.getDate() + 1)) {
+      var curX = zwdays[day.getDay()]; // 当前星期
       var curD = day.getDate();
       var cc = "";
-      //如果是今天就设置选中的Class
-      var today = dateFormat('yyyy-MM-dd', new Date());
-      if (day.getTime() == new Date(today).getTime()) {
-        isToday = 1;
-        todayIndex = i;
-        cc = "chosen";
-      }else{
-        isToday = 0;
+      // 如果是今天就设置选中的Class
+      var formattedDay = dateFormat('yyyy-MM-dd', day);
+      if (formattedDay === today) {
+          isToday = 1;
+          todayIndex = i;
+          cc = "chosen";
+      } else {
+          isToday = 0;
       }
-      cs.push({ xq: curX, day: curD, X: curX.substr(0, 1), classChosen: cc, index: i,isToday });
+      cs.push({date:formattedDay, xq: curX, day: curD, X: (curX.substr(0, 1)=='T' || curX.substr(0, 1)=='S')?curX.substr(0, 2):curX.substr(0, 1), classChosen: cc, index: i, isToday });
       i++;
-    }
-    return {"calendar":cs,"cLChosen":"cL" + (todayIndex-3)}
+  }
+  return { "calendar": cs, "cLChosen": "cL" + (todayIndex - 3) };
 }
+
 function loginIn(){
   wx.getUserProfile({
     desc: '获取用户信息',

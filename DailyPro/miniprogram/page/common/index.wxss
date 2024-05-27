@@ -17,7 +17,7 @@
 .calendarView{
   width: 100%;
   border: 1px solid #D1CECE;
-  border-radius: 15px;
+  border-radius: 20px;
   white-space: nowrap;
   padding: 12px 12px 8px 12px;
   box-sizing: border-box;
@@ -39,13 +39,14 @@
 }
 .pointY{
   display: inline-block;
-  background-color: #ffde5a;
-  width: 4px;
-  height: 4px;
+  background-color: #ffec1f;
+  width: 8px;
+  height: 8px;
   border-radius: 20px;
+  box-shadow: 0 0 10px #8d8b8b;
 }
 .calenToday{
-  background-color: #f6f3fe;
+  background-color: #e4dff1;
   border-radius: 10px ;
 
 }

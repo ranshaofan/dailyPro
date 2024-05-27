@@ -6,24 +6,24 @@
       <view class="name">{{nickName}}</view>
     </view>
     <view class="beginRImg">
-      <image src="./resources/pic/sun.png" mode="widthFix"></image>
+      <image src="./resources/pic/{{helloPic}}.png" mode="widthFix"></image>
     </view>
   </view>
   <!-- 日历 -->
   <scroll-view class="calendarView" scroll-x="true" scroll-y="false" scrollbar="none" scroll-into-view="{{cLChosen}}">
-    <view class="calenList {{item.isToday ? 'calenToday' : ''}} {{item.classChosen}}" id="cL{{item.index}}" wx:for="{{calendar}}" wx:key="index" data-index="{{item.index}}" wx:for-item="item" bindtap='canlenChosen'>
+    <view class="calenList {{item.isToday ? 'calenToday' : ''}} {{item.classChosen}}" id="cL{{item.index}}" wx:for="{{calendar}}" wx:key="index" data-day="{{item.date}}" data-index="{{item.index}}" wx:for-item="item" bindtap='canlenChosen'>
       <!-- 星期 -->
       <view class="calenX">{{item.X}}</view>
       <!-- 日期 -->
       <view class="calenD">{{item.day}}</view>
       <!-- <span class="pointY" wx:if="{{item.classChosen=='chosen'}}"></span> -->
-      <span class="pointY" wx:if="{{item.isToday}}"></span>
+      <span class="pointY" wx:if="{{item.classChosen=='chosen'}}"></span>
     </view>
   </scroll-view>
   <!-- 时间模块 -->
   <view class="task">
     <view class="tctitle">
-      <view class="taskTitleLeft">今日时间</view>
+      <view class="taskTitleLeft">{{isToday?"今日":"当日"}}时间</view>
       <span class="taskTitleAdd" bindtap="showAddTimeDlg">+</span>
     </view>
     <view class="taskContent">
@@ -55,7 +55,7 @@
   <!-- events模块 -->
   <view class="cost">
     <view class="tctitle">
-      <view class="costTitleLeft">今日事件</view>
+      <view class="costTitleLeft">{{isToday?"今日":"当日"}}事件</view>
       <span class="costTitleAdd" bindtap='showAddEventDlg'>+</span>
     </view>
     <view class="costContent">
@@ -99,7 +99,7 @@
   <view class="dlgTitle flexCenter">
     <view class="dlgName">新增时间</view>
     <picker mode="date" value="{{ currentDate }}" start="{{ startDate }}" end="{{ endDate }}" bindchange="onDateChange">
-      <view class="timepicker">{{ currentDate }}</view>
+      <view class="timepicker newdatetime">{{ currentDate }}</view>
     </picker>
     <view bindtap="closeAddDlg" data-type="task" class="dlgClose">×</view>
   </view>
@@ -127,7 +127,7 @@
   <view class="dlgTitle flexCenter">
     <view class="dlgName">新增事件</view>
     <picker mode="date" value="{{ currentDate }}" start="{{ startDate }}" end="{{ endDate }}" bindchange="onDateChange">
-      <view class="timepicker">{{ currentDate }}</view>
+      <view class="timepicker newdatetime">{{ currentDate }}</view>
     </picker>
     <view bindtap="closeAddDlg" data-type="cost" class="dlgClose">×</view>
   </view>
@@ -152,8 +152,8 @@
   </view>
   <view class="timeDlgLine">
     <view class="timeDlgLineName">事件评价</view>
-    <picker mode="selector" class="addInput" value="{{jugeIndex}}" range="{{jugeArr}}" bindchange="onJugeChange">
-      <view class="eventTypePicker">{{jugeArr[jugeIndex]}}</view>
+    <picker mode="selector" class="addInput" value="{{jugeIndex}}" range="{{evaluation}}" bindchange="onJugeChange">
+      <view class="eventTypePicker">{{evaluation[jugeIndex]}}</view>
     </picker>
   </view>
   <view class="addBtn">
