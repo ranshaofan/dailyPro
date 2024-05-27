@@ -86,16 +86,17 @@ Page({
       success: res => {
         var user = res.userInfo;
         //设置全局用户信息
-        app.globalData.userInfo = res.userInfo
-        //检查之前是否已经授权登录
+        app.globalData.userInfo = user;
+    
+        // 检查之前是否已经授权登录
         db.collection('userInfo').where({
-          _id: app.globalData.userInfo._id
+          _id: user._id // 这里的 _id 应该是用户的唯一标识符
         }).get({
           success: res => {
             //原先没有添加，这里添加
-            if (!res.data[0]) {
-              //将数据添加到数据库
-              var info = db.collection('userInfo').add({
+            if (res.data.length === 0) {
+              // 将数据添加到数据库
+              db.collection('userInfo').add({
                 data: {
                   avatarUrl: user.avatarUrl,
                   nickName: user.nickName
@@ -103,22 +104,31 @@ Page({
                 success: res => {
                   app.globalData.user_id = res._id;
                   that.setData({
-                    userInfo: res
-                  })
+                    userInfo: user // 确保这里使用的是 `user` 而不是 `res`
+                  });
                 }
-              })
-
+              });
             } else {
-              //已经添加过了
-              this.setData({
+              // 已经添加过了
+              that.setData({
                 userInfo: res.data[0]
-              })
+              });
               app.globalData.userInfo = res.data[0];
             }
+          },
+          fail: err => {
+            console.error('查询用户信息失败', err);
           }
-        })
+        });
+      },
+      fail: err => {
+        console.error('获取用户信息失败', err);
+        wx.showToast({
+          title: '授权失败，请重新授权',
+          icon: 'none'
+        });
       }
-    })
+    });
   },
   loginOut:function(e){
     var that = this;
