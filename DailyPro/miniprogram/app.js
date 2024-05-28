@@ -39,7 +39,7 @@ App({
       //查询userinfo以后才查询对应的数据
       events.where({
         eventtime: day,
-        user_id:this.globalData.userInfo._id
+        user_id:this.globalData.userInfo._openid
       }).get().then(res => {
         // 查询成功，res.data 包含了查询结果
         if (res.data) {
@@ -54,7 +54,7 @@ App({
   
       slots.where({
         datetime: day,
-        user_id:this.globalData.userInfo._id
+        user_id:this.globalData.userInfo._openid
       }).get().then(res => {
         // 查询成功，res.data 包含了查询结果
         if (res.data) {

@@ -105,14 +105,14 @@ Page({
           con: con,
           stime: st,
           etime: et,
-          user_id: app.globalData.userInfo._id,
+          user_id: app.globalData.userInfo._openid,
           datetime: dateFormat('yyyy-MM-dd', new Date(datetime))
         },
         success: res => {
           var slots = db.collection('slots');
           slots.where({
             datetime: that.data.currentDate,
-            user_id:app.globalData.userInfo._id
+            user_id:app.globalData.userInfo._openid
           }).get().then(res => {
             if (res.data) {
               app.globalData.slots = res.data;
@@ -154,14 +154,14 @@ Page({
           notes: notes,
           name: name,
           evaluation: evaluation,
-          user_id: app.globalData.userInfo._id,
+          user_id: app.globalData.userInfo._openid,
           eventtime: dateFormat('yyyy-MM-dd', new Date(eventtime))
         },
         success: res => {
           var events = db.collection('events');
           events.where({
             eventtime: that.data.currentDate,
-            user_id:app.globalData.userInfo._id
+            user_id:app.globalData.userInfo._openid
           }).get().then(res => {
             if (res.data) {
               app.globalData.events = res.data;
@@ -232,7 +232,7 @@ Page({
     //查询events
     db.collection('events').where({
       eventtime: day,
-      user_id:app.globalData.userInfo._id
+      user_id:app.globalData.userInfo._openid
     }).get().then(res => {
       if (res.data) {
         app.globalData.events = res.data;
@@ -246,7 +246,7 @@ Page({
     //查询slots
     db.collection('slots').where({
       datetime: day,
-      user_id:app.globalData.userInfo._id
+      user_id:app.globalData.userInfo._openid
     }).get().then(res => {
       if (res.data) {
         app.globalData.slots = res.data;
