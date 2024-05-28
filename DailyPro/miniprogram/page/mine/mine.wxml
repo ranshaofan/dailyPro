@@ -1,56 +1,20 @@
-<!-- <view class="page" data-weui-theme="{{theme}}">
-  <view class="index">
-    <view class="index-bd">
-      <view class="kind-list">
-        <block wx:for-items="{{list}}" wx:key="{{item.id}}">
-          <view class="kind-list-item">
-            <view id="{{item.id}}" class="kind-list-item-hd {{item.open ? 'kind-list-item-hd-show' : ''}}" bindtap="kindToggle">
-              <view class="kind-list-text">{{item.name}}</view>
-              <image wx:if="{{theme === 'dark'}}" class="kind-list-img" src="resources/kind/{{item.id}}_dark.png"></image>
-              <image wx:else class="kind-list-img" src="resources/kind/{{item.id}}.png"></image>
-            </view>
-            <view class="kind-list-item-bd {{item.open ? 'kind-list-item-bd-show' : ''}}">
-              <view class="navigator-box {{item.open ? 'navigator-box-show' : ''}}">
-                <block wx:for-items="{{item.pages}}" wx:for-item="page" wx:key="*item">
-                  <navigator url="../../packageCloud/pages/{{item.id}}/{{page.url}}" class="navigator">
-                    <view class="navigator-text">{{page.zh}}</view>
-                    <view class="navigator-arrow"></view>
-                  </navigator>
-                </block>
-              </view>
-            </view>
-          </view>
-        </block>
-      </view>
-    </view>
-  </view>
-</view> -->
 <view class="page">
   <view class="mine">
     <!-- 头像和卡片 -->
     <view class="flexCenter cardM">
-      <view class="ava" bindtap='avaclick'>
-        <image class="" src="{{userInfo.avatarUrl}}" mode="aspectFill" lazy-load="false" binderror="" bindload=""></image>
+      <view class="ava flexCenter">
+        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" lazy-load="false"></image>
+        </button>
       </view>
       <view class="name">
-        <view>{{userInfo.nickName}}</view>
+        <input type="nickname" class="weui-input" placeholder="请输入昵称" onblur='nicknameBlur' value='{{userInfo.nickName}}'/>
         <view>记划萌新</view>
       </view>
     </view>
   </view>
   <view class="block" id='setBalance' bindtap=''>类别设置</view>
-  <!-- <view class="block">注册</view> -->
-  <!-- <view class="block" bindtap='setLimit'>设置提醒限额</view> -->
-  <view class="block"  bindtap='loginOut'>退出登录</view>
-  <!-- <view>
-    <form bindsubmit="handlerSubmit">
-      <label class="loginLab">账号</label>
-      <input class="inputText" placeholder="请输入账号" name="account" />
-      <label class="loginLab">密码</label>
-      <input class="inputText" password="true" placeholder="请输入密码" name="pwd" />
-      <button class="regBtn" type="primary" form-type="submit">注册</button>
-    </form>
-  </view> -->
+  <view class="block" bindtap='loginOut'>退出登录</view>
   <view wx:if="{{showBalanceDialog}}" class="dialog" bindtap='hideDialog'>
     <view class="dialog-content" catchtap="stopPropagation">
       <text>{{dlgObj.txt}}</text>

@@ -35,7 +35,7 @@ App({
       if (res.data[0]) this.globalData.userInfo = res.data[0];
       this.dataLoadStatus.userInfoLoaded = true;
       this.checkDataReady();
-
+      if(!res.data || res.data.length==0)return;
       //查询userinfo以后才查询对应的数据
       events.where({
         eventtime: day,
