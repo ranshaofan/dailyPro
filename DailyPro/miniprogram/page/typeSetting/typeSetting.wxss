@@ -1,0 +1,8 @@
+/* page/typeSetting/typeSetting.wxss */@import "../common/index.wxss";
+
+
+.page{
+    background-color: #efefef;
+    padding: 0 !important;
+  }
+  

@@ -3,7 +3,8 @@
     "page/home/home",
     "page/analysis/analysis",
     "page/mine/mine",
-    "page/task/task"
+    "page/task/task",
+    "page/typeSetting/typeSetting"
   ],
   "preloadRule": {
     "page/home/home": {

@@ -13,7 +13,7 @@
       </view>
     </view>
   </view>
-  <view class="block" id='setBalance' bindtap=''>类别设置</view>
+  <view class="block" id='setBalance' bindtap=''><navigator url="/page/typeSetting/typeSetting">类别设置</navigator></view>
   <view class="block" bindtap='loginOut'>退出登录</view>
   <view wx:if="{{showBalanceDialog}}" class="dialog" bindtap='hideDialog'>
     <view class="dialog-content" catchtap="stopPropagation">
