@@ -43,8 +43,8 @@
             </view>
             <view class="taskdate">{{item.datetime}}</view>
             <view class="taskpics">
-              <view class="flexCenter" wx:key="i" wx:for-item="picItem" wx:for-index="i">
-                <!-- <image class="taskBoxImg" src="" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image> -->
+              <view class="flexCenter" wx:for-item="picItem" wx:for-index="i">
+                <image class="taskBoxImg" src="{{item.pic}}" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
               </view>
             </view>
           </view>
@@ -113,8 +113,8 @@
     </picker>
   </view>
   <view class="addDlgbottom flexCenter pickerbgc">
-    <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
-      <view class="picker flexCenter">{{typeArr[typeIndex]}}</view>
+    <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" wx:key="typeIndex" range="{{typeNames}}" bindchange="onTypeChange">
+      <view class="picker flexCenter">{{typeNames[typeIndex]}}</view>
     </picker>
     <input type="text" class="addTaskInput addInput" bindinput="onInput" value="{{inputValue}}" data-type="slotCon" />
   </view>
@@ -132,8 +132,8 @@
     <view bindtap="closeAddDlg" data-type="cost" class="dlgClose">×</view>
   </view>
   <!-- <view class="addDlgbottom flexCenter pickerbgc addEventDlgT"> -->
-  <!-- <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
-      <view class="picker flexCenter">{{typeArr[typeIndex]}}</view>
+  <!-- <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" range="{{typeInfo}}" bindchange="onTypeChange">
+      <view class="picker flexCenter">{{typeInfo[typeIndex]}}</view>
     </picker> -->
   <!-- </view> -->
   <view class="timeDlgLine">
@@ -142,8 +142,8 @@
   </view>
   <view class="timeDlgLine">
     <view class="timeDlgLineName">事件类型</view>
-    <picker mode="selector" class="addInput" value="{{typeIndex}}" range="{{typeArr}}" bindchange="onTypeChange">
-      <view class="eventTypePicker">{{typeArr[typeIndex]}}</view>
+    <picker mode="selector" class="addInput" value="{{typeIndex}}" wx:key="typeIndex" range="{{typeNames}}" bindchange="onTypeChange">
+      <view class="eventTypePicker">{{typeNames[typeIndex]}}</view>
     </picker>
   </view>
   <view class="timeDlgLine">

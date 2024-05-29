@@ -1,4 +1,4 @@
-import { dateFormat, initCalendar } from '../../util/util'
+import { dateFormat, initCalendar,refreshEventsAndSlots } from '../../util/util'
 const app = getApp();
 const db = wx.cloud.database();//获取数据库引用
 Page({
@@ -11,7 +11,7 @@ Page({
     sayhello: "",
     helloPic: 'sun',
     evaluation: [],
-    typeData: [],
+    typeInfo: [],
     startX: 0,
     currentDate: '2024-5-20',
     sdate: '2024-5-20',
@@ -20,7 +20,7 @@ Page({
     addEventDlgShow: 0,
     typeIndex: 0,
     jugeIndex: 0,
-    typeArr: ["娱乐", "工作", "学习", "饮食"],
+    typeNames: [],
     // jugeArr: ["优秀", "普通", "差劲"],
     contents: [],
     inputValue: "",
@@ -62,25 +62,31 @@ Page({
   },
   onShow() {
     const that = this;
-    if (app.globalData.events.length > 0) {
+    if (JSON.stringify(app.globalData.userInfo) != "{}") {
+      refreshEventsAndSlots();
+      const typeNames = app.globalData.typeInfo.map(item => item.typeName);
       this.setData({
         events: app.globalData.events,
         slots: app.globalData.slots,
+        typeInfo: app.globalData.typeInfo,
         evaluation: app.globalData.evaluation,
-        typeData: app.globalData.typeData
+        typeNames
       })
-      if (JSON.stringify(app.globalData.userInfo) != "{}") {
+      if (JSON.stringify(app.globalData.userInfo) != "{}" && app.globalData.userInfo.nickName) {
         this.setData({
           nickName: app.globalData.userInfo.nickName
         });
       }
     } else {
       app.dataReadyCallback = function () {
+        refreshEventsAndSlots();
+        const typeNames = app.globalData.typeInfo.map(item => item.typeName);
         that.setData({
           events: app.globalData.events,
           slots: app.globalData.slots,
+          typeInfo: app.globalData.typeInfo,
           evaluation: app.globalData.evaluation,
-          typeData: app.globalData.typeData
+          typeNames
         });
         if (JSON.stringify(app.globalData.userInfo) != "{}") {
           that.setData({
@@ -89,6 +95,7 @@ Page({
         }
       }
     }
+    console.log(app.globalData.events);
   },
   addDlgBtn(event) {
     var that = this;
@@ -96,7 +103,7 @@ Page({
     if (type == "slots") {//时间
       var st = this.data.dlgStTime;
       var et = this.data.dlgEtTime;
-      var type = this.data.typeArr[this.data.typeIndex];
+      var type = this.data.typeNames[this.data.typeIndex];
       var con = this.data.inputValue;
       var datetime = this.data.currentDate;
       //向数据库中添加数据
@@ -117,6 +124,7 @@ Page({
           }).get().then(res => {
             if (res.data) {
               app.globalData.slots = res.data;
+              refreshEventsAndSlots();
               that.setData({
                 slots: res.data,
                 addTimeDlgShow: 0
@@ -135,7 +143,7 @@ Page({
       //   slots: cons
       // });
     } else {//event
-      var type = this.data.typeArr[this.data.typeIndex];
+      var type = this.data.typeNames[this.data.typeIndex];
       var notes = this.data.inputCon;
       var name = this.data.inputName;
       var evaluation = this.data.evaluation[this.data.jugeIndex];
@@ -166,6 +174,7 @@ Page({
           }).get().then(res => {
             if (res.data) {
               app.globalData.events = res.data;
+              refreshEventsAndSlots();
               that.setData({
                 events: res.data,
                 addEventDlgShow: 0

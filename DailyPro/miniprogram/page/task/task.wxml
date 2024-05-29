@@ -159,8 +159,8 @@
     <!-- todayCost -->
     <view class="titleevent flexCenter">
       <view class="typeEventSelector titleeventleft epicker">
-        <picker mode="selector"  class="addInput"  value="{{typeEventIndex}}" range="{{typeData}}"  bindchange="onTypeEventChange">
-          <view class="eventTypePicker">{{typeData[typeEventIndex].type}}</view>
+        <picker mode="selector"  class="addInput"  value="{{typeEventIndex}}" range="{{typeInfo}}"  bindchange="onTypeEventChange">
+          <view class="eventTypePicker">{{typeInfo[typeEventIndex].type}}</view>
         </picker>
       </view>
       <view class="titleeventright flexCenter">

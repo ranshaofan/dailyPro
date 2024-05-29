@@ -133,6 +133,7 @@ App({
     // todayCosts: [],
     events:[],
     slots:[],
+    userInfo:{},
     typeInfo:[],//存放类型与图片相对应的数组
     evaluation:["干得漂亮","正常水平","差点意思","烂透了"],
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],

@@ -218,6 +218,25 @@ function loginIn(){
   })
 }
 
+function refreshEventsAndSlots(){
+  const app = getApp();
+  //根据typeInfo中的数据 给events和slots写入pic
+  var typeInfo = app.globalData.typeInfo;
+  var events = app.globalData.events;
+  var slots = app.globalData.slots;
+  var userid = app.globalData.userInfo._openid;
+  events.forEach(e => {
+    var ts = typeInfo.filter(t=>{return t.user_id==userid && t.typeName==e.type;});
+    if(ts.length>0) e["pic"] =ts[0].pic;
+    else e["pic"]="../common/icon/fastfood.png";//默认 
+  });
+  slots.forEach(e => {
+    var ts = typeInfo.filter(t=>{return t.user_id==userid && t.typeName==e.type;});
+    if(ts.length>0) e["pic"] =ts[0].pic;
+    else e["pic"]="../common/icon/fastfood.png";//默认 
+  });
+}
+
 function refreshTypeInfo(userid) {
   var db = wx.cloud.database();
   return new Promise((resolve, reject) => {
@@ -245,5 +264,6 @@ module.exports = {
   dateFormat,
   initCalendar,
   loginIn,
-  refreshTypeInfo
+  refreshTypeInfo,
+  refreshEventsAndSlots
 }

@@ -14,7 +14,7 @@ CustomPage({
     ifTime: 0,
     ifEvent: 1,
     calendar: [],
-    typeData:[],
+    typeInfo:[],
     evaluation:[],
     valueEventIndex:0,
     typeEventIndex:0,
@@ -92,7 +92,7 @@ CustomPage({
       cLChosen: cs.cLChosen,
       events: app.globalData.events,
       evaluation:app.globalData.evaluation,
-      typeData: app.globalData.typeData
+      typeInfo: app.globalData.typeInfo
     })
     if (app.globalData.userInfo && app.globalData.userInfo.avatarUrl) {
       this.setData({
