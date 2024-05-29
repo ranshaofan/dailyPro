@@ -246,6 +246,7 @@ Page({
     }).get().then(res => {
       if (res.data) {
         app.globalData.events = res.data;
+        refreshEventsAndSlots();
         that.setData({
           events: res.data
         });
@@ -260,6 +261,7 @@ Page({
     }).get().then(res => {
       if (res.data) {
         app.globalData.slots = res.data;
+        refreshEventsAndSlots();
         that.setData({
           slots: res.data
         });
