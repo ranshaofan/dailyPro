@@ -1,5 +1,6 @@
 const app = getApp();
 const db = wx.cloud.database(); // 获取数据库引用
+import { refreshTypeInfo } from '../../util/util';
 
 Page({
   data: {
@@ -18,12 +19,21 @@ Page({
   },
 
   onShow() {
+    var that = this;
     if (app.globalData.userInfo && app.globalData.userInfo.avatarUrl) {
       this.setData({
         userInfo: app.globalData.userInfo,
         typeInfo: app.globalData.typeInfo
       });
     }
+    refreshTypeInfo(app.globalData.userInfo._openid).then(data => {
+      this.setData({
+        typeInfo: data
+      });
+      app.globalData.typeInfo = data;
+    }).catch(err => {
+      console.error('刷新数据失败:', err);
+    });
   },
   navigateBack() {
     wx.navigateBack({

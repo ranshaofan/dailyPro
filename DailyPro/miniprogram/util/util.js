@@ -1,4 +1,5 @@
-const app = getApp()
+const app = getApp();
+
 function formatTime(time) {
   if (typeof time !== 'number' || time < 0) {
     return time
@@ -216,6 +217,23 @@ function loginIn(){
     }
   })
 }
+
+function refreshTypeInfo(userid) {
+  var db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    const typeInfo = db.collection('typeInfo');
+    typeInfo.where({
+      user_id: userid
+    }).get().then(res => {
+      if (res.data) {
+        resolve(res.data);
+      }
+    }).catch(err => {
+      console.error('查询失败:', err);
+      reject(err);
+    });
+  });
+}
 module.exports = {
   formatTime,
   formatLocation,
@@ -226,5 +244,6 @@ module.exports = {
   drawTimeline,
   dateFormat,
   initCalendar,
-  loginIn
+  loginIn,
+  refreshTypeInfo
 }
