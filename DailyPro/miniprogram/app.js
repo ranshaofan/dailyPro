@@ -125,6 +125,18 @@ App({
       themeListeners.splice(index, 1)
     }
   },
+  /*(
+{
+        "pagePath": "page/analysis/analysis",
+        "iconPath": "@iconTimeGray",
+        "selectedIconPath": "@selectedIconTime"
+      },
+{
+        "pagePath": "page/task/task",
+        "iconPath": "@iconTask",
+        "selectedIconPath": "@selectedIconTask"
+      },
+  )*/
   globalData: {
     theme: wx.getSystemInfoSync().theme,
     hasLogin: false,
@@ -138,8 +150,8 @@ App({
     evaluation:["干得漂亮","正常水平","差点意思","烂透了"],
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     zwdays: ['日', '一', '二', '三', '四', '五', '六'],
-    typeData:[{type:"所有",pic:"",color:""},{type:"娱乐",pic:"",color:""},{type:"学习",pic:"",color:""}],
     colorobj: { "娱乐": "#C3ACEB", "工作": "#EB974F", "学习": "#B4EBA1", "兴趣": "#EA90BA" },
+    types:[],
     iconTabbar: '/page/weui/example/images/icon_tabbar.png',
     iconNames:[//权宜之计
       "a-addmusic.png",
