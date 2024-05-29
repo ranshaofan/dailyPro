@@ -58,6 +58,7 @@ Page({
       isToday:1,
       currentDate:dateFormat('yyyy-MM-dd', new Date())
     });
+
   },
   onShow() {
     const that = this;

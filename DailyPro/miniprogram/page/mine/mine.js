@@ -61,6 +61,7 @@ Page({
               this.setData({
                 userInfo: { ...userInfo, ...dataToUpdate }
               });
+              app.globalData.userInfo = { ...userInfo, ...dataToUpdate };
             },
             fail: console.error
           });
@@ -73,6 +74,7 @@ Page({
               this.setData({
                 userInfo: { ...userInfo, ...dataToUpdate }
               });
+              app.globalData.userInfo = { ...userInfo, ...dataToUpdate };
             },
             fail: console.error
           });

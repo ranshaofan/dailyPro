@@ -1,5 +1,22 @@
 <view class="page">
-  <view class="back-button" bindtap="navigateBack">
-    返回
-  </view>
+    <view class="wrapblock block" wx:for="{{typeInfo}}" wx:key="index" data-index="{{index}}" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE">
+        <view class="item boxLeft"  style="left:{{item.conLeft}}px;">
+            <view class="imgView flexCenter">
+                <image src="{{item.pic}}" mode="aspectFill"></image>
+            </view>
+            <view class="item-name">
+                <input type="text" placeholder="未定义" data-index="{{index}}" value="{{item.typeName}}" bindblur="onblur" />
+            </view>
+            <view class="checkbox" data-index="{{index}}" bindtap="toggleCheck">
+                <view class="{{item.isTrue ? 'checked' : 'unchecked'}}"></view>
+            </view>
+        </view>
+        <!-- 这里是左滑按钮部分 -->
+        <view class="delCost flexCenter" bindtap="costDelete" data-index="{{index}}">
+            <view class="flexCenter" catchtap="costDelete" data-index="{{index}}">删除</view>
+        </view>
+    </view>
+    <view class="addType">
+        <navigator url="/page/addType/addType">添加分类</navigator>
+    </view>
 </view>

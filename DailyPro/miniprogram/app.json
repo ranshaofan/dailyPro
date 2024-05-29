@@ -4,7 +4,8 @@
     "page/analysis/analysis",
     "page/mine/mine",
     "page/task/task",
-    "page/typeSetting/typeSetting"
+    "page/typeSetting/typeSetting",
+    "page/addType/addType"
   ],
   "preloadRule": {
     "page/home/home": {

@@ -13,7 +13,7 @@ exports.main = async (event, context) => {
   try {
     // 先查找用户是否已经存在
     const userRecord = await db.collection('userInfo').where({
-      _id: wxContext.OPENID
+      _openid: wxContext.OPENID
     }).get()
 
     if (userRecord.data && userRecord.data.length > 0) {
@@ -31,7 +31,7 @@ exports.main = async (event, context) => {
         data: {
           avatarUrl: avatarUrl,
           nickName: nickName,
-          _id: wxContext.OPENID
+          _openid: wxContext.OPENID
         }
       })
       return {

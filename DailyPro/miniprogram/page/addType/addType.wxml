@@ -1,0 +1,15 @@
+<view class="page">
+    <view class="inputType flexCenter">
+        <view class="imgView flexCenter">
+            <image class="item-pic" src="{{selectedIcon}}" mode="aspectFill"></image>
+        </view>
+        <input type="text" placeholder="请输入自定义类别" bindinput="onInput" value="{{inputValue}}"/>
+    </view>
+    <view class="picsView">
+        <block wx:for="{{icons}}" wx:key="fileID">
+            <view class="imgView flexCenter" bindtap="iconClick" data-icon="{{item}}">
+                <image class="item-pic" src="../common/icon/{{item}}" mode="widthFix"></image>
+            </view>
+        </block>
+    </view>
+</view>

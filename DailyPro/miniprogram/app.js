@@ -22,11 +22,13 @@ App({
     const userInfoCollection = db.collection('userInfo');
     const events = db.collection('events');
     const slots = db.collection('slots'); 
+    const typeInfo = db.collection('typeInfo'); 
 
     // 用于跟踪数据加载状态
     this.dataLoadStatus = {
       userInfoLoaded: false,
-      eventsLoaded: false
+      eventsLoaded: false,
+      typeInfoLoaded:false
     };
 
     // 查询数据
@@ -37,44 +39,52 @@ App({
       this.checkDataReady();
       if(!res.data || res.data.length==0)return;
       //查询userinfo以后才查询对应的数据
+      //events事件
       events.where({
         eventtime: day,
         user_id:this.globalData.userInfo._openid
       }).get().then(res => {
-        // 查询成功，res.data 包含了查询结果
         if (res.data) {
           that.globalData.events = res.data;
         }
         this.dataLoadStatus.eventsLoaded = true;
         this.checkDataReady();
       }).catch(err => {
-        // 查询失败
         console.error('查询失败:', err);
       });
-  
+      //slots时间
       slots.where({
         datetime: day,
         user_id:this.globalData.userInfo._openid
       }).get().then(res => {
-        // 查询成功，res.data 包含了查询结果
         if (res.data) {
           that.globalData.slots = res.data;
         }
         this.dataLoadStatus.slotsLoaded = true;
         this.checkDataReady();
       }).catch(err => {
-        // 查询失败
+        console.error('查询失败:', err);
+      });
+      //typeInfo
+      typeInfo.where({
+        user_id:this.globalData.userInfo._openid
+      }).get().then(res => {
+        if (res.data) {
+          that.globalData.typeInfo = res.data;
+        }
+        this.dataLoadStatus.typeInfoLoaded = true;
+        this.checkDataReady();
+      }).catch(err => {
         console.error('查询失败:', err);
       });
     }).catch(err => {
-      // 查询失败
       console.error('查询失败:', err);
     });
 
   },
 
   checkDataReady: function () {
-    if (this.dataLoadStatus.userInfoLoaded && this.dataLoadStatus.eventsLoaded) {
+    if (this.dataLoadStatus.userInfoLoaded && this.dataLoadStatus.eventsLoaded && this.dataLoadStatus.typeInfoLoaded) {
       if (this.dataReadyCallback) {
         this.dataReadyCallback();
       }
@@ -123,12 +133,53 @@ App({
     // todayCosts: [],
     events:[],
     slots:[],
+    typeInfo:[],//存放类型与图片相对应的数组
     evaluation:["干得漂亮","正常水平","差点意思","烂透了"],
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     zwdays: ['日', '一', '二', '三', '四', '五', '六'],
     typeData:[{type:"所有",pic:"",color:""},{type:"娱乐",pic:"",color:""},{type:"学习",pic:"",color:""}],
     colorobj: { "娱乐": "#C3ACEB", "工作": "#EB974F", "学习": "#B4EBA1", "兴趣": "#EA90BA" },
     iconTabbar: '/page/weui/example/images/icon_tabbar.png',
+    iconNames:[//权宜之计
+      "a-addmusic.png",
+      "chuju.png",
+      "a-musicquality.png",
+      "archiver.png",
+      "bangong.png",
+      "baoxian.png",
+      "bell.png",
+      "bianji.png",
+      "bofang.png",
+      "book.png",
+      "chongwu.png",
+      "coffee.png",
+      "computer.png",
+      "create.png",
+      "cup.png",
+      "diannao.png",
+      "dianpu.png",
+      "dianying.png",
+      "error.png",
+      "ershou.png",
+      "ershouche.png",
+      "fangchan.png",
+      "fastfood.png",
+      "fuzhuang.png",
+      "gifts.png",
+      "gouwuche.png",
+      "huiyuan.png",
+      "huwai.png",
+      "jiadian.png",
+      "jiaju.png",
+      "jianshen.png",
+      "jiayou.png",
+      "jiazhuang.png",
+      "jinrong.png",
+      "jipiao.png",
+      "jiudian.png",
+      "jiushui.png",
+      "shopping.png"
+    ]
   },
   // lazy loading openid
   getUserOpenId(callback) {
