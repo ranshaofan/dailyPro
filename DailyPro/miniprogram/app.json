@@ -50,6 +50,11 @@
         "selectedIconPath": "@selectedIconHome"
       },
       {
+        "pagePath": "page/task/task",
+      "iconPath": "@iconTask",
+      "selectedIconPath": "@selectedIconTask"
+      },
+      {
         "pagePath": "page/mine/mine",
         "iconPath": "@iconMine",
         "selectedIconPath": "@selectedIconMine"

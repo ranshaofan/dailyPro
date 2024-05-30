@@ -237,6 +237,42 @@ function refreshEventsAndSlots() {
   });
 }
 
+//获取当前userid下所有数据
+function getEventsData(userid){
+  var db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    const events = db.collection('events');
+    events.where({
+      user_id: userid
+    }).get().then(res => {
+      if (res.data) {
+        resolve(res.data);
+      }
+    }).catch(err => {
+      console.error('查询失败:', err);
+      reject(err);
+    });
+  });
+}
+
+//获取当前userid下所有数据
+function getSlotsData(userid){
+  var db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    const slots = db.collection('slots');
+    slots.where({
+      user_id: userid
+    }).get().then(res => {
+      if (res.data) {
+        resolve(res.data);
+      }
+    }).catch(err => {
+      console.error('查询失败:', err);
+      reject(err);
+    });
+  });
+}
+
 function refreshTypeInfo(userid) {
   var db = wx.cloud.database();
   return new Promise((resolve, reject) => {
@@ -296,5 +332,7 @@ module.exports = {
   loginIn,
   refreshTypeInfo,
   refreshEventsAndSlots,
-  formatValueTime
+  formatValueTime,
+  getSlotsData,
+  getEventsData
 }

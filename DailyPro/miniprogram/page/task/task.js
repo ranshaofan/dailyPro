@@ -1,5 +1,6 @@
 import CustomPage from './base/CustomPage'
-import { dateFormat, initCalendar,loginIn } from '../../util/util'
+import { dateFormat, initCalendar, loginIn, refreshEventsAndSlots, getSlotsData, getEventsData } from '../../util/util'
+
 const app = getApp();
 const db = wx.cloud.database();//获取数据库引用
 CustomPage({
@@ -14,26 +15,24 @@ CustomPage({
     ifTime: 0,
     ifEvent: 1,
     calendar: [],
-    typeInfo:[],
-    evaluation:[],
-    valueEventIndex:0,
-    typeEventIndex:0,
-    currentDate:'2024-5-20',
-    sdate:'2024-5-20',
-    edate:'2024-5-20',
+    typeInfo: [],
+    evaluation: [],
+    valueEventIndex: 0,
+    typeEventIndex: 0,
+    currentDate: '2024-5-20',
+    sdate: dateFormat('yyyy-MM-dd', new Date()),
+    edate: dateFormat('yyyy-MM-dd', new Date()),
     cLChosen: "",
-    events: [{eventtime:'2024-5-20',name:'喝咖啡',type:'饮食',notes:'不应该',evaluation:'普通',inittime:'',userid:'',index:1,conLeft:0}],
+    events: [{ eventtime: '2024-5-20', name: '喝咖啡', type: '饮食', notes: '不应该', evaluation: '普通', inittime: '', userid: '', index: 1, conLeft: 0 }],
     // events:[{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:1,cost:200,conLeft:0},{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:2,cost:200,conLeft:0},{type:"娱乐",con:"Today",pic:"../common/img/phoneG.png",index:3,cost:20,conLeft:0}],
-    tasks: [{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00", i: 0 }, { type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00", i: 1 }],
     today: dateFormat('yyyy-MM-dd', new Date()),
     timePicker: null,
     dlgStTime: "08:00",
     dlgEtTime: "08:00",
     addTimeDlgShow: 0,
     addEventDlgShow: 0,
-    typeIndex: 0,
     startX: 0,//滑动时的起始坐标
-    typeArr: ["娱乐", "工作", "学习","饮食"],
+    typeArr: ["娱乐", "工作", "学习", "饮食"],
     jugeArr: ["优秀", "普通", "差劲"],
     contents: [],
     inputValue: "",
@@ -41,7 +40,11 @@ CustomPage({
     inputName: "",
     inputNum: "",
     userInfo: { balanceAmount: 3000, limitAmount: 1000 },
-    curEvent:{name:'',type:'',notes:'',juge:''}
+    curEvent: { name: '', type: '', notes: '', juge: '' },
+
+    slots: [],
+    typeIndex: 0,
+    typeNames: ["1", "2"]
   },
   changePageTask() {
     this.setData({
@@ -70,17 +73,17 @@ CustomPage({
       typeIndex: e.detail.value
     })
   },
-  onJugeChange(e){
+  onJugeChange(e) {
     this.setData({
       jugeIndex: e.detail.value
     })
   },
-  onEventValueChange(e){
+  onEventValueChange(e) {
     this.setData({
       valueEventIndex: e.detail.value
     })
   },
-  onTypeEventChange(e){
+  onTypeEventChange(e) {
     this.setData({
       typeEventIndex: e.detail.value
     })
@@ -91,7 +94,7 @@ CustomPage({
       calendar: cs.calendar,
       cLChosen: cs.cLChosen,
       events: app.globalData.events,
-      evaluation:app.globalData.evaluation,
+      evaluation: app.globalData.evaluation,
       typeInfo: app.globalData.typeInfo
     })
     if (app.globalData.userInfo && app.globalData.userInfo.avatarUrl) {
@@ -100,12 +103,71 @@ CustomPage({
       })
     }
   },
-  onshow() {
-    if (JSON.stringify(app.globalData.events) != JSON.stringify(events)) {
-      this.setData({
-        events: app.globalData.events
-      })
+  onShow() {
+    refreshEventsAndSlots();
+    const typeNames = app.globalData.typeInfo.map(item => item.typeName);
+    typeNames.unshift("全部");
+    this.setData({
+      events: app.globalData.events,
+      slots: app.globalData.slots,
+      typeInfo: app.globalData.typeInfo,
+      evaluation: app.globalData.evaluation,
+      typeNames
+    });
+  },
+  findAlls(event) {
+    var that = this;
+    var typeName = this.data.typeNames[that.data.typeIndex];//类别
+    var keywords = this.data.inputName;//关键词
+    var sdate = this.data.sdate;//开始日期
+    var edate = this.data.edate;//结束日期
+    if (this.data.ifTime) {//查询slots时间
+      getSlotsData(app.globalData.userInfo._openid).then(data => {
+        //获取到当前user_id的data以后进行过滤
+        var slotsData = data.filter(item => {
+          var Ttime = new Date(item.datetime).getTime();
+          var st = new Date(sdate).getTime();
+          var et = new Date(edate).getTime();
+          var timeIf = (Ttime >= st && Ttime <= et);
+          return timeIf && (typeName == "全部" || typeName == item.type) && (!keywords || item.con.indexOf(keywords) > -1);
+        });
+        that.setData({
+          slots: slotsData
+        });
+      }).catch(err => {
+        console.error('刷新数据失败:', err);
+      });
+    } else {
+      //查询events事件
+      getEventsData(app.globalData.userInfo._openid).then(data => {
+        //获取到当前user_id的data以后进行过滤
+        var eventsData = data.filter(item => {
+          var Ttime = new Date(item.eventtime).getTime();
+          var st = new Date(sdate).getTime();
+          var et = new Date(edate).getTime();
+          var timeIf = (Ttime >= st && Ttime <= et);
+          return timeIf && (typeName == "全部" || typeName == item.type) && (!keywords || item.notes.indexOf(keywords) > -1 || item.name.indexOf(keywords) > -1);
+        });
+        eventsData.sort((a, b) => {
+          const timeA = new Date(`${a.datetime}T${that.correctTime(a.stime)}:00`).getTime();
+          const timeB = new Date(`${b.datetime}T${that.correctTime(b.stime)}:00`).getTime();
+          return timeA - timeB;
+        });
+        that.setData({
+          events: eventsData
+        });
+      }).catch(err => {
+        console.error('刷新数据失败:', err);
+      });
     }
+  },
+  correctTime(time) {
+    let [hours, minutes] = time.split(':').map(Number);
+    while (minutes >= 60) {
+      hours += 1;
+      minutes -= 60;
+    }
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
   },
   //addDlg弹框的input事件
   onInput(event) {
@@ -116,7 +178,9 @@ CustomPage({
       this.data.inputCon = event.detail.value;
     } else if (type == "eventName") {
       this.data.inputName = event.detail.value;
-    }else {
+    } else if (type == "keywords") {
+      this.data.inputName = event.detail.value;
+    } else {
       this.data.inputValue = event.detail.value;
     }
   },
@@ -194,7 +258,7 @@ CustomPage({
     db.collection('events').where({
       _id: delArr[0]._id
     }).remove({
-      success: function(res) {
+      success: function (res) {
       }
     });
   },
@@ -245,29 +309,29 @@ CustomPage({
               app.globalData.events = res.data;
               that.setData({
                 events: res.data,
-                addEventDlgShow:0
+                addEventDlgShow: 0
               });
             }
           }).catch(err => {
             console.error('查询失败:', err);
             that.setData({
-              addEventDlgShow:0
+              addEventDlgShow: 0
             });
           });
         }
       })
     }
   },
-  showAddTimeDlg(){
+  showAddTimeDlg() {
     this.setData({
       addTimeDlgShow: 1,
       addEventDlgShow: 0
     });
   },
-  showAddEventDlg(){
-    if(JSON.stringify(app.globalData.userInfo)=="{}"){
+  showAddEventDlg() {
+    if (JSON.stringify(app.globalData.userInfo) == "{}") {
       loginIn();
-    }else{
+    } else {
       this.setData({
         addTimeDlgShow: 0,
         addEventDlgShow: 1
@@ -275,10 +339,10 @@ CustomPage({
     }
   },
   closeAddDlg(event) {
-      this.setData({
-        addTimeDlgShow: 0,
-        addEventDlgShow:0
-      });
+    this.setData({
+      addTimeDlgShow: 0,
+      addEventDlgShow: 0
+    });
   },
   handleLongPress(event) {
     //长按某一个task 在对应位置出现删除标签
@@ -309,17 +373,17 @@ CustomPage({
       scale: 1
     });
   },
-  onDateChange: function(e) {
+  onDateChange: function (e) {
     this.setData({
       currentDate: e.detail.value
     });
   },
-  onSDateChange: function(e) {
+  onSDateChange: function (e) {
     this.setData({
       sdate: e.detail.value
     });
   },
-  onEDateChange: function(e) {
+  onEDateChange: function (e) {
     this.setData({
       edate: e.detail.value
     });
