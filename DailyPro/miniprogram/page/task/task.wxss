@@ -102,6 +102,7 @@
     margin-bottom: 20px;
     padding: 10px;
     position: relative;
+    z-index: 2;
     /* width: 100%; */
     /* position: absolute; */
     /* left: 0; */
@@ -353,13 +354,23 @@
 .delCost{
     position: absolute;
     right: 0;
+    top: 0;
     background-color: rgb(158, 66, 140);
     height: 100%;
-    width: 50px;
+    width: 80px;
     font-size: 19px;
     color: #fff;
     border-radius: 0 16px 16px 0;
     z-index: 1;
+    padding-right: 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.delCost image{
+    width: 24px;
+    height: 24px;
 }
 .timepicker{
     color: #3D1467;
@@ -459,4 +470,7 @@
     color: #655B6F;
     white-space: normal;
     overflow: scroll;
+  }
+  .slotBoxW{
+    position: relative;
   }

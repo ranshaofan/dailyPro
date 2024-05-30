@@ -111,8 +111,8 @@
     </view>
     <!-- 右侧内容列表 bbb -->
     <view class="taskList">
-      <view wx:for="{{slots}}" wx:key="index" wx:for-index="index" data-index='{{index}}' bind:longpress="handleLongPress" bindtap="clickTask">
-        <view wx:if="{{key==index}}" class="taskbox bg{{index%4}}" style="scale:{{scale}};">
+      <view wx:for="{{slots}}" class="slotBoxW" wx:key="index" wx:for-index="index" data-index='{{index}}' bind:longpress="handleLongPress" bindtap="clickTask">
+        <view wx:if="{{key==index}}" class="taskbox bg{{index%4}}" data-index="{{index}}" style="scale:{{scale}};left:{{item.conLeft}}px;" data-type="slots" bindtouchmove="conTouchM" bindtouchend="conTouchE">
           <view class="tbtop">
             <view class="tbtopLeft">{{item.type}}</view>
             <view class="tbright">
@@ -122,7 +122,7 @@
           </view>
           <view class="tbCon">{{item.con}}</view>
         </view>
-        <view class="taskbox bg{{index%4}}" wx:else>
+        <view class="taskbox bg{{index%4}}" style="left:{{item.conLeft}}px;"  data-index="{{index}}" data-type="slots" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE" wx:else>
           <view class="tbtop">
             <view class="tbtopLeft">{{item.type}}</view>
             <view class="tbright">
@@ -131,6 +131,10 @@
             </view>
           </view>
           <view class="tbCon">{{item.con}}</view>
+        </view>
+        <!-- 这里是左滑按钮部分 -->
+        <view class="delCost"  bindtap="costDelete" data-index="{{index}}">
+            <image class="" src="./images/delwhite.png" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
         </view>
       </view>
     </view>
@@ -141,42 +145,8 @@
   </view>
   <!-- 事件模块列表 -->
   <view wx:else>
-    <!-- 卡片 -->
-    <!-- <view class="costCard">
-      <view class="cardLeft">
-        <view class="cardType">Monthly balance</view>
-        <view class="total">
-          <span>￥</span>
-          {{userInfo.balanceAmount}}
-        </view>
-        <view class="limit">
-          Limit
-          <span>￥</span>
-          {{userInfo.limitAmount}}
-        </view>
-      </view>
-      <view class="cardBtn flexCenter" bindtap="showAddDlg" data-btn="cost">ADD COST</view>
-    </view> -->
-    <!-- todayCost -->
-    <!-- <view class="titleevent flexCenter"> -->
-    <!-- <view class="typeEventSelector titleeventleft epicker">
-        <picker mode="selector"  class="addInput"  value="{{typeEventIndex}}" range="{{typeInfo}}"  bindchange="onTypeEventChange">
-          <view class="eventTypePicker">{{typeInfo[typeEventIndex].type}}</view>
-        </picker>
-      </view> -->
-    <!-- <view class="titleeventright flexCenter"> -->
-    <!-- <view class="eventspan">
-          当日评价
-        </view>
-        <view class="eventValueSelector epicker">
-          <picker mode="selector"  class="addInput"  value="{{valueEventIndex}}" range="{{evaluation}}"  bindchange="onEventValueChange">
-            <view class="eventTypePicker">{{evaluation[valueEventIndex]}}</view>
-          </picker>
-        </view> -->
-    <!-- </view> -->
-    <!-- </view> -->
     <!-- cost内容列表 -->
-    <view class="costBox bg{{index%4}}" wx:for="{{events}}" wx:key="index" wx:for-item="item" data-index="{{index}}" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE">
+    <view class="costBox bg{{index%4}}" wx:for="{{events}}" wx:key="index" data-type="events" wx:for-item="item" data-index="{{index}}" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE">
       <view class="costBoxin bg{{index%4}}" style="left:{{item.conLeft}}px;">
         <view class="costImgView flexCenter">
           <image class="costBoxImg" src="{{item.pic}}" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
@@ -191,8 +161,8 @@
         <view class="moreImgView flexCenter">{{item.evaluation}}</view>
       </view>
       <!-- 这里是左滑按钮部分 -->
-      <view class="delCost flexCenter" bindtap="costDelete" data-index="{{index}}">
-        <view class="flexCenter" catchtap="costDelete" data-index="{{index}}">删除</view>
+      <view class="delCost" bindtap="costDelete" data-index="{{index}}">
+          <image class="" src="./images/delwhite.png" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
       </view>
     </view>
   </view>

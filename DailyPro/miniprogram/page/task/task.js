@@ -201,6 +201,7 @@ CustomPage({
   },
   //触摸时触发，手指在屏幕上每移动一次，触发一次
   conTouchM: function (e) {
+    var type = e.currentTarget.dataset.type;
     var that = this;
     if (e.touches.length == 1) {
       //记录触摸点位置的X坐标
@@ -221,18 +222,24 @@ CustomPage({
       }
       //获取手指触摸的是哪一个item
       var index = e.currentTarget.dataset.index;
-      var list = that.data.events;
+      var list = type=="events"?that.data.events:that.data.slots;
       //将拼接好的样式设置到当前item中
       list[index].conLeft = left;
       // //更新列表的状态
-      app.globalData.todayCosts = list;
-      this.setData({
-        events: list
-      });
+      if(type=="events"){
+        this.setData({
+          events: list
+        });
+      }else{
+        this.setData({
+          slots: list
+        });
+      }
     }
   },
   conTouchE: function (e) {
-    var that = this
+    var that = this;
+    var type = e.currentTarget.dataset.type;
     if (e.changedTouches.length == 1) {
       //手指移动结束后触摸点位置的X坐标
       var endX = e.changedTouches[0].clientX;
@@ -243,29 +250,47 @@ CustomPage({
       var left = disX > delBtnWidth / 2 ? delBtnWidth * (-1) : 0;
       //获取手指触摸的是哪一项
       var index = e.currentTarget.dataset.index;
-      var list = that.data.events;
+      var list = type=="events"?that.data.events:that.data.slots;
       //将拼接好的样式设置到当前item中
       list[index].conLeft = left;
       // //更新列表的状态
-      app.globalData.todayCosts = list;
-      this.setData({
-        events: list
-      });
+      if(type=="events"){
+        this.setData({
+          events: list
+        });
+      }else{
+        this.setData({
+          slots: list
+        });
+      }
     }
   },
   costDelete(e) {//删除按钮
+    var type = e.currentTarget.dataset.type;
     var index = e.currentTarget.dataset.index;
-    var delArr = this.data.events.splice(index, 1);
-    app.globalData.todayCosts = this.data.events;
-    this.setData({
-      events: this.data.events
-    });
-    db.collection('events').where({
-      _id: delArr[0]._id
-    }).remove({
-      success: function (res) {
-      }
-    });
+    if(type=="events"){
+      var delArr = this.data.events.splice(index, 1);
+      this.setData({
+        events: this.data.events
+      });
+      db.collection('events').where({
+        _id: delArr[0]._id
+      }).remove({
+        success: function (res) {
+        }
+      });
+    }else{
+      var delArr = this.data.slots.splice(index, 1);
+      this.setData({
+        slots: this.data.slots
+      });
+      db.collection('slots').where({
+        _id: delArr[0]._id
+      }).remove({
+        success: function (res) {
+        }
+      });
+    }
   },
   //悬浮addDLg确定按钮的click
   addDlgBtn(event) {
