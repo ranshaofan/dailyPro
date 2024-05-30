@@ -47,12 +47,14 @@ CustomPage({
     typeNames: ["1", "2"]
   },
   changePageTask() {
+    var that = this;
     this.setData({
       ifTime: 1,
       ifEvent: 0
     });
   },
   changePageCost() {
+    var that = this;
     this.setData({
       ifTime: 0,
       ifEvent: 1
@@ -104,7 +106,7 @@ CustomPage({
     }
   },
   onShow() {
-    refreshEventsAndSlots();
+    // refreshEventsAndSlots();
     const typeNames = app.globalData.typeInfo.map(item => item.typeName);
     typeNames.unshift("全部");
     this.setData({
@@ -114,8 +116,9 @@ CustomPage({
       evaluation: app.globalData.evaluation,
       typeNames
     });
+    this.findAlls();
   },
-  findAlls(event) {
+  findAlls() {
     var that = this;
     var typeName = this.data.typeNames[that.data.typeIndex];//类别
     var keywords = this.data.inputName;//关键词
@@ -131,6 +134,7 @@ CustomPage({
           var timeIf = (Ttime >= st && Ttime <= et);
           return timeIf && (typeName == "全部" || typeName == item.type) && (!keywords || item.con.indexOf(keywords) > -1);
         });
+        refreshEventsAndSlots({events:that.data.events,slots:slotsData});
         that.setData({
           slots: slotsData
         });
@@ -149,10 +153,11 @@ CustomPage({
           return timeIf && (typeName == "全部" || typeName == item.type) && (!keywords || item.notes.indexOf(keywords) > -1 || item.name.indexOf(keywords) > -1);
         });
         eventsData.sort((a, b) => {
-          const timeA = new Date(`${a.datetime}T${that.correctTime(a.stime)}:00`).getTime();
-          const timeB = new Date(`${b.datetime}T${that.correctTime(b.stime)}:00`).getTime();
+          const timeA = new Date(a.datetime).getTime();
+          const timeB = new Date(b.datetime).getTime();
           return timeA - timeB;
         });
+        refreshEventsAndSlots({events:eventsData,slots:that.data.slots});
         that.setData({
           events: eventsData
         });

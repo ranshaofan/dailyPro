@@ -218,13 +218,19 @@ function loginIn() {
   })
 }
 
-function refreshEventsAndSlots() {
+function refreshEventsAndSlots(alls) {
   const app = getApp();
-  //根据typeInfo中的数据 给events和slots写入pic
+  var events,slots;
   var typeInfo = app.globalData.typeInfo;
-  var events = app.globalData.events;
-  var slots = app.globalData.slots;
   var userid = app.globalData.userInfo._openid;
+  if(alls){
+    events = alls.events;
+    slots = alls.slots;
+  }else{
+    events = app.globalData.events;
+    slots = app.globalData.slots;
+  }
+  //根据typeInfo中的数据 给events和slots写入pic
   events.forEach(e => {
     var ts = typeInfo.filter(t => { return t.user_id == userid && t.typeName == e.type; });
     if (ts.length > 0) e["pic"] = ts[0].pic;
