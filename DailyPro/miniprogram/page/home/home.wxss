@@ -1,65 +1,82 @@
 @import "../common/index.wxss";
-.homePage{
-  background: linear-gradient(#fff ,#fff,#fff,rgb(246,234,227));
+
+.homePage {
+  background: linear-gradient(#fff, #fff, #fff, rgb(246, 234, 227));
 }
-.bg0{
+
+.bg0 {
   background-color: #FFEEE7;
 }
-.bg1{
+
+.bg1 {
   background-color: #F9EFF7;
 }
-.bg2{
+
+.bg2 {
   background-color: #EFFAF7;
 }
-.bg3{
+
+.bg3 {
   background-color: #F1F1F1;
 }
+
 /**begin**/
-.begin{
+.begin {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 15%;
 }
-.beginLeft{
+
+.beginLeft {
   width: 70%;
 }
-.title{
+
+.title {
   color: #15399C;
   font-size: 22px;
   font-weight: 700;
 }
-.name{
+
+.name {
   color: #4A4D4C;
   font-size: 20px;
 }
-.beginRImg{
-  width:30%;
+
+.beginRImg {
+  width: 30%;
   height: 100%;
 }
-.beginRImg image{
+
+.beginRImg image {
   width: 100%;
   opacity: 0.2;
   /* object-fit: contain; */
   /* object-position: center; */
 }
+
 /* task & cost开始 */
-.task{
+.task {
   margin-bottom: 30px;
 }
-.tctitle{
+
+.tctitle {
   position: relative;
   height: 30px;
   margin-bottom: 30px;
 }
-.taskTitleLeft,.costTitleLeft{
+
+.taskTitleLeft,
+.costTitleLeft {
   position: absolute;
   left: 0;
   top: 0;
   font-size: 21px;
   font-weight: 700;
 }
-.taskTitleAdd,.costTitleAdd{
+
+.taskTitleAdd,
+.costTitleAdd {
   position: absolute;
   right: 0;
   top: 0;
@@ -71,10 +88,12 @@
   border: 0.2px solid #70707042;
   text-align: center;
 }
-.taskView{
+
+.taskView {
   white-space: nowrap;
 }
-.taskBox{
+
+.taskBox {
   position: relative;
   width: 50%;
   height: 236px;
@@ -85,25 +104,35 @@
   box-sizing: border-box;
   vertical-align: top;
 }
-.taskBoxColor0,.costBoxColor2{
+
+.taskBoxColor0,
+.costBoxColor2 {
   background-color: #FFEEE7;
 }
-.taskBoxColor1,.costBoxColor3{
+
+.taskBoxColor1,
+.costBoxColor3 {
   background-color: #EFFAF7;
 }
-.taskBoxColor2,.costBoxColor4{
+
+.taskBoxColor2,
+.costBoxColor4 {
   background-color: #F1F1F1;
 }
-.taskBoxColor3{
+
+.taskBoxColor3 {
   background-color: #E9E4F2;
 }
-.tasktype,.costtype{
+
+.tasktype,
+.costtype {
   color: #3d1467;
   font-size: 19px;
   font-weight: 700;
   margin-bottom: 4px;
 }
-.taskdate{
+
+.taskdate {
   color: #ffffff;
   font-size: 14px;
   font-weight: 500;
@@ -113,7 +142,8 @@
   border-radius: 20px;
   background-color: rgba(197, 185, 208, 0.5);
 }
-.taskdatetime{
+
+.taskdatetime {
   color: #fff;
   font-size: 14px;
   font-weight: 500;
@@ -123,14 +153,16 @@
   border-radius: 20px;
   background-color: rgb(253, 176, 125);
 }
-.taskcon{
+
+.taskcon {
   /* white-space: nowrap; */
   color: #2d0f4b;
   font-size: 16px;
   height: 20px;
   margin-bottom: 14px;
 }
-.costdate{
+
+.costdate {
   font-weight: 500;
   font-size: 13px;
   background-color: rgba(233, 230, 236, 0.5);
@@ -138,41 +170,53 @@
   padding: 0 6px;
   color: #9888a5;
 }
-.costname{
+
+.delWhite {
+  width: 26px;
+  height: 26px;
+}
+
+.costname {
   margin-right: 6px;
 }
-.costcon{
+
+.costcon {
   font-size: 16px;
   color: #655B6F;
 }
-.delSlot{
+
+.delSlot {
   position: absolute;
   right: 10px;
-  bottom: 10px;
-  width: 28px;
-  height: 30px;
+  bottom: 15px;
+  width: 34px;
+  height: 34px;
   padding: 5px;
   box-sizing: border-box;
   border-radius: 10px;
   background-color: #5b2656;
 }
-.delSlot image{
+
+.delSlot image {
   width: 100%;
   height: 100%;
 }
-.taskbgc{
+
+.taskbgc {
   width: 100%;
   height: 80px;
   position: absolute;
   bottom: 0;
   left: 0;
 }
-.taskpics{
+
+.taskpics {
   position: absolute;
   bottom: 24px;
   height: 30px;
 }
-.taskpics view{
+
+.taskpics view {
   position: absolute;
   top: 0;
   width: 40px;
@@ -180,35 +224,27 @@
   background-color: #fff;
   border-radius: 20px;
 }
-.taskpics image{
+
+.taskpics image {
   width: 32px;
   height: 30px;
 }
-.moreImgView image{
+
+.moreImgView image {
   width: 3px;
   height: 13px;
 }
-.costTxt{
+
+.costTxt {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   margin-left: 16px;
 }
-.delCost{
-  position: absolute;
-  right: 0;
-  background-color: rgb(158, 66, 140);
-  height: 100%;
-  width: 50px;
-  font-size: 19px;
-  color: #fff;
-  border-radius: 0 16px 16px 0;
-  z-index: 1;
-}
 
 /* 弹框 */
-.addDlg{
+.addDlg {
   position: fixed;
   top: 20%;
   background-color: #fff;
@@ -218,7 +254,8 @@
   border: 1px solid #541A69;
   box-shadow: rgba(146, 143, 146, 0.8) 5px 5px 5px;
 }
-.dlgTitle{
+
+.dlgTitle {
   position: relative;
   width: 100%;
   height: 50px;
@@ -231,56 +268,64 @@
   margin-bottom: 10px;
   background: rgba(74, 31, 74, 0.65);
 }
-.dlgTitle span{
+
+.dlgTitle span {
   width: 30px;
   display: inline-block;
   position: absolute;
   right: 10px;
   font-weight: 700;
-  font-style:normal;
+  font-style: normal;
   text-align: end;
 }
-.dlgName{
+
+.dlgName {
   position: absolute;
   left: 10px;
   top: 0;
   bottom: 0;
   margin: auto;
 }
-.dlgClose{
+
+.dlgClose {
   position: absolute;
   right: 10px;
   top: 0;
   bottom: 0;
   margin: auto;
 }
-.addDlgTop .timepicker{
+
+.addDlgTop .timepicker {
   width: 36%;
   height: 40px;
-  border:1px solid #E7E7EB;
+  border: 1px solid #E7E7EB;
   background-color: #fcf7ff;
   border-radius: 5px;
   color: #777676;
 }
-.addDlgbottom{
+
+.addDlgbottom {
   margin-top: 10px;
 }
-.addDlgbottom .typepicker{
+
+.addDlgbottom .typepicker {
   width: 30%;
   height: 40px;
-  border:1px solid #E7E7EB;
+  border: 1px solid #E7E7EB;
   background-color: #fff;
   border-radius: 12px;
   color: #777676;
 }
-.eventTypePicker{
+
+.eventTypePicker {
   width: 100%;
   height: 40px;
   line-height: 40px;
 }
-.addInput{
+
+.addInput {
   height: 40px;
-  border:1px solid #3D1560;
+  border: 1px solid #3D1560;
   background-color: #fff;
   border-radius: 12px;
   color: 3D1560;
@@ -289,10 +334,12 @@
   font-size: 14px;
   width: 60%;
 }
-.addTaskInput{
+
+.addTaskInput {
   width: 60%;
 }
-.addBtn button{
+
+.addBtn button {
   background-color: #896D89;
   color: #fff;
   font-size: 18px;
@@ -300,40 +347,47 @@
   border: 1px solid #3D1560;
   border-radius: 12px;
 }
-.addEventDlgT span{
+
+.addEventDlgT span {
   width: 20%;
   display: inline-flex;
   justify-content: flex-end;
   align-items: center;
   background-color: #fff;
 }
-.addEventDlgT input{
+
+.addEventDlgT input {
   width: 40%;
 }
-.addDlgTimeBeizhu{
+
+.addDlgTimeBeizhu {
   width: 60%;
   height: 80px;
 }
-.delete{
+
+.delete {
   position: fixed;
-  
+
 }
-.delete image{
+
+.delete image {
   width: 60px;
   height: 40px;
 }
-.delCost{
+
+.delCost {
   position: absolute;
   right: 0;
   background-color: rgb(158, 66, 140);
   height: 100%;
-  width: 50px;
+  width: 70px;
   font-size: 19px;
   color: #fff;
   border-radius: 0 16px 16px 0;
   z-index: 1;
 }
-.timepicker{
+
+.timepicker {
   color: #4F185A;
   background-color: #fff;
   border: 2px solid #4F185A;
@@ -343,21 +397,25 @@
   line-height: 26px;
   font-size: 15px;
 }
-.timeDlgLine{
+
+.timeDlgLine {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
 }
-.timeDlgLineName{
+
+.timeDlgLineName {
   color: #3D184C;
   font-size: 14px;
   margin-right: 14px;
 }
-.timerangeView{
+
+.timerangeView {
   padding: 0 0 10px 0;
 }
-.timerangeView picker{
+
+.timerangeView picker {
   width: 40%;
   color: #3D1560;
   margin: 0 5px;

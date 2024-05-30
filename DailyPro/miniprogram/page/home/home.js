@@ -1,4 +1,4 @@
-import { dateFormat, initCalendar,refreshEventsAndSlots,formatValueTime } from '../../util/util'
+import { dateFormat, initCalendar, refreshEventsAndSlots, formatValueTime } from '../../util/util'
 const app = getApp();
 const db = wx.cloud.database();//获取数据库引用
 Page({
@@ -32,7 +32,7 @@ Page({
     // slots: [{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }, { type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' },{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }],
     dlgStTime: "08:00",
     dlgEtTime: "08:00",
-    isToday:1
+    isToday: 1
 
   },
   onLoad() {
@@ -55,8 +55,8 @@ Page({
       cLChosen: cs.cLChosen,
       sayhello,
       helloPic,
-      isToday:1,
-      currentDate:dateFormat('yyyy-MM-dd', new Date())
+      isToday: 1,
+      currentDate: dateFormat('yyyy-MM-dd', new Date())
     });
 
   },
@@ -106,9 +106,9 @@ Page({
       var type = this.data.typeNames[this.data.typeIndex];
       var con = this.data.inputValue;
       var datetime = this.data.currentDate;
-      if(Number(et.split(":")[0])<Number(st.split(":")[0])) {
-         wx.showToast({ title: '结束时间不应小于开始时间', icon: 'none' });
-         return;
+      if (Number(et.split(":")[0]) < Number(st.split(":")[0])) {
+        wx.showToast({ title: '结束时间不应小于开始时间', icon: 'none' });
+        return;
       }
       //向数据库中添加数据
       db.collection('slots').add({
@@ -124,7 +124,7 @@ Page({
           var slots = db.collection('slots');
           slots.where({
             datetime: that.data.currentDate,
-            user_id:app.globalData.userInfo._openid
+            user_id: app.globalData.userInfo._openid
           }).get().then(res => {
             if (res.data) {
               app.globalData.slots = res.data;
@@ -174,7 +174,7 @@ Page({
           var events = db.collection('events');
           events.where({
             eventtime: that.data.currentDate,
-            user_id:app.globalData.userInfo._openid
+            user_id: app.globalData.userInfo._openid
           }).get().then(res => {
             if (res.data) {
               app.globalData.events = res.data;
@@ -214,7 +214,7 @@ Page({
     }
   },
   //时间弹框事件
-  onTimeStartBlur: function(e) {
+  onTimeStartBlur: function (e) {
     var val = e.detail.value;
     var formattedVal = formatValueTime(val);
     if (formattedVal == "error") {
@@ -225,7 +225,7 @@ Page({
     }
   },
 
-  onTimeEndBlur: function(e) {
+  onTimeEndBlur: function (e) {
     var val = e.detail.value;
     var formattedVal = formatValueTime(val);
     if (formattedVal == "error") {
@@ -259,7 +259,7 @@ Page({
     var that = this;
     var index = event.currentTarget.dataset.index;
     var day = event.currentTarget.dataset.day;
-    var isToday = dateFormat('yyyy-MM-dd', new Date())==dateFormat('yyyy-MM-dd', new Date(day))?1:0;
+    var isToday = dateFormat('yyyy-MM-dd', new Date()) == dateFormat('yyyy-MM-dd', new Date(day)) ? 1 : 0;
     let calendar = this.data.calendar.map(item => {
       item.classChosen = item.index === index ? 'chosen' : '';
       return item;
@@ -267,7 +267,7 @@ Page({
     //查询events
     db.collection('events').where({
       eventtime: day,
-      user_id:app.globalData.userInfo._openid
+      user_id: app.globalData.userInfo._openid
     }).get().then(res => {
       if (res.data) {
         app.globalData.events = res.data;
@@ -282,7 +282,7 @@ Page({
     //查询slots
     db.collection('slots').where({
       datetime: day,
-      user_id:app.globalData.userInfo._openid
+      user_id: app.globalData.userInfo._openid
     }).get().then(res => {
       if (res.data) {
         app.globalData.slots = res.data;
@@ -297,7 +297,7 @@ Page({
     // 更新数据到前端
     that.setData({
       calendar: calendar,
-      currentDate:day,
+      currentDate: day,
       isToday,
       cLChosen: 'cL' + index,
     });
@@ -367,30 +367,55 @@ Page({
     }
   },
   costDelete(e) {//删除按钮
-    var index = e.currentTarget.dataset.index;
-    var delArr = this.data.events.splice(index, 1);
-    app.globalData.events = this.data.events;
-    this.setData({
-      events: this.data.events
-    });
-    db.collection('events').where({
-      _id: delArr[0]._id
-    }).remove({
-      success: function (res) {
+    var that = this;
+    wx.showModal({
+      title: '确认删除',
+      content: '确定要删除该项吗？',
+      success(res) {
+        if (res.confirm) {
+          var index = e.currentTarget.dataset.index;
+          var delArr = that.data.events.splice(index, 1);
+          app.globalData.events = that.data.events;
+          that.setData({
+            events: that.data.events
+          });
+          db.collection('events').where({
+            _id: delArr[0]._id
+          }).remove({
+            success: function (res) {
+            }
+          });
+        } else if (res.cancel) {
+          // wx.showToast({
+          //   title: '已取消删除',
+          //   icon: 'none'
+          // });
+        }
       }
     });
   },
   delSlot: function (e) {
-    var index = e.currentTarget.dataset.index;
-    var delArr = this.data.slots.splice(index, 1);
-    app.globalData.slots = this.data.slots;
-    this.setData({
-      slots: this.data.slots
-    });
-    db.collection('slots').where({
-      _id: delArr[0]._id
-    }).remove({
-      success: function (res) {
+    var that = this;
+    wx.showModal({
+      title: '确认删除',
+      content: '确定要删除该项吗？',
+      success(res) {
+        if (res.confirm) {
+          var index = e.currentTarget.dataset.index;
+          var delArr = that.data.slots.splice(index, 1);
+          app.globalData.slots = that.data.slots;
+          that.setData({
+            slots: that.data.slots
+          });
+          db.collection('slots').where({
+            _id: delArr[0]._id
+          }).remove({
+            success: function (res) {
+            }
+          });
+        } else if (res.cancel) {
+          
+        }
       }
     });
   },

@@ -27,6 +27,7 @@ Page({
   onUnload:function(){
     var pic = this.data.selectedIcon;
     var typeName = this.data.inputValue;
+    if(!typeName){return;}
     db.collection('typeInfo').add({
       data: {
         pic,
@@ -45,7 +46,6 @@ Page({
           }
         }).catch(err => {
           console.error('查询失败:', err);
-          
         });
       }
     })

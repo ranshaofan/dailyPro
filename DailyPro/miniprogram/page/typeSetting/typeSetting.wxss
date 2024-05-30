@@ -95,7 +95,7 @@
     position: absolute;
     right: 0;
     background-color: rgb(158, 66, 140);
-    width: 60px;
+    width: 70px;
     font-size: 19px;
     color: #fff;
     height: 56px;
