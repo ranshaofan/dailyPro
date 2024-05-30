@@ -255,7 +255,7 @@
   margin: auto;
 }
 .addDlgTop .timepicker{
-  width: 40%;
+  width: 36%;
   height: 40px;
   border:1px solid #E7E7EB;
   background-color: #fcf7ff;

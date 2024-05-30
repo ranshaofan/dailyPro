@@ -96,7 +96,7 @@ function drawLine(ctx, x1, y1, x2, y2, color, width) {
   ctx.draw(true);
 }
 
-function drawTimeline(canvasContext,res, events) {
+function drawTimeline(canvasContext, res, events) {
   const width = res.width;
   const height = res.height;
   const margin = 30;
@@ -107,51 +107,51 @@ function drawTimeline(canvasContext,res, events) {
   const timelineEnd = width - margin;
   const timelineLength = timelineEnd - timelineStart;
   const eventSpacing = timelineLength / (events.length - 1);
-  
+
   canvasContext.strokeStyle = "#333";
   canvasContext.lineWidth = 2;
-  
+
   // Draw the timeline
   canvasContext.beginPath();
   canvasContext.moveTo(timelineStart, height / 2);
   canvasContext.lineTo(timelineEnd, height / 2);
   canvasContext.stroke();
-  
+
   // Draw the ticks and labels
   canvasContext.font = "12px sans-serif";
   canvasContext.textAlign = "center";
   canvasContext.fillStyle = "#333";
-  
+
   for (let i = 0; i < events.length; i++) {
     const eventX = timelineStart + eventSpacing * i;
     const event = events[i];
-    
+
     // Draw the tick
     canvasContext.beginPath();
     canvasContext.moveTo(eventX, height / 2 - tickWidth / 2);
     canvasContext.lineTo(eventX, height / 2 + tickWidth / 2);
     canvasContext.stroke();
-    
+
     // Draw the label
     canvasContext.fillText(event.label, eventX, height / 2 + tickSpacing);
   }
 }
 // js时间格式化
-function dateFormat(fmt,date){
+function dateFormat(fmt, date) {
   var o = {
-      "M+" : date.getMonth()+1,     // 月份
-      "d+" : date.getDate(),     // 日
-      "h+" : date.getHours(),     // 小时
-      "m+" : date.getMinutes(),     // 分
-      "s+" : date.getSeconds(),     // 秒
-      "q+" : Math.floor((date.getMonth()+3)/3), // 季度
-      "S" : date.getMilliseconds()    // 毫秒
+    "M+": date.getMonth() + 1,     // 月份
+    "d+": date.getDate(),     // 日
+    "h+": date.getHours(),     // 小时
+    "m+": date.getMinutes(),     // 分
+    "s+": date.getSeconds(),     // 秒
+    "q+": Math.floor((date.getMonth() + 3) / 3), // 季度
+    "S": date.getMilliseconds()    // 毫秒
   };
-  if(/(y+)/.test(fmt))
-      fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));
-  for(var k in o)
-      if(new RegExp("("+ k +")").test(fmt))
-          fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+  if (/(y+)/.test(fmt))
+    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+  for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt))
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
   return fmt;
 }
 function initCalendar() {
@@ -165,25 +165,25 @@ function initCalendar() {
   var isToday = 0;
   var today = dateFormat('yyyy-MM-dd', new Date()); // 格式化当前日期
   for (var day = new Date(beginDay); day.getTime() <= endDay.getTime(); day.setDate(day.getDate() + 1)) {
-      var curX = zwdays[day.getDay()]; // 当前星期
-      var curD = day.getDate();
-      var cc = "";
-      // 如果是今天就设置选中的Class
-      var formattedDay = dateFormat('yyyy-MM-dd', day);
-      if (formattedDay === today) {
-          isToday = 1;
-          todayIndex = i;
-          cc = "chosen";
-      } else {
-          isToday = 0;
-      }
-      cs.push({date:formattedDay, xq: curX, day: curD, X: (curX.substr(0, 1)=='T' || curX.substr(0, 1)=='S')?curX.substr(0, 2):curX.substr(0, 1), classChosen: cc, index: i, isToday });
-      i++;
+    var curX = zwdays[day.getDay()]; // 当前星期
+    var curD = day.getDate();
+    var cc = "";
+    // 如果是今天就设置选中的Class
+    var formattedDay = dateFormat('yyyy-MM-dd', day);
+    if (formattedDay === today) {
+      isToday = 1;
+      todayIndex = i;
+      cc = "chosen";
+    } else {
+      isToday = 0;
+    }
+    cs.push({ date: formattedDay, xq: curX, day: curD, X: (curX.substr(0, 1) == 'T' || curX.substr(0, 1) == 'S') ? curX.substr(0, 2) : curX.substr(0, 1), classChosen: cc, index: i, isToday });
+    i++;
   }
   return { "calendar": cs, "cLChosen": "cL" + (todayIndex - 3) };
 }
 
-function loginIn(){
+function loginIn() {
   wx.getUserProfile({
     desc: '获取用户信息',
     success: res => {
@@ -218,7 +218,7 @@ function loginIn(){
   })
 }
 
-function refreshEventsAndSlots(){
+function refreshEventsAndSlots() {
   const app = getApp();
   //根据typeInfo中的数据 给events和slots写入pic
   var typeInfo = app.globalData.typeInfo;
@@ -226,14 +226,14 @@ function refreshEventsAndSlots(){
   var slots = app.globalData.slots;
   var userid = app.globalData.userInfo._openid;
   events.forEach(e => {
-    var ts = typeInfo.filter(t=>{return t.user_id==userid && t.typeName==e.type;});
-    if(ts.length>0) e["pic"] =ts[0].pic;
-    else e["pic"]="../common/icon/fastfood.png";//默认 
+    var ts = typeInfo.filter(t => { return t.user_id == userid && t.typeName == e.type; });
+    if (ts.length > 0) e["pic"] = ts[0].pic;
+    else e["pic"] = "../common/icon/fastfood.png";//默认 
   });
   slots.forEach(e => {
-    var ts = typeInfo.filter(t=>{return t.user_id==userid && t.typeName==e.type;});
-    if(ts.length>0) e["pic"] =ts[0].pic;
-    else e["pic"]="../common/icon/fastfood.png";//默认 
+    var ts = typeInfo.filter(t => { return t.user_id == userid && t.typeName == e.type; });
+    if (ts.length > 0) e["pic"] = ts[0].pic;
+    else e["pic"] = "../common/icon/fastfood.png";//默认 
   });
 }
 
@@ -253,6 +253,36 @@ function refreshTypeInfo(userid) {
     });
   });
 }
+
+function formatValueTime(val) {
+  if (!val) return;
+  var h = "", s = "";
+  if (val.indexOf(":") > 0) {
+    h = val.split(":")[0];
+    s = val.split(":")[1];
+  } else if (val.indexOf("：") > 0) {
+    h = val.split("：")[0];
+    s = val.split("：")[1];
+  } else if (val.indexOf(".") > 0) {
+    h = val.split(".")[0];
+    s = val.split(".")[1];
+  } else if (val.indexOf(" ") > 0) {
+    h = val.split(" ")[0];
+    s = val.split(" ")[1];
+  } else if (val.length <= 2) {
+    h = val;
+    s = "00";
+  } else if (val.length > 2) {
+    h = val.substring(0, val.length - 2);
+    s = val.substring(val.length - 2);
+  }
+  if ((!Number(h) && Number(h)!=0) || (!Number(s) && Number(s)!=0) || Number(h) < 0 || Number(h) > 23 || Number(s) < 0 || Number(s) > 59) {
+    return "error";
+  }
+  h = h.length < 2 ? ('0' + h) : h;
+  s = s.length < 2 ? ('0' + s) : s;
+  return h + ":" + s;
+}
 module.exports = {
   formatTime,
   formatLocation,
@@ -265,5 +295,6 @@ module.exports = {
   initCalendar,
   loginIn,
   refreshTypeInfo,
-  refreshEventsAndSlots
+  refreshEventsAndSlots,
+  formatValueTime
 }

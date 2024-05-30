@@ -104,13 +104,20 @@
     <view bindtap="closeAddDlg" data-type="task" class="dlgClose">×</view>
   </view>
   <view class="addDlgTop flexCenter">
-    <picker class="timepicker pickerbgc flexCenter" id="timepickerS" mode="time" value="{{time}}" start="06:00" end="23:59" bindchange="onTimeStartChange">
+    <!-- <picker class="timepicker pickerbgc flexCenter" id="timepickerS" mode="time" value="{{time}}" start="06:00" end="23:59" bindchange="onTimeStartChange">
       <view class="picker flexCenter">{{dlgStTime}}</view>
     </picker>
     ~
     <picker class="timepicker pickerbgc flexCenter" id="timepickerE" mode="time" value="{{time}}" start="06:00" end="23:59" bindchange="onTimeEndChange">
       <view class="picker flexCenter">{{dlgEtTime}}</view>
-    </picker>
+    </picker> -->
+    <view class="timepicker pickerbgc flexCenter">
+      <input class="picker flexCenter" id="timepickerS" type="text" value="{{dlgStTime}}" start="06:00" end="23:59" bindblur="onTimeStartBlur" />
+    </view>
+    ~
+    <view class="timepicker pickerbgc flexCenter">
+      <input class="picker flexCenter" id="timepickerE" type="text" value="{{dlgEtTime}}" start="06:00" end="23:59" bindblur="onTimeEndBlur" />
+    </view>
   </view>
   <view class="addDlgbottom flexCenter pickerbgc">
     <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" wx:key="typeIndex" range="{{typeNames}}" bindchange="onTypeChange">

@@ -1,4 +1,4 @@
-import { dateFormat, initCalendar,refreshEventsAndSlots } from '../../util/util'
+import { dateFormat, initCalendar,refreshEventsAndSlots,formatValueTime } from '../../util/util'
 const app = getApp();
 const db = wx.cloud.database();//获取数据库引用
 Page({
@@ -106,6 +106,10 @@ Page({
       var type = this.data.typeNames[this.data.typeIndex];
       var con = this.data.inputValue;
       var datetime = this.data.currentDate;
+      if(Number(et.split(":")[0])<Number(st.split(":")[0])) {
+         wx.showToast({ title: '结束时间不应小于开始时间', icon: 'none' });
+         return;
+      }
       //向数据库中添加数据
       db.collection('slots').add({
         data: {
@@ -210,16 +214,37 @@ Page({
     }
   },
   //时间弹框事件
-  onTimeStartChange(e) {
-    this.setData({
-      dlgStTime: e.detail.value
-    })
+  onTimeStartBlur: function(e) {
+    var val = e.detail.value;
+    var formattedVal = formatValueTime(val);
+    if (formattedVal == "error") {
+      wx.showToast({ title: '无效时间', icon: 'none' });
+      this.setData({ dlgStTime: '06:00' }); // 设置为默认值
+    } else {
+      this.setData({ dlgStTime: formattedVal });
+    }
   },
-  onTimeEndChange(e) {
-    this.setData({
-      dlgEtTime: e.detail.value
-    })
+
+  onTimeEndBlur: function(e) {
+    var val = e.detail.value;
+    var formattedVal = formatValueTime(val);
+    if (formattedVal == "error") {
+      wx.showToast({ title: '无效时间', icon: 'none' });
+      this.setData({ dlgEtTime: '23:59' }); // 设置为默认值
+    } else {
+      this.setData({ dlgEtTime: formattedVal });
+    }
   },
+  // onTimeStartChange(e) {
+  //   this.setData({
+  //     dlgStTime: e.detail.value
+  //   })
+  // },
+  // onTimeEndChange(e) {
+  //   this.setData({
+  //     dlgEtTime: e.detail.value
+  //   })
+  // },
   onTypeChange(e) {
     this.setData({
       typeIndex: e.detail.value
