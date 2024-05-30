@@ -133,7 +133,7 @@
           <view class="tbCon">{{item.con}}</view>
         </view>
         <!-- 这里是左滑按钮部分 -->
-        <view class="delCost"  bindtap="costDelete" data-index="{{index}}">
+        <view class="delCost"  bindtap="costDelete" data-type="slots" data-index="{{index}}">
             <image class="" src="./images/delwhite.png" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
         </view>
       </view>
@@ -161,7 +161,7 @@
         <view class="moreImgView flexCenter">{{item.evaluation}}</view>
       </view>
       <!-- 这里是左滑按钮部分 -->
-      <view class="delCost" bindtap="costDelete" data-index="{{index}}">
+      <view class="delCost" bindtap="costDelete" data-type="events" data-index="{{index}}">
           <image class="" src="./images/delwhite.png" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
       </view>
     </view>

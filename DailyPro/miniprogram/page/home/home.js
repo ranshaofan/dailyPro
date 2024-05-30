@@ -1,4 +1,4 @@
-import { dateFormat, initCalendar, refreshEventsAndSlots, formatValueTime } from '../../util/util'
+import { dateFormat, initCalendar, refreshEventsAndSlots, formatValueTime, getSlotsData, getEventsData } from '../../util/util'
 const app = getApp();
 const db = wx.cloud.database();//获取数据库引用
 Page({
@@ -63,6 +63,7 @@ Page({
   onShow() {
     const that = this;
     if (JSON.stringify(app.globalData.userInfo) != "{}") {
+      //先获取数据
       refreshEventsAndSlots();
       const typeNames = app.globalData.typeInfo.map(item => item.typeName);
       this.setData({

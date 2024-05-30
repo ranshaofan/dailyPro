@@ -277,6 +277,8 @@ CustomPage({
         _id: delArr[0]._id
       }).remove({
         success: function (res) {
+          //删除app.globaldata中的数据
+          app.globalData.events = app.globalData.events.filter(event => event._id !== delArr[0]._id);
         }
       });
     }else{
@@ -288,6 +290,8 @@ CustomPage({
         _id: delArr[0]._id
       }).remove({
         success: function (res) {
+          //删除app.globaldata中的数据
+          app.globalData.slots = app.globalData.slots.filter(event => event._id !== delArr[0]._id);
         }
       });
     }
