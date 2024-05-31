@@ -322,7 +322,7 @@
     width: 60%;
 }
 .addBtn button{
-    background-color: #896D89;
+    background-color: rgb(71 26 132 / 65%);
     color: #fff;
     font-size: 18px;
     font-weight: 700;
