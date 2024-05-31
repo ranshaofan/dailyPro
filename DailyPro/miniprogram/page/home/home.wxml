@@ -1,3 +1,6 @@
+<view wx:if="{{loading}}" class="loading-spinner">
+  <image src="../common/img/loading.png" class="spinner-image"></image>
+</view>
 <view class="page homePage">
   <!-- begin -->
   <view class="begin">
@@ -49,6 +52,9 @@
             </view>
           </view>
         </view>
+        <view class="textspan" wx:if="{{slots.length==0}}">
+          暂无时间哦，快去添加吧~
+        </view>
       </scroll-view>
     </view>
   </view>
@@ -92,6 +98,9 @@
             <image class="delWhite" src="./resources/pic/delwhite.png" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
           </view>
         </view>
+      </view>
+      <view class="textspan" wx:if="{{events.length==0}}">
+          暂无事件哦，快去添加吧~
       </view>
     </view>
   </view>

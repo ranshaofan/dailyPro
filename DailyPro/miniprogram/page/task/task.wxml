@@ -1,4 +1,7 @@
 <import src="../common/head.wxml" />
+<view wx:if="{{loading}}" class="loading-spinner">
+  <image src="../common/img/loading.png" class="spinner-image"></image>
+</view>
 <!-- /**时间弹框**/ -->
 <view id="addTaskDlg" class="addDlg" wx:if="{{addTimeDlgShow}}">
   <view class="dlgTitle">

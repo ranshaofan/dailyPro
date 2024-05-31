@@ -1,3 +1,6 @@
+<view wx:if="{{loading}}" class="loading-spinner">
+  <image src="../common/img/loading.png" class="spinner-image"></image>
+</view>
 <view class="page">
     <view class="wrapblock block" wx:for="{{typeInfo}}" wx:key="index" data-index="{{index}}" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE">
         <view class="item boxLeft"  style="left:{{item.conLeft}}px;">

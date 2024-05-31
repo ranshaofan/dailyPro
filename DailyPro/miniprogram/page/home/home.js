@@ -32,8 +32,8 @@ Page({
     // slots: [{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }, { type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' },{ type: "Work", con: "that's all bullshit", st: "11:00", et: "12:00",datetime:'2024-5-20' }],
     dlgStTime: "08:00",
     dlgEtTime: "08:00",
-    isToday: 1
-
+    isToday: 1,
+    loading:1,
   },
   onLoad() {
     var cs = initCalendar();
@@ -71,7 +71,8 @@ Page({
         slots: app.globalData.slots,
         typeInfo: app.globalData.typeInfo,
         evaluation: app.globalData.evaluation,
-        typeNames
+        typeNames,
+        loading:0
       })
       if (JSON.stringify(app.globalData.userInfo) != "{}" && app.globalData.userInfo.nickName) {
         this.setData({
@@ -87,7 +88,8 @@ Page({
           slots: app.globalData.slots,
           typeInfo: app.globalData.typeInfo,
           evaluation: app.globalData.evaluation,
-          typeNames
+          typeNames,
+          loading:0
         });
         if (JSON.stringify(app.globalData.userInfo) != "{}") {
           that.setData({
@@ -96,7 +98,6 @@ Page({
         }
       }
     }
-    console.log(app.globalData.events);
   },
   addDlgBtn(event) {
     var that = this;
@@ -257,6 +258,9 @@ Page({
     })
   },
   canlenChosen: function (event) {
+    this.setData({
+      loading:1
+    });
     var that = this;
     var index = event.currentTarget.dataset.index;
     var day = event.currentTarget.dataset.day;
@@ -274,7 +278,8 @@ Page({
         app.globalData.events = res.data;
         refreshEventsAndSlots();
         that.setData({
-          events: res.data
+          events: res.data,
+          loading:0
         });
       }
     }).catch(err => {
@@ -289,7 +294,8 @@ Page({
         app.globalData.slots = res.data;
         refreshEventsAndSlots();
         that.setData({
-          slots: res.data
+          slots: res.data,
+          loading:0
         });
       }
     }).catch(err => {

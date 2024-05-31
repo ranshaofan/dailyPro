@@ -1,3 +1,6 @@
+<view wx:if="{{loading}}" class="loading-spinner">
+  <image src="../common/img/loading.png" class="spinner-image"></image>
+</view>
 <view class="page">
   <view class="mine">
     <!-- 头像和卡片 -->

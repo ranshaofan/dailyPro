@@ -6,12 +6,14 @@ Page({
   data: {
     typeInfo: [
     ],
-    startX: 0
+    startX: 0,
+    loading:1
   },
 
   onLoad() {
     if (app.globalData.userInfo && app.globalData.userInfo.avatarUrl) {
       this.setData({
+        loading:1,
         userInfo: app.globalData.userInfo,
         typeInfo: app.globalData.typeInfo
       });
@@ -23,12 +25,14 @@ Page({
     if (app.globalData.userInfo && app.globalData.userInfo.avatarUrl) {
       this.setData({
         userInfo: app.globalData.userInfo,
-        typeInfo: app.globalData.typeInfo
+        typeInfo: app.globalData.typeInfo,
+        loading:0
       });
     }
     refreshTypeInfo(app.globalData.userInfo._openid).then(data => {
       this.setData({
-        typeInfo: data
+        typeInfo: data,
+        loading:0
       });
       app.globalData.typeInfo = data;
     }).catch(err => {
@@ -46,7 +50,8 @@ Page({
     typeInfo[index].isTrue = typeInfo[index].isTrue ? 0 : 1;
     this.updateTypeInfo({isTrue:typeInfo[index].isTrue},typeInfo[index]._id);
     this.setData({
-      typeInfo
+      typeInfo,
+      loading:0
     });
   },
   onUnload() {
@@ -66,7 +71,8 @@ Page({
         // 更新成功后更新页面数据
         typeInfo[index] = { ...typeInfo[index], ...dataToUpdate };
         this.setData({
-          typeInfo: typeInfo
+          typeInfo: typeInfo,
+          loading:0
         });
       },
       fail: console.error

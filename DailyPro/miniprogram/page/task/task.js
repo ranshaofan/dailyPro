@@ -44,7 +44,8 @@ CustomPage({
 
     slots: [],
     typeIndex: 0,
-    typeNames: ["1", "2"]
+    typeNames: ["1", "2"],
+    loading:1,
   },
   changePageTask() {
     var that = this;
@@ -94,6 +95,7 @@ CustomPage({
     var cs = initCalendar();
     this.setData({
       calendar: cs.calendar,
+      loading:1,
       cLChosen: cs.cLChosen,
       events: app.globalData.events,
       evaluation: app.globalData.evaluation,
@@ -119,6 +121,9 @@ CustomPage({
     this.findAlls();
   },
   findAlls() {
+    this.setData({
+      loading:1
+    });
     var that = this;
     var typeName = this.data.typeNames[that.data.typeIndex];//类别
     var keywords = this.data.inputName;//关键词
@@ -136,7 +141,8 @@ CustomPage({
         });
         refreshEventsAndSlots({events:that.data.events,slots:slotsData});
         that.setData({
-          slots: slotsData
+          slots: slotsData,
+          loading:0
         });
       }).catch(err => {
         console.error('刷新数据失败:', err);
@@ -159,7 +165,8 @@ CustomPage({
         });
         refreshEventsAndSlots({events:eventsData,slots:that.data.slots});
         that.setData({
-          events: eventsData
+          events: eventsData,
+          loading:0
         });
       }).catch(err => {
         console.error('刷新数据失败:', err);

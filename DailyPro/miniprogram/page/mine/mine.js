@@ -6,7 +6,8 @@ Page({
     userInfo: { avatarUrl: "./resources/img/login.png", nickName: "未登录" },
     inputAmount: '', // 用于存储输入的月余额
     dlgObj: { txt: "请设置月余额：", inputtxt: "请输入月余额" },
-    avatarUrl: './resources/img/login.png'
+    avatarUrl: './resources/img/login.png',
+    loading:1
   },
   
   onLoad() {
@@ -20,7 +21,8 @@ Page({
   onShow() {
     if (app.globalData.userInfo && app.globalData.userInfo.avatarUrl) {
       this.setData({
-        userInfo: app.globalData.userInfo
+        userInfo: app.globalData.userInfo,
+        loading:0
       });
     }
   },

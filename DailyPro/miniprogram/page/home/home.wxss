@@ -425,3 +425,14 @@
   color: #3D1560;
   margin: 0 5px;
 }
+.textspan{
+  color: #9c9a9d;
+  font-size: 18px;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  background-color: #fff;
+  border: 1px solid #E7E7EB;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0 0px 10px #ccc;
+  margin: 10px;
+}
