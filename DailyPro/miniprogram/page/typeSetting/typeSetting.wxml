@@ -3,6 +3,7 @@
 </view>
 <view class="page">
     <view class="typeWrap">
+        <view class="textspan" wx:if="{{typeInfo.length==0}}">点击最下方按钮"添加分类”</view>
         <view class="wrapblock block" wx:for="{{typeInfo}}" wx:key="index" data-index="{{index}}" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE">
             <view class="item boxLeft"  style="left:{{item.conLeft}}px;">
                 <view class="imgView flexCenter">
