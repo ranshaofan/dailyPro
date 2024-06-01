@@ -65,7 +65,7 @@
     <button class="flexCenter confirm" bindtap="addDlgBtn" data-type="event">确定</button>
   </view>
 </view>
-<view class="tcpage page">
+<view class="{{ifTime==1?'tcpage':'tcpage2'}} page">
   <!-- 时间列表 -->
   <button id="tcAddBtn">
     <image bindtap="findAlls" class="" src="./images/addTaskImg.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
@@ -94,8 +94,9 @@
     </view>
   </view>
   <view wx:if="{{ifTime}}" class="taskView flexCenter">
+    <view class="textspan" wx:if="{{slots.length==0}}">暂无时间哦，快去添加吧~</view>
     <!-- 左侧时间轴竖条 -->
-    <view class="vBar">
+    <view class="vBar" wx:if="{{slots.length>0}}">
       <!-- 竖条开始的圆点 -->
       <view class="beginCircle flexCenter">
         <span class="beginCOut">
@@ -148,6 +149,7 @@
   </view>
   <!-- 事件模块列表 -->
   <view wx:else>
+    <view class="textspan" wx:if="{{events.length==0}}">暂无事件哦，快去添加吧~</view>
     <!-- cost内容列表 -->
     <view class="costBox bg{{index%4}}" wx:for="{{events}}" wx:key="index" data-type="events" wx:for-item="item" data-index="{{index}}" bindtouchstart="conTouchS" bindtouchmove="conTouchM" bindtouchend="conTouchE">
       <view class="costBoxin bg{{index%4}}" style="left:{{item.conLeft}}px;">

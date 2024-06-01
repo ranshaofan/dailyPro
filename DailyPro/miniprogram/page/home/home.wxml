@@ -52,9 +52,7 @@
             </view>
           </view>
         </view>
-        <view class="textspan" wx:if="{{slots.length==0}}">
-          暂无时间哦，快去添加吧~
-        </view>
+        <view class="textspan" wx:if="{{slots.length==0}}">暂无时间哦，快去添加吧~</view>
       </scroll-view>
     </view>
   </view>
@@ -99,9 +97,7 @@
           </view>
         </view>
       </view>
-      <view class="textspan" wx:if="{{events.length==0}}">
-          暂无事件哦，快去添加吧~
-      </view>
+      <view class="textspan" wx:if="{{events.length==0}}">暂无事件哦，快去添加吧~</view>
     </view>
   </view>
 </view>
@@ -122,19 +118,33 @@
     <picker class="timepicker pickerbgc flexCenter" id="timepickerE" mode="time" value="{{time}}" start="06:00" end="23:59" bindchange="onTimeEndChange">
       <view class="picker flexCenter">{{dlgEtTime}}</view>
     </picker> -->
-    <view class="timepicker pickerbgc flexCenter">
+    <view class="timepicker pickerbgc inputView">
       <input class="picker flexCenter" id="timepickerS" type="text" value="{{dlgStTime}}" start="06:00" end="23:59" bindblur="onTimeStartBlur" />
+      <span class="inputClear" catchtap="clearDlgInput">×</span>
     </view>
     ~
-    <view class="timepicker pickerbgc flexCenter">
+    <view class="timepicker pickerbgc inputView">
       <input class="picker flexCenter" id="timepickerE" type="text" value="{{dlgEtTime}}" start="06:00" end="23:59" bindblur="onTimeEndBlur" />
+      <span class="inputClear" catchtap="clearDlgInput">×</span>
     </view>
   </view>
-  <view class="addDlgbottom flexCenter pickerbgc">
-    <picker class="typepicker flexCenter" id="typepicker" mode="selector" value="{{typeIndex}}" wx:key="typeIndex" range="{{typeNames}}" bindchange="onTypeChange">
-      <view class="picker flexCenter">{{typeNames[typeIndex]}}</view>
-    </picker>
-    <input type="text" class="addTaskInput addInput" bindinput="onInput" value="{{inputValue}}" data-type="slotCon" />
+  <view class="addDlgbottom">
+    <!-- <view class="flexCenter">
+      <span>时间名称</span>
+      <input type="text" class="addTaskInput addInput" bindinput="onInput" value="{{inputValue}}" data-type="slotCon" />
+    </view> -->
+    <view class="flexCenter timeDlgLine">
+      <span class="timeDlgLineName">时间类别</span>
+      <picker class="addInput" id="typepicker" mode="selector" value="{{typeIndex}}" wx:key="typeIndex" range="{{typeNames}}" bindchange="onTypeChange">
+        <view class="eventTypePicker">{{typeNames[typeIndex]}}</view>
+      </picker>
+      <!-- wx:if="{{typeNames.length==0}}" -->
+    </view>
+    <view class="typenoneSpan" wx:if="{{typeNames.length==0}}">（当前暂无类别，请先在设置页面添加类别哦）</view>
+    <view class="flexCenter timeDlgLine">
+      <span class="timeDlgLineName">详情备注</span>
+      <input type="text" class="addTaskInput addInput sjcon" bindinput="onInput" value="{{inputValue}}" data-type="slotCon" />
+    </view>
   </view>
   <view class="addBtn">
     <button class="pickerbgc flexCenter" bindtap="addDlgBtn" data-type="slots">确定</button>
@@ -159,11 +169,12 @@
     <input class="addInput" placeholder="事件名称" value="{{inputCon}}" bindinput="onInput" data-type="eventName" />
   </view>
   <view class="timeDlgLine">
-    <view class="timeDlgLineName">事件类型</view>
+    <view class="timeDlgLineName">事件类别</view>
     <picker mode="selector" class="addInput" value="{{typeIndex}}" wx:key="typeIndex" range="{{typeNames}}" bindchange="onTypeChange">
       <view class="eventTypePicker">{{typeNames[typeIndex]}}</view>
     </picker>
   </view>
+  <view class="typenoneSpan" wx:if="{{typeNames.length==0}}">（当前暂无类别，请先在设置页面添加类别哦）</view>
   <view class="timeDlgLine">
     <view class="timeDlgLineName">详细备注</view>
     <input class="addInput addDlgTimeBeizhu" placeholder="备注" value="{{inputName}}" bindinput="onInput" data-type="eventCon" />

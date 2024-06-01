@@ -1,9 +1,15 @@
 @import "../common/index.wxss";
-.tcpage{
-    background: linear-gradient(#fff ,#fff,#fff,rgb(248, 241, 230));
-  }
+
+.tcpage {
+    background: linear-gradient(#fff, #fff, #fff, rgb(239, 241, 255));
+}
+
+.tcpage2 {
+    background: linear-gradient(#fff, #fff, #fff, rgb(253, 240, 255));
+}
+
 /**按钮**/
-#tcAddBtn{
+#tcAddBtn {
     width: 80vw;
     height: 47px;
     color: #fff;
@@ -11,9 +17,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to right,#7857D2 ,#C6A8E8);
+    background: linear-gradient(to right, #7857D2, #C6A8E8);
 }
-#tcAddBtn image{
+
+#tcAddBtn image {
     position: absolute;
     top: 0;
     left: 0;
@@ -22,24 +29,28 @@
     height: 100%;
     margin: 0 !important;
 }
+
 /* task竖条 */
-.vBar{
+.vBar {
     width: 10%;
     position: absolute;
     top: 0;
     left: -10px;
 }
-.beginCircle span{
+
+.beginCircle span {
     display: inline-block;
 }
-.beginCOut{
+
+.beginCOut {
     width: 16px;
     height: 16px;
     border-radius: 50%;
     border: 4px solid #861883;
     position: relative;
 }
-.beginCIn{
+
+.beginCIn {
     position: absolute;
     margin: auto;
     top: 0;
@@ -51,13 +62,15 @@
     border-radius: 50%;
     background-color: #861883;
 }
-.stickBox{
+
+.stickBox {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-.stick{
+
+.stick {
     display: inline-block;
     width: 3px;
     height: 68px;
@@ -65,7 +78,8 @@
     background-color: #861883;
     border-radius: 20px;
 }
-.bcircle{
+
+.bcircle {
     display: inline-block;
     width: 10px;
     height: 10px;
@@ -73,30 +87,37 @@
     border: 3px solid #861883;
     position: relative;
 }
-.taskView{
+
+.taskView {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     position: relative;
 }
-.taskList{
+
+.taskList {
     width: 90%;
     position: absolute;
     right: 0;
 }
-.bg0{
+
+.bg0 {
     background-color: #FFEEE7;
 }
-.bg1{
+
+.bg1 {
     background-color: #F9EFF7;
 }
-.bg2{
+
+.bg2 {
     background-color: #EFFAF7;
 }
-.bg3{
+
+.bg3 {
     background-color: #F1F1F1;
 }
-.taskbox{
+
+.taskbox {
     border-radius: 18px;
     height: 78px;
     margin-bottom: 20px;
@@ -108,29 +129,34 @@
     /* left: 0; */
 
 }
-.tbtop{
+
+.tbtop {
     position: relative;
     height: 24px;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
 }
-.tbtopLeft{
+
+.tbtopLeft {
     color: #3D1467;
     font-size: 19px;
     font-weight: 700;
 }
-.tbtopRight{
+
+.tbtopRight {
     font-size: 14x;
     color: #89868C;
     margin-bottom: 5px;
 }
-.tbright{
+
+.tbright {
     position: absolute;
     right: 0px;
     top: 0px;
 }
-.tbCon{
+
+.tbCon {
     width: 60%;
     height: 50px;
     font-size: 14x;
@@ -139,31 +165,37 @@
     white-space: normal;
     overflow: scroll;
 }
-.mark{
+
+.mark {
     position: fixed;
     left: -1px;
     z-index: 99;
     /* bottom: 50px; */
 }
-.mark0{
+
+.mark0 {
     bottom: 100px;
 }
-.mark1{
+
+.mark1 {
     bottom: 50px;
 }
-.mark image{
+
+.mark image {
     width: 35px;
     height: 98px;
 }
+
 /* cost */
-.costCard{
+.costCard {
     width: 100%;
     height: 97px;
-    background: linear-gradient(45deg,#8675D6 ,#9E91D9,#CFC4FE,#B2A3F8);
+    background: linear-gradient(45deg, #8675D6, #9E91D9, #CFC4FE, #B2A3F8);
     border-radius: 11px;
     position: relative;
 }
-.cardBtn{
+
+.cardBtn {
     background-color: #7857D2;
     position: absolute;
     right: 10px;
@@ -178,7 +210,8 @@
     font-size: 13px;
     font-style: italic;
 }
-.cardLeft{
+
+.cardLeft {
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -187,22 +220,26 @@
     height: 100%;
     box-sizing: border-box;
 }
-.cardType{
+
+.cardType {
     font-size: 12px;
     font-weight: 700;
     color: #F0F0F1;
 }
-.total{
+
+.total {
     font-size: 17px;
     font-weight: 700;
     color: #FEFEFF;
 }
-.limit{
+
+.limit {
     font-size: 10px;
     font-style: italic;
     color: #E7E7EB;
 }
-.titleevent{
+
+.titleevent {
     font-size: 19px;
     font-weight: 700;
     color: #5C5F5E;
@@ -212,32 +249,39 @@
     box-sizing: border-box;
     padding: 20px 0;
 }
-.epicker{
-}
-.epicker picker{
+
+.epicker {}
+
+.epicker picker {
     width: 100%;
 }
-.typeEventSelector{
+
+.typeEventSelector {
     width: 80px;
 }
-.eventValueSelector{
+
+.eventValueSelector {
     width: 80px;
 }
-.titleeventleft{
+
+.titleeventleft {
     position: absolute;
     left: 0;
 }
-.titleeventright{
+
+.titleeventright {
     position: absolute;
     right: 0;
 }
-.eventspan{
+
+.eventspan {
     font-size: 16px;
     width: 70px;
     height: 100%;
 }
+
 /* 弹框 */
-.addDlg{
+.addDlg {
     position: fixed;
     top: 20%;
     background-color: #fff;
@@ -247,7 +291,8 @@
     border: 1px solid #541A69;
     box-shadow: rgba(146, 143, 146, 0.8) 5px 5px 5px;
 }
-.dlgTitle{
+
+.dlgTitle {
     position: relative;
     width: 100%;
     height: 50px;
@@ -260,56 +305,64 @@
     margin-bottom: 10px;
     background: rgba(74, 31, 74, 0.65);
 }
-.dlgTitle span{
+
+.dlgTitle span {
     width: 30px;
     display: inline-block;
     position: absolute;
     right: 10px;
     font-weight: 700;
-    font-style:normal;
+    font-style: normal;
     text-align: end;
 }
-.dlgName{
+
+.dlgName {
     position: absolute;
     left: 10px;
     top: 0;
     bottom: 0;
     margin: auto;
 }
-.dlgClose{
+
+.dlgClose {
     position: absolute;
     right: 10px;
     top: 0;
     bottom: 0;
     margin: auto;
 }
-.addDlgTop .timepicker{
+
+.addDlgTop .timepicker {
     width: 40%;
     height: 40px;
-    border:1px solid #E7E7EB;
+    border: 1px solid #E7E7EB;
     background-color: #fcf7ff;
     border-radius: 5px;
     color: #777676;
 }
-.addDlgbottom{
+
+.addDlgbottom {
     margin-top: 10px;
 }
-.addDlgbottom .typepicker{
+
+.addDlgbottom .typepicker {
     width: 30%;
     height: 40px;
-    border:1px solid #E7E7EB;
+    border: 1px solid #E7E7EB;
     background-color: #fff;
     border-radius: 12px;
     color: #777676;
 }
-.eventTypePicker{
+
+.eventTypePicker {
     width: 100%;
     height: 40px;
     line-height: 40px;
 }
-.addInput{
+
+.addInput {
     height: 40px;
-    border:1px solid #3D1560;
+    border: 1px solid #3D1560;
     background-color: #fff;
     border-radius: 12px;
     color: 3D1560;
@@ -318,10 +371,12 @@
     font-size: 14px;
     width: 60%;
 }
-.addTaskInput{
+
+.addTaskInput {
     width: 60%;
 }
-.addBtn button{
+
+.addBtn button {
     background-color: rgb(71 26 132 / 65%);
     color: #fff;
     font-size: 18px;
@@ -329,29 +384,35 @@
     border: 1px solid #3D1467;
     border-radius: 12px;
 }
-.addEventDlgT span{
+
+.addEventDlgT span {
     width: 20%;
     display: inline-flex;
     justify-content: flex-end;
     align-items: center;
     background-color: #fff;
 }
-.addEventDlgT input{
+
+.addEventDlgT input {
     width: 40%;
 }
-.addDlgTimeBeizhu{
+
+.addDlgTimeBeizhu {
     width: 60%;
     height: 80px;
 }
-.delete{
+
+.delete {
     position: fixed;
-    
+
 }
-.delete image{
+
+.delete image {
     width: 60px;
     height: 40px;
 }
-.delCost{
+
+.delCost {
     position: absolute;
     right: 0;
     top: 0;
@@ -368,11 +429,13 @@
     justify-content: flex-end;
     align-items: center;
 }
-.delCost image{
+
+.delCost image {
     width: 24px;
     height: 24px;
 }
-.timepicker{
+
+.timepicker {
     color: #3D1467;
     background-color: #fff;
     border: 2px solid #3D1467;
@@ -382,27 +445,32 @@
     line-height: 26px;
     font-size: 15px;
 }
-.timeDlgLine{
+
+.timeDlgLine {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
 }
-.timeDlgLineName{
+
+.timeDlgLineName {
     color: #3D1467;
     font-size: 14px;
     margin-right: 14px;
 }
-.timerangeView{
+
+.timerangeView {
     padding: 0 0 10px 0;
 }
-.timerangeView picker{
+
+.timerangeView picker {
     width: 40%;
     color: #3D1467;
     margin: 0 5px;
 }
+
 /*查询检索*/
-.pickerFind{
+.pickerFind {
     width: 80vw;
     display: flex;
     justify-content: flex-start;
@@ -412,13 +480,15 @@
     margin-bottom: 3vw;
     display: flex;
 }
-.span{
+
+.span {
     color: #3D1467;
     font-size: 18px;
     height: 30px;
     width: 70px;
 }
-.typepickerfind{
+
+.typepickerfind {
     width: 30%;
     height: 30px;
     border-radius: 10px;
@@ -426,19 +496,22 @@
     border: 2px solid #3D1467;
     margin-right: 10px;
 }
-.findinput{
+
+.findinput {
     border-radius: 10px;
     color: #3D1467;
     border: 2px solid #3D1467;
     flex-grow: 1;
     height: 30px;
 }
-.findinput input{
+
+.findinput input {
     padding: 0 10px;
     box-sizing: border-box;
     color: #3D1467;
 }
-.taskdate{
+
+.taskdate {
     color: #ffffff;
     font-size: 14px;
     font-weight: 500;
@@ -448,13 +521,15 @@
     border-radius: 20px;
     background-color: rgba(197, 185, 208, 0.5);
 }
+
 .costtype {
     color: #3d1467;
     font-size: 19px;
     font-weight: 700;
     margin-bottom: 4px;
-  }
-  .costdate {
+}
+
+.costdate {
     color: #ffffff;
     font-size: 13px;
     font-weight: 500;
@@ -463,14 +538,16 @@
     text-align: center;
     border-radius: 20px;
     background-color: rgba(197, 185, 208, 0.5);
-  }
-  .costcon {
+}
+
+.costcon {
     font-size: 16px;
     width: 160px;
     color: #655B6F;
     white-space: normal;
     overflow: scroll;
-  }
-  .slotBoxW{
+}
+
+.slotBoxW {
     position: relative;
-  }
+}

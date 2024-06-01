@@ -99,6 +99,13 @@ Page({
       }
     }
   },
+  clearDlgInput(e){
+    console.log("cccccc");
+    this.setData({
+      dlgStTime:"",
+      dlgEtTime:""
+    });
+  },
   addDlgBtn(event) {
     var that = this;
     var type = event.currentTarget.dataset.type;

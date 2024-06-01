@@ -296,6 +296,7 @@
   position: absolute;
   right: 10px;
   top: 0;
+  font-size: 30px;
   bottom: 0;
   margin: auto;
 }
@@ -308,7 +309,27 @@
   border-radius: 11px;
   color: #777676;
 }
-
+.inputView{
+  position: relative;
+  padding: 0 25px 0 10px !important;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 10px;
+}
+.inputClear{
+  display: block;
+  width: 20px;
+  height: 40px;
+  line-height: 40px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  font-size: 20px;
+}
 .addDlgbottom {
   margin-top: 10px;
 }
@@ -321,13 +342,15 @@
   border-radius: 12px;
   color: #777676;
 }
-
+.sjcon{
+  width: 60%;
+  height: 100px !important;
+}
 .eventTypePicker {
   width: 100%;
   height: 40px;
   line-height: 40px;
 }
-
 .addInput {
   height: 40px;
   border: 1px solid #3D1560;
@@ -424,15 +447,4 @@
   width: 40%;
   color: #3D1560;
   margin: 0 5px;
-}
-.textspan{
-  color: #9c9a9d;
-  font-size: 18px;
-  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  background-color: #fff;
-  border: 1px solid #E7E7EB;
-  padding: 10px;
-  border-radius: 20px;
-  box-shadow: 0 0px 10px #ccc;
-  margin: 10px;
 }
