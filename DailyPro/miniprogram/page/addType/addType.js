@@ -24,7 +24,7 @@ Page({
         inputValue: event.detail.value
       });
   },
-  onUnload:function(){
+  saveType:function(){
     var pic = this.data.selectedIcon;
     var typeName = this.data.inputValue;
     if(!typeName){return;}
@@ -49,5 +49,31 @@ Page({
         });
       }
     })
+  },
+  onUnload:function(){
+    // var pic = this.data.selectedIcon;
+    // var typeName = this.data.inputValue;
+    // if(!typeName){return;}
+    // db.collection('typeInfo').add({
+    //   data: {
+    //     pic,
+    //     typeName,
+    //     isTrue:"1",
+    //     user_id: app.globalData.userInfo._openid
+    //   },
+    //   success: res => {
+    //     var typeInfo = db.collection('typeInfo');
+    //     slots.where({
+    //       user_id:app.globalData.userInfo._openid
+    //     }).get().then(res => {
+    //       if (res.data) {
+    //         app.globalData.typeInfo = res.data;
+            
+    //       }
+    //     }).catch(err => {
+    //       console.error('查询失败:', err);
+    //     });
+    //   }
+    // })
   }
 });

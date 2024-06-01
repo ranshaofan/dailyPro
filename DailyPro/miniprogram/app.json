@@ -55,6 +55,11 @@
       "selectedIconPath": "@selectedIconTask"
       },
       {
+        "pagePath": "page/analysis/analysis",
+        "iconPath": "@iconTimeGray",
+        "selectedIconPath": "@selectedIconTime"
+      },
+      {
         "pagePath": "page/mine/mine",
         "iconPath": "@iconMine",
         "selectedIconPath": "@selectedIconMine"

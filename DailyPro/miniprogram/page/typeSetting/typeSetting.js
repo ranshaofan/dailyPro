@@ -22,11 +22,14 @@ Page({
 
   onShow() {
     var that = this;
+    this.setData({
+        loading:1
+    });
     if (app.globalData.userInfo && app.globalData.userInfo.avatarUrl) {
       this.setData({
         userInfo: app.globalData.userInfo,
-        typeInfo: app.globalData.typeInfo,
-        loading:0
+        typeInfo: app.globalData.typeInfo
+        // loading:0
       });
     }
     refreshTypeInfo(app.globalData.userInfo._openid).then(data => {
@@ -37,6 +40,9 @@ Page({
       app.globalData.typeInfo = data;
     }).catch(err => {
       console.error('刷新数据失败:', err);
+      that.setData({
+        loading:0
+    });
     });
   },
   navigateBack() {
@@ -97,7 +103,7 @@ Page({
       //计算手指起始点的X坐标与当前触摸点的X坐标的差值
       var disX = that.data.startX - moveX;
       //delBtnWidth 为右侧按钮区域的宽度
-      var delBtnWidth = 58;
+      var delBtnWidth = 66;
       var left = 0;
       if (disX == 0 || disX < 0) {//如果移动距离小于等于0，文本层位置不变
         left = 0;
@@ -127,7 +133,7 @@ Page({
       var endX = e.changedTouches[0].clientX;
       //触摸开始与结束，手指移动的距离
       var disX = that.data.startX - endX;
-      var delBtnWidth = 58;
+      var delBtnWidth = 66;
       //如果距离小于删除按钮的1/2，不显示删除按钮
       var left = disX > delBtnWidth / 2 ? delBtnWidth * (-1) : 0;
       //获取手指触摸的是哪一项
