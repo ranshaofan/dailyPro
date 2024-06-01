@@ -204,7 +204,7 @@ Page({
         app.globalData.slots = this.data.slots;
         refreshEventsAndSlots();
         this.setData({
-          slots:app.globalData.slots,
+          slots: app.globalData.slots,
           addTimeDlgShow: 0,
           loading: 0
         });
@@ -273,7 +273,7 @@ Page({
         app.globalData.events = this.data.events;
         refreshEventsAndSlots();
         this.setData({
-          events:app.globalData.events,
+          events: app.globalData.events,
           addEventDlgShow: 0,
           loading: 0
         });
@@ -521,6 +521,13 @@ Page({
       }
     });
   },
+  clearAllInput() {
+    this.setData({
+      inputValue: "",
+      inputCon: "",
+      inputName: ""
+    });
+  },
   //时间
   showAddTimeDlg() {
     this.data.addOrUpd = "add";
@@ -528,14 +535,20 @@ Page({
       loginIn();
       this.setData({
         nickName: app.globalData.userInfo.nickName,
-        addOrUpd: "add"
+        addOrUpd: "add",
+        inputValue: "",
+        inputCon: "",
+        inputName: ""
       });
     } else {
       this.setData({
         addTimeDlgShow: 1,
         addEventDlgShow: 0,
         addOrUpd: "add",
-        nickName: app.globalData.userInfo.nickName
+        nickName: app.globalData.userInfo.nickName,
+        inputValue: "",
+        inputCon: "",
+        inputName: ""
       });
     }
   },
@@ -545,7 +558,10 @@ Page({
       loginIn();
       this.setData({
         nickName: app.globalData.userInfo.nickName,
-        addOrUpd: "add"
+        addOrUpd: "add",
+        inputValue: "",
+        inputCon: "",
+        inputName: ""
         // title:"未登录哦，请先到设置页面登录~"
       });
     } else {
@@ -553,7 +569,10 @@ Page({
         addTimeDlgShow: 0,
         addEventDlgShow: 1,
         addOrUpd: "add",
-        nickName: app.globalData.userInfo.nickName
+        nickName: app.globalData.userInfo.nickName,
+        inputValue: "",
+        inputCon: "",
+        inputName: ""
       });
     }
   },
