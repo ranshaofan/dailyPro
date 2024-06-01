@@ -1,4 +1,4 @@
-import { dateFormat, initCalendar, refreshEventsAndSlots, formatValueTime, getSlotsData, getEventsData } from '../../util/util'
+import { dateFormat, initCalendar, refreshEventsAndSlots, formatValueTime, upd, getSlotsData, getEventsData } from '../../util/util'
 const app = getApp();
 const db = wx.cloud.database();//获取数据库引用
 Page({
@@ -33,7 +33,8 @@ Page({
     dlgStTime: "08:00",
     dlgEtTime: "08:00",
     isToday: 1,
-    loading:1,
+    loading: 1,
+    addOrUpd: "add"
   },
   onLoad() {
     var cs = initCalendar();
@@ -72,7 +73,7 @@ Page({
         typeInfo: app.globalData.typeInfo,
         evaluation: app.globalData.evaluation,
         typeNames,
-        loading:0
+        loading: 0
       })
       if (JSON.stringify(app.globalData.userInfo) != "{}" && app.globalData.userInfo.nickName) {
         this.setData({
@@ -89,7 +90,7 @@ Page({
           typeInfo: app.globalData.typeInfo,
           evaluation: app.globalData.evaluation,
           typeNames,
-          loading:0
+          loading: 0
         });
         if (JSON.stringify(app.globalData.userInfo) != "{}") {
           that.setData({
@@ -99,24 +100,52 @@ Page({
       }
     }
   },
-  clearDlgInput(e){
+  clearDlgInput(e) {
     console.log("cccccc");
     this.setData({
-      dlgStTime:"",
-      dlgEtTime:""
+      dlgStTime: "",
+      dlgEtTime: ""
     });
   },
-  editcard(event){
+  editcard(event) {
+    this.setData({
+      addOrUpd: "upd"
+    });
+    this.data.addOrUpd = "upd";
     var type = event.currentTarget.dataset.type;
-    if(type == "slots"){
-
-    }else{
-
+    var index = event.currentTarget.dataset.index;
+    this.data.editIndex = index;
+    if (type == "slots") {
+      //获取当前键值对dto
+      var curSlot = this.data.slots[index];
+      //查找typeindex
+      var typeIndex = this.data.typeNames.indexOf(curSlot.type);
+      this.setData({
+        dlgStTime: curSlot.stime,
+        dlgEtTime: curSlot.etime,
+        typeIndex: typeIndex,
+        inputValue: curSlot.con,
+        currentDate: curSlot.datetime,
+        addTimeDlgShow: 1
+      });
+    } else {
+      var curEvent = this.data.events[index];
+      //查找typeindex
+      var typeIndex = this.data.typeNames.indexOf(curEvent.type);
+      var jugeIndex = this.data.evaluation.indexOf(curEvent.evaluation);
+      this.setData({
+        inputCon: curEvent.name,
+        typeIndex: typeIndex,
+        jugeIndex: jugeIndex,
+        currentDate: curEvent.eventtime,
+        inputName: curEvent.notes,
+        addEventDlgShow: 1
+      });
     }
   },
   addDlgBtn(event) {
     this.setData({
-      loading:1
+      loading: 1
     });
     var that = this;
     var type = event.currentTarget.dataset.type;
@@ -130,92 +159,136 @@ Page({
         wx.showToast({ title: '结束时间不应小于开始时间', icon: 'none' });
         return;
       }
-      //向数据库中添加数据
-      db.collection('slots').add({
-        data: {
-          type: type,
-          con: con,
-          stime: st,
-          etime: et,
-          user_id: app.globalData.userInfo._openid,
-          datetime: dateFormat('yyyy-MM-dd', new Date(datetime))
-        },
-        success: res => {
-          var slots = db.collection('slots');
-          slots.where({
-            datetime: that.data.currentDate,
-            user_id: app.globalData.userInfo._openid
-          }).get().then(res => {
-            if (res.data) {
-              app.globalData.slots = res.data;
-              refreshEventsAndSlots();
+      if (this.data.addOrUpd == "add") {
+        //向数据库中添加数据
+        db.collection('slots').add({
+          data: {
+            type: type,
+            con: con,
+            stime: st,
+            etime: et,
+            user_id: app.globalData.userInfo._openid,
+            datetime: dateFormat('yyyy-MM-dd', new Date(datetime))
+          },
+          success: res => {//增加时间成功
+            var slots = db.collection('slots');
+            slots.where({
+              datetime: that.data.currentDate,
+              user_id: app.globalData.userInfo._openid
+            }).get().then(res => {
+              if (res.data) {
+                app.globalData.slots = res.data;
+                refreshEventsAndSlots();
+                that.setData({
+                  slots: res.data,
+                  addTimeDlgShow: 0,
+                  loading: 0
+                });
+              }
+            }).catch(err => {//增加时间失败
+              console.error('查询失败:', err);
               that.setData({
-                slots: res.data,
                 addTimeDlgShow: 0,
-                loading:0
+                loading: 0
               });
-            }
-          }).catch(err => {
-            console.error('查询失败:', err);
-            that.setData({
-              addTimeDlgShow: 0,
-              loading:0
             });
-          });
-        }
-      })
-      // this.setData({
-      //   addTimeDlgShow: 0,
-      //   slots: cons
-      // });
-    } else {//event
+          }
+        })
+      } else {//修改时间
+        var editSlot = this.data.slots[this.data.editIndex];
+        this.data.slots[this.data.editIndex].con = this.data.inputValue;
+        this.data.slots[this.data.editIndex].datetime = this.data.currentDate;
+        this.data.slots[this.data.editIndex].type = this.data.typeNames[this.data.typeIndex];
+        this.data.slots[this.data.editIndex].stime = this.data.dlgStTime;
+        this.data.slots[this.data.editIndex].etime = this.data.dlgEtTime;
+        app.globalData.slots = this.data.slots;
+        refreshEventsAndSlots();
+        this.setData({
+          slots:app.globalData.slots,
+          addTimeDlgShow: 0,
+          loading: 0
+        });
+        upd("slots", editSlot._id, {
+          con: this.data.inputValue,
+          datetime: this.data.currentDate,
+          type: this.data.typeNames[this.data.typeIndex],
+          stime: this.data.dlgStTime,
+          etime: this.data.dlgEtTime
+        }).then(data => {
+          //修改时间成功
+          console.log(data);
+        }).catch(err => {
+          console.error('更新数据失败:', err);
+        });
+      }
+    } else {//event事件
       var type = this.data.typeNames[this.data.typeIndex];
       var notes = this.data.inputCon;
       var name = this.data.inputName;
       var evaluation = this.data.evaluation[this.data.jugeIndex];
       var eventtime = this.data.currentDate;
-      // this.data.events.push({ type, cost,pic,con, id: list.length,conLeft:0,i:list.length%3 });
-      // app.globalData.todayCost = list;
-      // this.setData({
-      //   addEventDlgShow: 0,
-      //   events: list
-      // });
-      // console.log(list);
-
-      //向数据库中添加数据
-      db.collection('events').add({
-        data: {
-          type: type,
-          notes: notes,
-          name: name,
-          evaluation: evaluation,
-          user_id: app.globalData.userInfo._openid,
-          eventtime: dateFormat('yyyy-MM-dd', new Date(eventtime))
-        },
-        success: res => {
-          var events = db.collection('events');
-          events.where({
-            eventtime: that.data.currentDate,
-            user_id: app.globalData.userInfo._openid
-          }).get().then(res => {
-            if (res.data) {
-              app.globalData.events = res.data;
-              refreshEventsAndSlots();
+      if (this.data.addOrUpd == "add") {
+        //向数据库中添加数据
+        db.collection('events').add({
+          data: {
+            type: type,
+            notes: notes,
+            name: name,
+            evaluation: evaluation,
+            user_id: app.globalData.userInfo._openid,
+            eventtime: dateFormat('yyyy-MM-dd', new Date(eventtime))
+          },
+          success: res => {
+            var events = db.collection('events');
+            events.where({
+              eventtime: that.data.currentDate,
+              user_id: app.globalData.userInfo._openid
+            }).get().then(res => {//新增事件成功
+              if (res.data) {
+                app.globalData.events = res.data;
+                refreshEventsAndSlots();
+                that.setData({
+                  events: res.data,
+                  addEventDlgShow: 0,
+                  loading: 0
+                });
+              }
+            }).catch(err => {//新增事件失败
+              console.error('查询失败:', err);
               that.setData({
-                events: res.data,
                 addEventDlgShow: 0,
-                loading:1
+                loading: 0
               });
-            }
-          }).catch(err => {
-            console.error('查询失败:', err);
-            that.setData({
-              addEventDlgShow: 0,
-              loading:0
             });
-          });
-        }
-      })
+          }
+        })
+      } else {//修改events事件
+        //修改缓存
+        var editEvent = this.data.events[this.data.editIndex];
+        this.data.events[this.data.editIndex].notes = this.data.inputCon;
+        this.data.events[this.data.editIndex].eventtime = this.data.currentDate;
+        this.data.events[this.data.editIndex].type = this.data.typeNames[this.data.typeIndex];
+        this.data.events[this.data.editIndex].name = this.data.inputName;
+        this.data.events[this.data.editIndex].evaluation = this.data.evaluation[this.data.jugeIndex];
+        app.globalData.events = this.data.events;
+        refreshEventsAndSlots();
+        this.setData({
+          events:app.globalData.events,
+          addEventDlgShow: 0,
+          loading: 0
+        });
+        upd("events", editEvent._id, {
+          notes: this.data.inputCon,
+          eventtime: this.data.currentDate,
+          type: this.data.typeNames[this.data.typeIndex],
+          name: this.data.inputName,
+          evaluation: this.data.evaluation[this.data.jugeIndex]
+        }).then(data => {
+          //修改事件event成功
+        }).catch(err => {
+          console.error('更新数据失败:', err);
+        });
+      }
     }
   },
   closeAddDlg(event) {
@@ -281,7 +354,7 @@ Page({
   },
   canlenChosen: function (event) {
     this.setData({
-      loading:1
+      loading: 1
     });
     var that = this;
     var index = event.currentTarget.dataset.index;
@@ -301,7 +374,7 @@ Page({
         refreshEventsAndSlots();
         that.setData({
           events: res.data,
-          loading:0
+          loading: 0
         });
       }
     }).catch(err => {
@@ -317,7 +390,7 @@ Page({
         refreshEventsAndSlots();
         that.setData({
           slots: res.data,
-          loading:0
+          loading: 0
         });
       }
     }).catch(err => {
@@ -443,36 +516,43 @@ Page({
             }
           });
         } else if (res.cancel) {
-          
+
         }
       }
     });
   },
   //时间
   showAddTimeDlg() {
+    this.data.addOrUpd = "add";
     if (JSON.stringify(app.globalData.userInfo) == "{}") {
       loginIn();
       this.setData({
-        nickName: app.globalData.userInfo.nickName
+        nickName: app.globalData.userInfo.nickName,
+        addOrUpd: "add"
       });
     } else {
       this.setData({
         addTimeDlgShow: 1,
         addEventDlgShow: 0,
+        addOrUpd: "add",
         nickName: app.globalData.userInfo.nickName
       });
     }
   },
   showAddEventDlg() {
+    this.data.addOrUpd = "add";
     if (JSON.stringify(app.globalData.userInfo) == "{}") {
       loginIn();
       this.setData({
-        nickName: app.globalData.userInfo.nickName
+        nickName: app.globalData.userInfo.nickName,
+        addOrUpd: "add"
+        // title:"未登录哦，请先到设置页面登录~"
       });
     } else {
       this.setData({
         addTimeDlgShow: 0,
         addEventDlgShow: 1,
+        addOrUpd: "add",
         nickName: app.globalData.userInfo.nickName
       });
     }

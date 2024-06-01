@@ -218,6 +218,7 @@ function loginIn() {
   })
 }
 
+//给两个数据加pic
 function refreshEventsAndSlots(alls) {
   const app = getApp();
   var events,slots;
@@ -296,6 +297,23 @@ function refreshTypeInfo(userid) {
   });
 }
 
+function upd(table,id,updcon){
+  var db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection(table).doc(id).update({
+      data: updcon,
+      success: res => {
+        // 更新成功后更新页面数据
+        resolve(res);
+      },
+      fail:e=> {
+        console.error('更新失败:', err);
+        reject(err);
+      }
+    });
+  });
+}
+
 function formatValueTime(val) {
   if (!val) return;
   var h = "", s = "";
@@ -340,5 +358,6 @@ module.exports = {
   refreshEventsAndSlots,
   formatValueTime,
   getSlotsData,
-  getEventsData
+  getEventsData,
+  upd
 }
