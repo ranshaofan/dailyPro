@@ -1,9 +1,9 @@
-import CustomPage from './base/CustomPage'
+// import CustomPage from './base/CustomPage'
 import { dateFormat, initCalendar, loginIn, refreshEventsAndSlots, getSlotsData, getEventsData } from '../../util/util'
 
 const app = getApp();
 const db = wx.cloud.database();//获取数据库引用
-CustomPage({
+Page({
   onShareAppMessage() {
     return {
       title: '时间录入',

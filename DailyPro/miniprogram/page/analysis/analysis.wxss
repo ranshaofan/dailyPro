@@ -1,38 +1,51 @@
 @import "../common/index.wxss";
 @import "../common/common.wxss";
-
-.analysisTitle {
+.page{
+  background: linear-gradient(#fff, #fff, #fff, rgb(239, 241, 255));
+}
+.timerangeView {
   width: 100vw;
   height: 30px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  padding: 10px 10px;
+  margin: 10px 0 10px 0;
 }
 
-.analysisTitle span {
+.analysisTitlespan {
   margin-right: 20px;
-  color: #193C9D;
-  font-style: italic;
+  color: #4d226d;
+  font-size: 24px;
+  font-weight: 700;
+  /* font-style: italic; */
 }
-
+.timepicker {
+  color: #3D1467;
+  background-color: #fff;
+  border: 2px solid #3D1467;
+  border-radius: 8px;
+  padding: 0 10PX;
+  height: 26px;
+  line-height: 26px;
+  font-size: 15px;
+}
 .analysisTitle picker {
-  color: #9FA0A2;
-  font-size: 17px;
-  font-style: italic;
-  border-radius: 15px;
-  border: 0.1px solid #dedddd;
-  padding: 0 8px;
-  margin-right: 20px;
+  width: 40%;
+    color: #3D1467;
+    margin: 0 5px;
 }
 
 .beginBtn {
   padding: 0 10px;
+  margin: 20px 40px 0 40px;
   color: aliceblue;
+  height: 40px;
   background-color: #acbff4;
-  background: linear-gradient(to left top, #193C9D, #acbff4, #6b86d1);
+  background: linear-gradient(to left top, #d2acf4, #9b6bd1,#5d199d);
   border-radius: 15px;
   border: 1px solid #dedddd;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .page {
@@ -111,4 +124,17 @@
 }
 p{
   display: block;
+}
+.tempor1{
+  font-size: 20px;
+  font-weight: 700;
+  color:#a31616;
+}
+.tempor2{
+  font-size: 18px;
+  color: #916161;
+}
+.temporimg{
+  width: 50px;
+  height: 50px;
 }

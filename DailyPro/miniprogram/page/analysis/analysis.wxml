@@ -1,84 +1,36 @@
 <wxs module="filters" src="../../util/filter.wxs"></wxs>
-<!-- <set-tab-bar wx:if="{{isSetTabBarPage}}" bindunmount="leaveSetTabBarPage"></set-tab-bar>
-<view wx:else class="index page" data-weui-theme="{{theme}}">
-  <view class="index-hd">
-    <image class="index-logo" src="resources/kind/logo.png"></image>
-    <view class="index-desc">以下将演示小程序接口能力，具体属性参数详见 <navigator url="/page/home/pages/doc-web-view/doc-web-view" class="weui-agree__link">小程序开发文档</navigator>。</view>
+<view class="loading-spinner">
+  <view>
+    <image class="temporimg" src="./resources/shy.png" mode="aspectFit" lazy-load="false" binderror="" bindload="">
+    </image>
   </view>
-  <view class="index-bd">
-    <view class="kind-list">
-      <block wx:for-items="{{list}}" wx:key="{{item.id}}">
-        <view class="kind-list-item">
-          <view id="{{item.id}}" class="kind-list-item-hd {{item.open ? 'kind-list-item-hd-show' : ''}}" bindtap="kindToggle">
-            <view class="kind-list-text">{{item.name}}</view>
-            <image wx:if="{{theme === 'dark'}}" class="kind-list-img" src="resources/kind/{{item.id}}_dark.png"></image>
-            <image wx:else class="kind-list-img" src="resources/kind/{{item.id}}.png"></image>
-          </view>
-          <view class="kind-list-item-bd {{item.open ? 'kind-list-item-bd-show' : ''}}">
-            <view class="navigator-box {{item.open ? 'navigator-box-show' : ''}}">
-              <block wx:for-items="{{item.pages}}" wx:for-item="page" wx:key="*item">
-                <navigator url="../../packageAPI/pages/{{item.id}}/{{page.url}}" class="navigator" wx:if="{{page.url !== '@set-tab-bar'}}">
-                  <view class="navigator-text">{{page.zh}}</view>
-                  <view class="navigator-arrow"></view>
-                </navigator>
-                <view wx:else class="navigator" bindtap="enterSetTabBarPage">
-                  <view class="navigator-text">{{page.zh}}</view>
-                  <view class="navigator-arrow"></view>
-                </view>
-              </block>
-            </view>
-          </view>
-        </view>
-      </block>
-    </view>
+  <view class="tempor1">
+    统计功能正在路上...
   </view>
-</view> -->
-<!-- <view class="page1" data-weui-theme="{{theme}}">
-  <view class="index">
-    <view class="index-hd">
-      <image class="index-logo" src="resources/kind/logo.png"></image>
-      <view class="index-desc">以下将展示小程序官方组件能力，组件样式仅供参考，开发者可根据自身需求自定义组件样式，具体属性参数详见 <navigator url="pages/doc-web-view/doc-web-view" class="weui-agree__link">小程序开发文档</navigator>。</view>
-    </view>
-    <view class="index-bd">
-      <view class="kind-list">
-        <block wx:for-items="{{list}}" wx:key="{{item.id}}">
-          <view class="kind-list-item">
-            <view id="{{item.id}}" class="kind-list-item-hd {{item.open ? 'kind-list-item-hd-show' : ''}}" bindtap="kindToggle">
-              <view class="kind-list-text">{{item.name}}</view>
-              <image wx:if="{{theme === 'dark'}}" class="kind-list-img" src="resources/kind/{{item.id}}_dark.png"></image>
-              <image wx:else class="kind-list-img" src="resources/kind/{{item.id}}.png"></image>
-            </view>
-            <view class="kind-list-item-bd {{item.open ? 'kind-list-item-bd-show' : ''}}">
-              <view class="navigator-box {{item.open ? 'navigator-box-show' : ''}}">
-                <block wx:for-items="{{item.pages}}" wx:for-item="page" wx:key="*item">
-                  <navigator wx:if="{{page.appid}}" target="miniProgram" open-type="navigate" app-id="{{page.appid}}" path="" extra-data="" version="release" class="navigator">
-                    <view class="navigator-text">{{page.name}}</view>
-                    <view class="navigator-arrow"></view>
-                  </navigator>
-                  <navigator wx:else url="/packageComponent/pages/{{item.id}}/{{page}}/{{page}}" class="navigator">
-                    <view class="navigator-text">{{page}}</view>
-                    <view class="navigator-arrow"></view>
-                  </navigator>
-                </block>
-              </view>
-            </view>
-          </view>
-        </block>
-      </view>
-    </view>
+  <view class="tempor2">
+    有任何建议请联系dpx1009
   </view>
-</view> -->
+</view>
 <view class="page">
   <!-- <button class="generateBtn" bindtap="listToTimeCanvas">生成</button> -->
   <!-- 标题部分 -->
-  <view class="analysisTitle">
-    <span wx:if="{{ifTask}}">Task</span>
-    <span wx:else>Cost</span>
-    <picker mode="selector" range="{{array}}" bindchange="bindPickerChange">
+  <view class="beginBtn flexCenter" bindtap="listToTimeCanvas">{{ifTask?'时间统计':'事件统计'}}</view>
+  <!-- <view class="analysisTitle flexCenter"> -->
+    <!-- <span class="analysisTitlespan">{{ifTask?'时间':'事件'}}</span> -->
+    <!-- <span wx:else>事件</span> -->
+    <!-- <picker mode="selector" range="{{array}}" bindchange="bindPickerChange">
       <view class="picker">{{array[index]}}</view>
-    </picker>
-    <view class="beginBtn flexCenter" bindtap="listToTimeCanvas">generation</view>
-  </view>
+    </picker> -->
+    <view class='timerangeView flexCenter'>
+      <picker mode="date" value="{{sdate}}" start="{{ startDate }}" end="{{ endDate }}" bindchange="onSDateChange">
+        <view class="timepicker flexCenter">{{ sdate }}</view>
+      </picker>
+      <span>——</span>
+      <picker mode="date" value="{{edate}}" start="{{ startDate }}" end="{{ endDate }}" bindchange="onEDateChange">
+        <view class="timepicker flexCenter">{{ edate }}</view>
+      </picker>
+    </view>
+  <!-- </view> -->
   <!-- 扇形图模块 -->
   <view class="fanChart chart" style="height:{{ifTask?'100%':'0'}}px;padding:{{ifTask?'10':'0'}}px;">
     <view class="canvasbox">
