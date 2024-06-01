@@ -37,7 +37,13 @@
             <image class="" src="./resources/pic/delwhite.png" mode="aspectWidth" lazy-load="false" binderror="" bindload=""></image>
           </view>
           <view>
-            <view class="tasktype">{{item.type}}</view>
+            <view class="tasktype">
+              <span>
+                {{item.type}}
+              </span>
+              <image class="editclass" src="../common/img/edit.png" bindtap="editcard" data-type="slots" mode="aspectWidth" lazy-load="false" binderror="" bindload="">
+              </image>
+              </view>
             <view class="taskcon">{{item.con}}</view>
             <view class="taskdatetime flexCenter">
               <view>{{item.stime}}</view>
@@ -84,7 +90,9 @@
           <view class="costTxt">
             <view class="costtype flexCenter">
               <view class="costname">{{item.name}}</view>
-              <view class="costdate">{{item.eventtime}}</view>
+              <!-- <view class="costdate">{{item.eventtime}}</view> -->
+              <image class="editclass" src="../common/img/edit.png" mode="aspectWidth" bindtap="editcard" data-type="events" lazy-load="false" binderror="" bindload="">
+              </image>
             </view>
             <view class="costcon">{{item.notes}}</view>
           </view>

@@ -131,7 +131,14 @@
   font-weight: 700;
   margin-bottom: 4px;
 }
-
+.tasktype{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.tasktype span{
+  margin-right: 5px;
+}
 .taskdate {
   color: #ffffff;
   font-size: 14px;

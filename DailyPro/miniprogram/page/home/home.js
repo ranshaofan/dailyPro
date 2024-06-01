@@ -106,7 +106,18 @@ Page({
       dlgEtTime:""
     });
   },
+  editcard(event){
+    var type = event.currentTarget.dataset.type;
+    if(type == "slots"){
+
+    }else{
+
+    }
+  },
   addDlgBtn(event) {
+    this.setData({
+      loading:1
+    });
     var that = this;
     var type = event.currentTarget.dataset.type;
     if (type == "slots") {//时间
@@ -140,13 +151,15 @@ Page({
               refreshEventsAndSlots();
               that.setData({
                 slots: res.data,
-                addTimeDlgShow: 0
+                addTimeDlgShow: 0,
+                loading:0
               });
             }
           }).catch(err => {
             console.error('查询失败:', err);
             that.setData({
-              addTimeDlgShow: 0
+              addTimeDlgShow: 0,
+              loading:0
             });
           });
         }
@@ -190,13 +203,15 @@ Page({
               refreshEventsAndSlots();
               that.setData({
                 events: res.data,
-                addEventDlgShow: 0
+                addEventDlgShow: 0,
+                loading:1
               });
             }
           }).catch(err => {
             console.error('查询失败:', err);
             that.setData({
-              addEventDlgShow: 0
+              addEventDlgShow: 0,
+              loading:0
             });
           });
         }

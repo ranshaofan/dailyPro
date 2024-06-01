@@ -273,35 +273,49 @@ Page({
     }
   },
   costDelete(e) {//删除按钮
+    var that = this;
     var type = e.currentTarget.dataset.type;
     var index = e.currentTarget.dataset.index;
-    if(type=="events"){
-      var delArr = this.data.events.splice(index, 1);
-      this.setData({
-        events: this.data.events
-      });
-      db.collection('events').where({
-        _id: delArr[0]._id
-      }).remove({
-        success: function (res) {
-          //删除app.globaldata中的数据
-          app.globalData.events = app.globalData.events.filter(event => event._id !== delArr[0]._id);
+    wx.showModal({
+      title: '确认删除',
+      content: '确定要删除该项吗？',
+      success(res) {
+        if (res.confirm) {
+          if(type=="events"){
+            var delArr = that.data.events.splice(index, 1);
+            that.setData({
+              events: that.data.events
+            });
+            db.collection('events').where({
+              _id: delArr[0]._id
+            }).remove({
+              success: function (res) {
+                //删除app.globaldata中的数据
+                app.globalData.events = app.globalData.events.filter(event => event._id !== delArr[0]._id);
+              }
+            });
+          }else{
+            var delArr = that.data.slots.splice(index, 1);
+            that.setData({
+              slots: that.data.slots
+            });
+            db.collection('slots').where({
+              _id: delArr[0]._id
+            }).remove({
+              success: function (res) {
+                //删除app.globaldata中的数据
+                app.globalData.slots = app.globalData.slots.filter(event => event._id !== delArr[0]._id);
+              }
+            });
+          }
+        } else if (res.cancel) {
+          // wx.showToast({
+          //   title: '已取消删除',
+          //   icon: 'none'
+          // });
         }
-      });
-    }else{
-      var delArr = this.data.slots.splice(index, 1);
-      this.setData({
-        slots: this.data.slots
-      });
-      db.collection('slots').where({
-        _id: delArr[0]._id
-      }).remove({
-        success: function (res) {
-          //删除app.globaldata中的数据
-          app.globalData.slots = app.globalData.slots.filter(event => event._id !== delArr[0]._id);
-        }
-      });
-    }
+      }
+    });
   },
   //悬浮addDLg确定按钮的click
   addDlgBtn(event) {

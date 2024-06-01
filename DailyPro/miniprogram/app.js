@@ -131,11 +131,6 @@ App({
         "iconPath": "@iconTimeGray",
         "selectedIconPath": "@selectedIconTime"
       },
-{
-        "pagePath": "page/task/task",
-        "iconPath": "@iconTask",
-        "selectedIconPath": "@selectedIconTask"
-      },
   )*/
   globalData: {
     theme: wx.getSystemInfoSync().theme,
@@ -147,7 +142,7 @@ App({
     slots:[],
     userInfo:{},
     typeInfo:[],//存放类型与图片相对应的数组
-    evaluation:["干得漂亮","正常水平","差点意思","烂透了"],
+    evaluation:["漂亮","正常","有点差","烂透了"],
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     zwdays: ['日', '一', '二', '三', '四', '五', '六'],
     colorobj: { "娱乐": "#C3ACEB", "工作": "#EB974F", "学习": "#B4EBA1", "兴趣": "#EA90BA" },
