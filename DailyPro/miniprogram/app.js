@@ -14,6 +14,7 @@ App({
         traceUser: true,
       });
     }
+    // this.getUserOpenId();
     
     // 获取数据库引用
     const db = wx.cloud.database();

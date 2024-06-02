@@ -1,4 +1,4 @@
-import { dateFormat, initCalendar, refreshEventsAndSlots, formatValueTime, upd, getSlotsData, getEventsData } from '../../util/util'
+import { dateFormat,loginIn, initCalendar, refreshEventsAndSlots, formatValueTime, upd, getSlotsData, getEventsData } from '../../util/util'
 const app = getApp();
 const db = wx.cloud.database();//获取数据库引用
 Page({
@@ -33,7 +33,7 @@ Page({
     dlgStTime: "08:00",
     dlgEtTime: "08:00",
     isToday: 1,
-    loading: 1,
+    loading: 0,
     addOrUpd: "add"
   },
   onLoad() {
@@ -77,7 +77,8 @@ Page({
       })
       if (JSON.stringify(app.globalData.userInfo) != "{}" && app.globalData.userInfo.nickName) {
         this.setData({
-          nickName: app.globalData.userInfo.nickName
+          nickName: app.globalData.userInfo.nickName,
+          loading: 0
         });
       }
     } else {
@@ -94,14 +95,14 @@ Page({
         });
         if (JSON.stringify(app.globalData.userInfo) != "{}") {
           that.setData({
-            nickName: app.globalData.userInfo.nickName
+            nickName: app.globalData.userInfo.nickName,
+            loading: 0
           });
         }
       }
     }
   },
   clearDlgInput(e) {
-    console.log("cccccc");
     this.setData({
       dlgStTime: "",
       dlgEtTime: ""
@@ -532,14 +533,18 @@ Page({
   showAddTimeDlg() {
     this.data.addOrUpd = "add";
     if (JSON.stringify(app.globalData.userInfo) == "{}") {
-      loginIn();
-      this.setData({
-        nickName: app.globalData.userInfo.nickName,
-        addOrUpd: "add",
-        inputValue: "",
-        inputCon: "",
-        inputName: ""
+      wx.showToast({
+        title:"请先登录,并设置类别",
+        icon:"none"
       });
+      // loginIn();
+      // this.setData({
+      //   nickName: app.globalData.userInfo.nickName,
+      //   addOrUpd: "add",
+      //   inputValue: "",
+      //   inputCon: "",
+      //   inputName: ""
+      // });
     } else {
       this.setData({
         addTimeDlgShow: 1,
@@ -555,14 +560,18 @@ Page({
   showAddEventDlg() {
     this.data.addOrUpd = "add";
     if (JSON.stringify(app.globalData.userInfo) == "{}") {
-      loginIn();
-      this.setData({
-        nickName: app.globalData.userInfo.nickName,
-        addOrUpd: "add",
-        inputValue: "",
-        inputCon: "",
-        inputName: ""
-        // title:"未登录哦，请先到设置页面登录~"
+      // loginIn();
+      // this.setData({
+      //   nickName: app.globalData.userInfo.nickName,
+      //   addOrUpd: "add",
+      //   inputValue: "",
+      //   inputCon: "",
+      //   inputName: ""
+      //   // title:"未登录哦，请先到设置页面登录~"
+      // });
+      wx.showToast({
+        title:"请先登录,并设置类别",
+        icon:"none"
       });
     } else {
       this.setData({

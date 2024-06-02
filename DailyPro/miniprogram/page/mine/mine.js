@@ -7,7 +7,7 @@ Page({
     inputAmount: '', // 用于存储输入的月余额
     dlgObj: { txt: "请设置月余额：", inputtxt: "请输入月余额" },
     avatarUrl: './resources/img/login.png',
-    loading:1
+    loading:0
   },
   
   onLoad() {
