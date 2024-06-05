@@ -128,12 +128,12 @@
     </picker> -->
     <view class="timepicker pickerbgc inputView">
       <input class="picker flexCenter" id="timepickerS" type="text" value="{{dlgStTime}}" start="06:00" end="23:59" bindblur="onTimeStartBlur" />
-      <span class="inputClear" catchtap="clearDlgInput">×</span>
+      <span class="inputClear" catchtap="clearDlgInput" data-se="st">×</span>
     </view>
     ~
     <view class="timepicker pickerbgc inputView">
       <input class="picker flexCenter" id="timepickerE" type="text" value="{{dlgEtTime}}" start="06:00" end="23:59" bindblur="onTimeEndBlur" />
-      <span class="inputClear" catchtap="clearDlgInput">×</span>
+      <span class="inputClear" catchtap="clearDlgInput" data-se="et">×</span>
     </view>
   </view>
   <view class="addDlgbottom">
@@ -174,7 +174,7 @@
   <!-- </view> -->
   <view class="timeDlgLine">
     <view class="timeDlgLineName">事件名称</view>
-    <input class="addInput" placeholder="事件名称" value="{{inputCon}}" bindinput="onInput" data-type="eventName" />
+    <input class="addInput" placeholder="事件名称" value="{{inputName}}" bindinput="onInput" data-type="eventName" />
   </view>
   <view class="timeDlgLine">
     <view class="timeDlgLineName">事件类别</view>
@@ -185,7 +185,7 @@
   <view class="typenoneSpan" wx:if="{{typeNames.length==0}}">（当前暂无类别，请先在设置页面添加类别哦）</view>
   <view class="timeDlgLine">
     <view class="timeDlgLineName">详细备注</view>
-    <input class="addInput addDlgTimeBeizhu" placeholder="备注" value="{{inputName}}" bindinput="onInput" data-type="eventCon" />
+    <input class="addInput addDlgTimeBeizhu" placeholder="备注" value="{{inputCon}}" bindinput="onInput" data-type="eventCon" />
   </view>
   <view class="timeDlgLine">
     <view class="timeDlgLineName">事件评价</view>

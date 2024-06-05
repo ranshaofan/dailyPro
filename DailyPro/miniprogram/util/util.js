@@ -245,40 +245,117 @@ function refreshEventsAndSlots(alls) {
 }
 
 //获取当前userid下所有数据
-function getEventsData(userid){
+async function getEventsData(userid) {
   var db = wx.cloud.database();
-  return new Promise((resolve, reject) => {
-    const events = db.collection('events');
-    events.where({
-      user_id: userid
-    }).get().then(res => {
-      if (res.data) {
-        resolve(res.data);
+  const events = db.collection('events');
+  const MAX_LIMIT = 20; // 每次查询最多获取的数据条数
+  const MAX_CONCURRENT = 5; // 每批次最多并发请求数量
+  let allData = []; // 用于存放所有查询到的数据
+
+  try {
+    // 先查询一下总记录数
+    const countResult = await events.where({ user_id: userid }).count();
+    const total = countResult.total; // 总记录数
+    const batchTimes = Math.ceil(total / MAX_LIMIT); // 计算需要分几次取
+
+    for (let i = 0; i < batchTimes; i += MAX_CONCURRENT) {
+      // 构建当前批次的查询请求
+      const tasks = [];
+      for (let j = 0; j < MAX_CONCURRENT && (i + j) < batchTimes; j++) {
+        const promise = events.where({ user_id: userid })
+          .skip((i + j) * MAX_LIMIT)
+          .limit(MAX_LIMIT)
+          .get();
+        tasks.push(promise);
       }
-    }).catch(err => {
-      console.error('查询失败:', err);
-      reject(err);
-    });
-  });
+
+      // 执行当前批次的查询请求
+      const results = await Promise.all(tasks);
+      results.forEach(result => {
+        allData = allData.concat(result.data);
+      });
+    }
+
+    return allData;
+  } catch (err) {
+    console.error('查询失败:', err);
+    throw err;
+  }
 }
 
+// function getEventsData(userid){
+//   var db = wx.cloud.database();
+//   return new Promise((resolve, reject) => {
+//     const events = db.collection('events');
+//     events.where({
+//       user_id: userid
+//     }).get().then(res => {
+//       if (res.data) {
+//         resolve(res.data);
+//       }
+//     }).catch(err => {
+//       console.error('查询失败:', err);
+//       reject(err);
+//     });
+//   });
+// }
+
 //获取当前userid下所有数据
-function getSlotsData(userid){
+// function getSlotsData(userid){
+//   var db = wx.cloud.database();
+//   return new Promise((resolve, reject) => {
+//     const slots = db.collection('slots');
+//     slots.where({
+//       user_id: userid
+//     }).get().then(res => {
+//       if (res.data) {
+//         resolve(res.data);
+//       }
+//     }).catch(err => {
+//       console.error('查询失败:', err);
+//       reject(err);
+//     });
+//   });
+// }
+
+async function getSlotsData(userid) {
   var db = wx.cloud.database();
-  return new Promise((resolve, reject) => {
-    const slots = db.collection('slots');
-    slots.where({
-      user_id: userid
-    }).get().then(res => {
-      if (res.data) {
-        resolve(res.data);
+  const slots = db.collection('slots');
+  const MAX_LIMIT = 20; // 每次查询最多获取的数据条数
+  const MAX_CONCURRENT = 5; // 每批次最多并发请求数量
+  let allData = []; // 用于存放所有查询到的数据
+
+  try {
+    // 先查询一下总记录数
+    const countResult = await slots.where({ user_id: userid }).count();
+    const total = countResult.total; // 总记录数
+    const batchTimes = Math.ceil(total / MAX_LIMIT); // 计算需要分几次取
+
+    for (let i = 0; i < batchTimes; i += MAX_CONCURRENT) {
+      // 构建当前批次的查询请求
+      const tasks = [];
+      for (let j = 0; j < MAX_CONCURRENT && (i + j) < batchTimes; j++) {
+        const promise = slots.where({ user_id: userid })
+          .skip((i + j) * MAX_LIMIT)
+          .limit(MAX_LIMIT)
+          .get();
+        tasks.push(promise);
       }
-    }).catch(err => {
-      console.error('查询失败:', err);
-      reject(err);
-    });
-  });
+
+      // 执行当前批次的查询请求
+      const results = await Promise.all(tasks);
+      results.forEach(result => {
+        allData = allData.concat(result.data);
+      });
+    }
+
+    return allData;
+  } catch (err) {
+    console.error('查询失败:', err);
+    throw err;
+  }
 }
+
 
 function refreshTypeInfo(userid) {
   var db = wx.cloud.database();

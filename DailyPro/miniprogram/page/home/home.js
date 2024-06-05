@@ -102,11 +102,17 @@ Page({
       }
     }
   },
-  clearDlgInput(e) {
-    this.setData({
-      dlgStTime: "",
-      dlgEtTime: ""
-    });
+  clearDlgInput(event) {
+    var se = event.currentTarget.dataset.se;
+    if(se=="st"){
+      this.setData({
+        dlgStTime: ""
+      });
+    }else{
+      this.setData({
+        dlgEtTime: ""
+      });
+    }
   },
   editcard(event) {
     this.setData({
@@ -135,11 +141,11 @@ Page({
       var typeIndex = this.data.typeNames.indexOf(curEvent.type);
       var jugeIndex = this.data.evaluation.indexOf(curEvent.evaluation);
       this.setData({
-        inputCon: curEvent.name,
+        inputName: curEvent.name,
         typeIndex: typeIndex,
         jugeIndex: jugeIndex,
         currentDate: curEvent.eventtime,
-        inputName: curEvent.notes,
+        inputCon: curEvent.notes,
         addEventDlgShow: 1
       });
     }
