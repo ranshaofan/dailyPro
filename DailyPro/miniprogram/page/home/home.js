@@ -164,6 +164,9 @@ Page({
       var datetime = this.data.currentDate;
       if (Number(et.split(":")[0]) < Number(st.split(":")[0])) {
         wx.showToast({ title: '结束时间不应小于开始时间', icon: 'none' });
+        that.setData({
+          loading: 0
+        });
         return;
       }
       if (this.data.addOrUpd == "add") {
@@ -336,6 +339,9 @@ Page({
       wx.showToast({ title: '无效时间', icon: 'none' });
       this.setData({ dlgEtTime: '23:59' }); // 设置为默认值
     } else {
+      if(Number(formattedVal.split(":")[0]) < Number(this.data.dlgStTime.split(":")[0])){//如果结束时间比开始时间小则加12个小时
+        formattedVal = Number(formattedVal.split(":")[0]) + 12 + ":"+ formattedVal.split(":")[1];
+      }
       this.setData({ dlgEtTime: formattedVal });
     }
   },
