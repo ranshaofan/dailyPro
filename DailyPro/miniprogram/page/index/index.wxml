@@ -1,0 +1,120 @@
+<!--page/index/index.wxml-->
+<view class="container">
+  <view class="header">
+    <view class="header-top">
+      <view class="date-info">
+        <view class="title-row">
+          <text class="title-main">今天</text>
+          <text class="title-sub">10月24日</text>
+        </view>
+        <view class="status-badge">
+          <text class="icon-small">☀️</text>
+          <text>Daily Flow</text>
+        </view>
+      </view>
+      <view class="icon-button shadow-card">
+        <image src="./resources/pic/{{helloPic}}.png" mode="widthFix"></image>
+      </view>
+    </view>
+
+    <view class="stats-card shadow-card">
+      <view class="stat-item">
+        <text class="stat-value">4</text>
+        <text class="stat-label">记录片段</text>
+      </view>
+      <view class="divider-v"></view>
+      <view class="stat-item">
+        <text class="stat-value">6.5</text>
+        <text class="stat-label">专注时长</text>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="content-scroll">
+    <view class="status-section">
+      <text class="section-label">当前状态</text>
+      <scroll-view scroll-x class="status-tags-scroll" enable-flex>
+        <view class="status-tag active">
+          <text class="tag-emoji">🏃</text>
+          <view class="tag-text">
+            <text class="tag-title">运动中</text>
+            <text class="tag-desc">已完成打卡</text>
+          </view>
+        </view>
+        <view class="status-tag normal">
+          <text class="tag-emoji">🌙</text>
+          <text class="tag-label">熬夜</text>
+        </view>
+        <view class="status-tag normal">
+          <text class="tag-emoji">🙂</text>
+          <text class="tag-label">心情</text>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="timeline-main">
+      <view class="timeline-line"></view>
+
+      <view class="timeline-item">
+        <view class="timeline-icon-wrap">
+          <view class="timeline-icon bg-orange">
+            <text class="material-icons text-orange">directions_car</text>
+          </view>
+        </view>
+        <view class="event-card shadow-card">
+          <view class="card-header">
+            <text class="time-range">08:00 - 09:00</text>
+            <view class="category-badge bg-orange-soft">
+              <view class="dot bg-orange"></view>
+              <text>生活</text>
+            </view>
+          </view>
+          <text class="event-title">交通通勤</text>
+          <text class="event-desc">听播客：设计心理学第二章，关于用户体验的思考。</text>
+        </view>
+      </view>
+
+      <view class="timeline-item">
+        <view class="timeline-dot-wrap">
+          <view class="timeline-dot-small"></view>
+        </view>
+        <view class="gap-button">
+          <view class="gap-info">
+            <view class="gap-header">
+              <text class="time-range">09:00 - 09:30</text>
+              <text class="gap-label">空闲</text>
+            </view>
+            <text class="gap-action">补记这段时间</text>
+          </view>
+          <text class="material-icons add-icon">add_circle</text>
+        </view>
+      </view>
+
+      <view class="timeline-item">
+        <view class="timeline-icon-wrap">
+          <view class="timeline-icon bg-blue">
+            <text class="material-icons text-blue">laptop_mac</text>
+          </view>
+        </view>
+        <view class="event-card shadow-card">
+          <view class="card-header">
+            <text class="time-range">09:30 - 12:00</text>
+            <view class="category-badge bg-blue-soft">
+              <view class="dot bg-blue"></view>
+              <text>工作</text>
+            </view>
+          </view>
+          <text class="event-title">深度工作：产品设计</text>
+          <view class="tag-container">
+            <text class="mini-tag">#项目开发</text>
+            <text class="mini-tag">#UI视觉</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="fab-button shadow-float">
+    <text class="material-icons">edit</text>
+  </view>
+</view>

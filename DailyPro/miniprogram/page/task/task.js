@@ -45,7 +45,7 @@ Page({
     slots: [],
     typeIndex: 0,
     typeNames: ["1", "2"],
-    loading:1,
+    loading:0,
   },
   changePageTask() {
     var that = this;

@@ -1,0 +1,205 @@
+<!--page/cateGory/cateGory.wxml-->
+<view class="container">
+  <view class="bg-decoration bg-orange"></view>
+  <view class="bg-decoration bg-blue"></view>
+  <view class="bg-decoration bg-rose"></view>
+
+  <scroll-view scroll-y class="main-content">
+    <view class="tip-section fade-in-up">
+      <text class="tip-text">长按右侧按钮拖拽排序，点击编辑可自定义名称与图标。停用的分类将不会出现在记录页。</text>
+    </view>
+
+    <view class="section-header fade-in-up delay-100">
+      <view class="section-title">
+         <image src="./resources/icon/time.png" mode=""/>
+        <text>时间记录分类</text>
+      </view>
+      <view class="btn-add" hover-class="btn-hover" bind:tap="newCategory">
+        <image class="material-icons icon-add" src="./resources/icon/add.png" mode=""/>
+        <text>新建分类</text>
+      </view>
+    </view>
+
+    <view class="category-list">
+      <view class="category-item fade-in-up delay-100">
+        <view class="category-icon-wrap bg-indigo-soft">
+          <view class="icon-svg icon-domain text-indigo" style="width: 60rpx; height: 60rpx;"></view>
+        </view>
+        <view class="category-info">
+          <text class="category-name">工作</text>
+          <view class="category-count">
+            <view class="count-dot bg-indigo"></view>
+            <text>423 条记录</text>
+          </view>
+        </view>
+        <view class="category-actions">
+          <view class="action-btn" hover-class="btn-hover">
+            <image class="material-icons" src="./resources/icon/edit.png" mode=""/>
+          </view>
+          <view class="action-btn drag-handle">
+            <!-- <text class="material-icons">drag_indicator</text> -->
+          </view>
+        </view>
+      </view>
+
+      <view class="category-item fade-in-up delay-200">
+        <view class="category-icon-wrap bg-teal-soft">
+          <!-- <text class="material-icons text-teal">directions_run</text> -->
+        </view>
+        <view class="category-info">
+          <text class="category-name">运动</text>
+          <view class="category-count">
+            <view class="count-dot bg-teal"></view>
+            <text>89 条记录</text>
+          </view>
+        </view>
+        <view class="category-actions">
+          <view class="action-btn" hover-class="btn-hover">
+            <image class="material-icons" src="./resources/icon/edit.png" mode=""/>
+          </view>
+          <view class="action-btn drag-handle">
+            <!-- <text class="material-icons">drag_indicator</text> -->
+          </view>
+        </view>
+      </view>
+
+      <view class="category-item disabled fade-in-up delay-300">
+        <view class="category-icon-wrap bg-slate-soft">
+          <!-- <text class="material-icons text-slate">bedtime</text> -->
+        </view>
+        <view class="category-info">
+          <text class="category-name line-through">睡眠</text>
+          <text class="category-status">已隐藏</text>
+        </view>
+        <view class="btn-enable" hover-class="btn-hover">启用</view>
+      </view>
+    </view>
+
+    <view class="divider fade-in-up delay-300"></view>
+
+    <view class="section-header fade-in-up delay-300">
+      <view class="section-title">
+        <image src="./resources/icon/slot.png" mode=""/>
+        <text>今日打卡内容</text>
+      </view>
+      <view class="btn-add" hover-class="btn-hover">
+        <image class="material-icons icon-add" src="./resources/icon/add.png" mode=""/>
+        <text>新增打卡</text>
+      </view>
+    </view>
+
+    <view class="category-list">
+      <view class="category-item fade-in-up delay-400">
+        <view class="category-icon-wrap bg-yellow-soft">
+          <!-- <text class="material-icons text-yellow">sentiment_satisfied</text> -->
+        </view>
+        <view class="category-info">
+          <text class="category-name">情绪</text>
+          <view class="category-count">
+            <text class="material-icons mini-icon text-yellow">check_circle</text>
+            <text>每日记录</text>
+          </view>
+        </view>
+        <view class="category-actions">
+          <view class="action-btn" hover-class="btn-hover">
+            <image class="material-icons" src="./resources/icon/edit.png" mode=""/>
+          </view>
+          <view class="switch-wrap">
+            <view class="switch-bg off">
+              <view class="switch-dot"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="category-item fade-in-up delay-500">
+        <view class="category-icon-wrap bg-blue-soft">
+          <!-- <text class="material-icons text-blue">local_drink</text> -->
+        </view>
+        <view class="category-info">
+          <text class="category-name">喝水</text>
+          <view class="category-count">
+            <text class="material-icons mini-icon text-blue">check_circle</text>
+            <text>每日目标 8 杯</text>
+          </view>
+        </view>
+        <view class="category-actions">
+          <view class="action-btn" hover-class="btn-hover">
+            <image class="material-icons" src="./resources/icon/edit.png" mode=""/>
+          </view>
+          <view class="switch-wrap">
+            <view class="switch-bg on">
+              <view class="switch-dot"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+<!-- 弹窗 -->
+<view class="modal-mask {{show ? 'show' : ''}}" bindtap="onCancel">
+  <view class="modal-container {{show ? 'enter' : ''}}" catchtap="preventBubble">
+    <view class="drag-bar-wrap">
+      <view class="drag-bar"></view>
+    </view>
+
+    <view class="modal-header">
+      <view class="btn-cancel" hover-class="btn-hover" bindtap="onCancel">取消</view>
+      <text class="modal-title">新建分类</text>
+      <view class="btn-save" hover-class="btn-hover" bindtap="onSave">保存</view>
+    </view>
+
+    <scroll-view scroll-y class="modal-content">
+      <view class="input-section">
+        <view class="input-card">
+          <view class="icon-preview" style="background-color: {{selectedColor}}">
+            <view class="icon-svg {{selectedIcon}}"></view>
+          </view>
+          <input 
+            class="name-input" 
+            placeholder="例如：阅读、健身..." 
+            value="{{categoryName}}" 
+            bindinput="onInputName"
+          />
+          <view class="btn-clear" wx:if="{{categoryName}}" bindtap="onClear">
+            <icon type="clear" size="20" color="#cbd5e1"></icon>
+          </view>
+        </view>
+      </view>
+
+      <view class="section-group">
+        <view class="section-label">选择图标</view>
+        <view class="grid-container card">
+          <block wx:for="{{icons}}" wx:key="name">
+            <view 
+              class="grid-item {{selectedIcon === item.class ? 'active' : ''}}" 
+              bindtap="selectIcon" 
+              data-icon="{{item.class}}"
+            >
+              <view class="icon-svg {{item.class}}"></view>
+            </view>
+          </block>
+        </view>
+      </view>
+
+      <view class="section-group">
+        <view class="section-label">主题色调</view>
+        <view class="color-container card">
+          <block wx:for="{{colors}}" wx:key="*this">
+            <view 
+              class="color-item {{selectedColor === item ? 'active' : ''}}" 
+              style="background-color: {{item}}" 
+              bindtap="selectColor" 
+              data-color="{{item}}"
+            >
+              <view class="check-mark" wx:if="{{selectedColor === item}}">L</view>
+            </view>
+          </block>
+        </view>
+      </view>
+      
+      <view class="safe-area-inset"></view>
+    </scroll-view>
+  </view>
+</view>

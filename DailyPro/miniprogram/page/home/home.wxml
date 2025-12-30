@@ -196,4 +196,4 @@
   <view class="addBtn">
     <button class="flexCenter confirm" bindtap="addDlgBtn" data-type="event">确定</button>
   </view>
-</view>
+</view> 

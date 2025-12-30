@@ -10,7 +10,7 @@ const config = {
   host,
 
   // 云开发环境 ID
-  envId: 'record-database-4gmgag5a6d5ccfe0',
+  envId: 'cloud1-8gxm482y6ddbf1e0',
   // envId: 'test-f0b102',
 
   // 云开发-存储 示例文件的文件 ID

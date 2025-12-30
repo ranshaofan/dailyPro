@@ -1,5 +1,5 @@
 <wxs module="filters" src="../../util/filter.wxs"></wxs>
-<view class="loading-spinner">
+<view class="loading-spinner" wx:if="{{0}}">
   <view>
     <image class="temporimg" src="./resources/shy.png" mode="aspectFit" lazy-load="false" binderror="" bindload="">
     </image>
@@ -14,7 +14,7 @@
 <view class="page">
   <!-- <button class="generateBtn" bindtap="listToTimeCanvas">生成</button> -->
   <!-- 标题部分 -->
-  <view class="beginBtn flexCenter" bindtap="listToTimeCanvas">{{ifTask?'时间统计':'事件统计'}}</view>
+  <view class="beginBtn flexCenter" bindtap="listToTimeCanvas">{{ifTask?'统计时间':'统计事件'}}</view>
   <!-- <view class="analysisTitle flexCenter"> -->
     <!-- <span class="analysisTitlespan">{{ifTask?'时间':'事件'}}</span> -->
     <!-- <span wx:else>事件</span> -->
@@ -55,14 +55,14 @@
   </view>
   <view style="height:{{ifTask?'0':'100%'}}px;"></view>
   <!-- 折现图模块 -->
-  <view class="lineChart chart">
+  <!-- <view class="lineChart chart">
     <view wx:if="{{ifTask}}">
       <view class="canvasbox">
         <canvas id="polyCanvas" type="2d" class="anaCanvas" />
       </view>
     </view>
     <view wx:else></view>
-  </view>
+  </view> -->
   <!-- task页面 -->
   <view wx:if="{{ifTask}}"></view>
   <!-- cost页面 -->
