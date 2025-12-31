@@ -7,7 +7,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    helloPic: 'sun'
+    helloPic: 'sun',
+    checkItems: [], // 存放打卡数据,
+    inputMode: 'voice', // 'voice' 或 'text'
+    isRecording: false,
+    showModal:false
   },
 
   /**
@@ -47,7 +51,84 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    // 每次回到首页都刷新数据
+    this.refreshCheckList();
+  },
+  refreshCheckList() {
+    const list = app.globalData.todayCheckList || [];
+    this.setData({ checkItems: list });
+  },
 
+  // 首页快速打卡切换逻辑
+  async onToggleStatus(e) {
+    let that = this;
+    const flagId = e.currentTarget.dataset.id;
+    const { checkItems } = this.data;
+    const index = checkItems.findIndex(item => item.flagId === flagId);
+    
+    if (index === -1) return;
+
+    // 1. UI 乐观更新
+    const targetItem = checkItems[index];
+    const newStatus = !targetItem.isOpen;
+    const updateKey = `checkItems[${index}].isOpen`;
+    this.setData({ [updateKey]: newStatus });
+    
+    // 2. 震动反馈
+    wx.vibrateShort({ type: 'light' });
+
+    // 3. 同步到云端 (逻辑同 category.js)
+    try {
+      const db = wx.cloud.database();
+      const now = new Date();
+      const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+      
+      const res = await db.collection('dayFlags').where({ date: todayStr }).get();
+      if (res.data.length > 0) {
+        const docId = res.data[0]._id;
+        const updatedList = [...this.data.checkItems];
+        
+        await db.collection('dayFlags').doc(docId).update({
+          data: { checkList: updatedList }
+        });
+        
+        // 同步全局，确保分类页数据一致
+        app.globalData.todayCheckList = updatedList;
+      }
+    } catch (err) {
+      console.error("更新失败", err);
+      that.refreshCheckList(); // 失败则回滚
+    }
+  },
+  toggleInputMode() {
+    this.setData({
+      inputMode: this.data.inputMode === 'voice' ? 'text' : 'voice'
+    });
+    wx.vibrateShort({ type: 'light' });
+  },
+
+  startRecording() {
+    this.setData({ isRecording: true });
+    wx.vibrateShort({ type: 'medium' });
+  },
+
+  stopRecording() {
+    this.setData({ isRecording: false });
+  },
+
+  // 显示弹窗
+  onAddTimeline() {
+    this.setData({ showModal: true });
+  },
+  
+  // 隐藏弹窗
+  hideModal() {
+    this.setData({ showModal: false });
+  },
+  
+  // 阻止冒泡
+  stopBubble() {
+    return;
   },
 
   /**

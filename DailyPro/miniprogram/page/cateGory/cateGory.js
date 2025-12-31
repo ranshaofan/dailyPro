@@ -74,6 +74,15 @@ Page({
         this.setData({ checkItems: data });
       };
     }
+    // 如果 app.js 已经跑完并拿到了数据
+    if (app.globalData.todayCheckList && app.globalData.todayCheckList.length > 0) {
+      this.setData({ checkItems: app.globalData.todayCheckList });
+    } else {
+      // 如果还没拿完，注册一个回调函数给 app.js 调用
+      app.todayFlagsReadyCallback = (data) => {
+        this.setData({ checkItems: data });
+      };
+    }
   },
 
   /**
@@ -86,9 +95,14 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow() {
-    this.initTodayData();
-  },
+  // 在 page/category/category.js 中
+onShow() {
+  // 假设 app.js 已经把今天的数据加载到了 globalData.todayCheckList
+  const todayList = getApp().globalData.todayCheckList || [];
+  this.setData({
+    checkItems: todayList 
+  });
+},
   async initTodayData() {
     const now = new Date();
     const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
@@ -127,194 +141,152 @@ Page({
       showCheckModal: false
     });
   },
-  // 1. 保存/新增打卡项到 flags 集合
   async onCheckSave() {
-    const { checkContent, selectedCheckIcon, isEditCheck, currentEditId, checkItems } = this.data;
+    const { checkContent, selectedCheckIcon, isEditCheck, currentEditId } = this.data;
     const trimmedName = checkContent.trim();
-  
-    // 1. 基础验证
-    if (!trimmedName) {
-      wx.showToast({ title: '请输入名称', icon: 'none' });
-      return;
-    }
-  
-    // 2. 重名校验
-    const isDuplicate = checkItems.some(item => {
-      if (isEditCheck) {
-        return item.name === trimmedName && item._id !== currentEditId;
-      } else {
-        return item.name === trimmedName;
-      }
-    });
-  
-    if (isDuplicate) {
-      wx.showToast({ title: '当前已有同名打卡项', icon: 'none' });
-      return;
-    }
+    if (!trimmedName) return wx.showToast({ title: '请输入名称', icon: 'none' });
   
     wx.showLoading({ title: '保存中...' });
+    const db = wx.cloud.database();
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
   
     try {
-      const db = wx.cloud.database();
-      const _ = db.command;
-      let updatedCheckItems = [...checkItems];
-      let targetId = currentEditId;
-  
-      // --- A. 更新/新增 flags 集合 ---
+      let flagId = currentEditId;
+      
+      // --- 1. 处理 flags 集合 (模板层) ---
       if (isEditCheck) {
-        await db.collection('flags').doc(currentEditId).update({
-          data: {
-            name: trimmedName,
-            iconName: selectedCheckIcon,
-            updateTime: db.serverDate(),
-            status: true
-          }
+        // 编辑模式
+        await db.collection('flags').doc(flagId).update({
+          data: { name: trimmedName, iconName: selectedCheckIcon, updateTime: db.serverDate() }
         });
-        updatedCheckItems = updatedCheckItems.map(item =>
-          item._id === currentEditId ? { ...item, name: trimmedName, iconName: selectedCheckIcon } : item
-        );
       } else {
-        const existRes = await db.collection('flags').where({
-          name: trimmedName,
-          status: false
-        }).get();
-  
+        // 新增模式：检查是否有 status:false 的同名项
+        const existRes = await db.collection('flags').where({ name: trimmedName }).get();
+        
         if (existRes.data.length > 0) {
-          targetId = existRes.data[0]._id;
-          await db.collection('flags').doc(targetId).update({
-            data: { iconName: selectedCheckIcon, status: true, updateTime: db.serverDate() }
+          flagId = existRes.data[0]._id;
+          await db.collection('flags').doc(flagId).update({
+            data: { status: true, iconName: selectedCheckIcon, updateTime: db.serverDate() }
           });
-          updatedCheckItems.push({ ...existRes.data[0], _id: targetId, name: trimmedName, iconName: selectedCheckIcon, status: true });
         } else {
-          const newData = {
-            name: trimmedName,
-            iconName: selectedCheckIcon,
-            status: true,
-            isOpen: true, // 默认开启
-            createTime: db.serverDate()
-          };
-          const res = await db.collection('flags').add({ data: newData });
-          targetId = res._id;
-          updatedCheckItems.push({ ...newData, _id: targetId });
+          const res = await db.collection('flags').add({
+            data: { 
+              name: trimmedName, iconName: selectedCheckIcon, 
+              status: true, isOpen: true, createTime: db.serverDate() 
+            }
+          });
+          flagId = res._id;
         }
       }
   
-      // --- B. 同步更新 dayFlags 集合（仅限今天） ---
-      const now = new Date();
-      // 保持和你 initTodayData 一致的日期格式: YYYY-M-D
-      const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-  
-      const dayRecordRes = await db.collection('dayFlags').where({
-        date: todayStr
-      }).get();
-  
-      if (dayRecordRes.data.length > 0) {
-        const todayDoc = dayRecordRes.data[0];
-        let newCheckList = [...(todayDoc.checkList || [])];
-  
+      // --- 2. 处理 dayFlags 集合 (实例层：仅限今天) ---
+      const dayRes = await db.collection('dayFlags').where({ date: todayStr }).get();
+      if (dayRes.data.length > 0) {
+        const dayDoc = dayRes.data[0];
+        let list = dayDoc.checkList || [];
+        
         if (isEditCheck) {
-          // 编辑：更新今日记录中的名称和图标
-          newCheckList = newCheckList.map(item => 
-            item.flagId === targetId ? { ...item, name: trimmedName, iconName: selectedCheckIcon } : item
-          );
+          // 更新今天列表里的这一项
+          list = list.map(item => item.flagId === flagId ? 
+            { ...item, name: trimmedName, iconName: selectedCheckIcon } : item);
         } else {
-          // 新增：如果今日记录里还没这项，就加进去
-          const hasTask = newCheckList.some(item => item.flagId === targetId);
-          if (!hasTask) {
-            newCheckList.push({
-              flagId: targetId,
-              name: trimmedName,
-              iconName: selectedCheckIcon,
-              isCompleted: false
-            });
+          // 如果今天还没这项，则添加
+          if (!list.some(item => item.flagId === flagId)) {
+            list.push({ flagId, name: trimmedName, iconName: selectedCheckIcon, isCompleted: false });
           }
         }
-  
-        // 更新到云端 dayFlags
-        await db.collection('dayFlags').doc(todayDoc._id).update({
-          data: { checkList: newCheckList }
-        });
+        
+        await db.collection('dayFlags').doc(dayDoc._id).update({ data: { checkList: list } });
+        
+        // 更新本地和全局 UI (以 dayFlags 的内容为准渲染列表)
+        this.setData({ checkItems: list });
+        getApp().globalData.todayCheckList = list; // 假设你在全局存了这个
       }
   
-      // --- C. 统一同步全局和本地 ---
-      this.setData({
-        checkItems: updatedCheckItems,
-        showCheckModal: false
-      });
-      getApp().globalData.flags = updatedCheckItems;
-  
+      this.setData({ showCheckModal: false });
       wx.hideLoading();
       wx.showToast({ title: '保存成功' });
-  
     } catch (e) {
+      console.error(e);
       wx.hideLoading();
-      console.error('保存失败：', e);
-      wx.showToast({ title: '保存失败', icon: 'none' });
     }
   },
   onCheckEdit(e) {
-    const id = e.currentTarget.dataset.id;
-    console.log('当前点击的ID:', id); // 调试用
+    const id = e.currentTarget.dataset.id; // 这里的 id 是 WXML 传来的 item.flagId
     
-    const target = this.data.checkItems.find(item => item._id === id);
-    console.log('找到的目标对象:', target); // 调试用
+    // 修改查找逻辑：通过 flagId 在本地列表中找到对应项
+    const target = this.data.checkItems.find(item => item.flagId === id);
   
     if (!target) {
-      console.error('未找到对应打卡项，请检查 data-id 是否正确');
+      console.error('未找到对应打卡项');
       return;
     }
   
     this.setData({
       showCheckModal: true,      
       isEditCheck: true,         
-      currentEditId: id,         
+      currentEditId: id,          // 此时存入的是 flagId
       checkContent: target.name,  
       selectedCheckIcon: target.iconName 
     });
   },
   async onDeleteCheck() {
-    const { currentEditId, checkItems } = this.data;
-    const app = getApp();
+    const { currentEditId } = this.data; // 这里的 ID 已经在 onCheckEdit 中设为 flagId 了
+    
+    if (!currentEditId) return;
   
     wx.showModal({
       title: '确认删除',
-      content: '删除后，该项将不再出现在打卡清单中。',
+      content: '删除后，今日清单将不再显示该项，历史记录将保留。',
       confirmColor: '#ff4d4f',
-      confirmText: '删除',
       success: async (res) => {
-        if (res.confirm) {
-          wx.showLoading({ title: '正在处理...' });
+        if (!res.confirm) return;
+        
+        wx.showLoading({ title: '删除中...' });
+        const db = wx.cloud.database();
+        const now = new Date();
+        const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
   
-          try {
-            const db = wx.cloud.database();
+        try {
+          // 1. 逻辑删除模板 (flags 集合)
+          // 注意：flags 集合记录的 _id 恰好就是我们这里的 flagId (即 currentEditId)
+          await db.collection('flags').doc(currentEditId).update({
+            data: { 
+              status: false, 
+              deleteTime: db.serverDate() 
+            }
+          });
+  
+          // 2. 从今日实例数组中移除 (dayFlags 集合)
+          const dayRes = await db.collection('dayFlags').where({ date: todayStr }).get();
+          
+          if (dayRes.data.length > 0) {
+            const dayDoc = dayRes.data[0];
             
-            // --- 核心修改：逻辑删除 ---
-            await db.collection('flags').doc(currentEditId).update({
-              data: {
-                status: false, // 标记为不可见/已停用
-                deleteTime: db.serverDate() // 记录删除时间备查
-              }
-            });
-  
-            // 从本地当前显示的列表中移除这一项
-            const updatedList = checkItems.filter(item => item._id !== currentEditId);
+            // --- 关键：使用 flagId 进行过滤，剔除被删除的这一项 ---
+            const newList = dayDoc.checkList.filter(item => item.flagId !== currentEditId);
             
-            this.setData({
-              checkItems: updatedList,
-              showCheckModal: false
+            // 更新云端今日记录
+            await db.collection('dayFlags').doc(dayDoc._id).update({
+              data: { checkList: newList }
             });
-  
-            // 同步更新全局变量
-            app.globalData.flags = updatedList;
-  
-            wx.hideLoading();
-            wx.showToast({ title: '已成功删除', icon: 'success' });
-  
-          } catch (e) {
-            wx.hideLoading();
-            console.error('逻辑删除失败：', e);
-            wx.showToast({ title: '删除失败', icon: 'none' });
+            
+            // 3. 实时同步本地 UI 和全局变量
+            this.setData({ 
+              checkItems: newList, 
+              showCheckModal: false 
+            });
+            getApp().globalData.todayCheckList = newList;
           }
+          
+          wx.hideLoading();
+          wx.showToast({ title: '已删除', icon: 'success' });
+          
+        } catch (e) {
+          console.error("删除操作失败：", e);
+          wx.hideLoading();
+          wx.showToast({ title: '删除失败', icon: 'none' });
         }
       }
     });
@@ -590,51 +562,58 @@ Page({
   /**
    * 2. 切换“今日打卡内容”的开启/关闭状态 (滑动开关)
    */
+  // page/cateGory/cateGory.js
+
   async onToggleCheck(e) {
-    const id = e.currentTarget.dataset.id; // 这里现在拿到的是 _id
+    const flagId = e.currentTarget.dataset.id; // 这里的 id 是 flags 集合的长 ID
     const { checkItems } = this.data;
-    
-    // 核心修复：使用 _id 进行匹配
-    const index = checkItems.findIndex(item => item._id === id);
-  
-    if (index === -1) {
-      console.error('未找到对应的打卡项，传入ID为:', id);
-      return;
-    }
-  
-    // 触感反馈
-    wx.vibrateShort({ type: 'medium' });
-  
-    // 切换后的状态
-    const newOpenStatus = !checkItems[index].isOpen;
+    const index = checkItems.findIndex(item => item.flagId === flagId);
+
+    if (index === -1) return;
+
+    // 1. 触感反馈
+    wx.vibrateShort({ type: 'light' });
+
+    // 2. 准备更新后的状态
+    const newStatus = !checkItems[index].isOpen; // 假设页面上用的是 isOpen 字段控制开关
     const updateKey = `checkItems[${index}].isOpen`;
-  
-    // 1. 先更新本地 UI，提升响应速度
-    this.setData({ [updateKey]: newOpenStatus });
-  
+
+    // 3. 乐观 UI 更新：先让用户看到开关动了
+    this.setData({ [updateKey]: newStatus });
+
     try {
       const db = wx.cloud.database();
-      // 2. 同步更新云端数据库 flags 集合
-      // 这里的 isOpen 字段名建议和你数据库保持一致，
-      // 如果数据库里叫 status，这里请改为 status
-      await db.collection('flags').doc(id).update({
-        data: {
-          isOpen: newOpenStatus 
-        }
-      });
-  
-      // 3. 同步更新全局数据
-      getApp().globalData.flags = this.data.checkItems;
-  
-      wx.showToast({
-        title: newOpenStatus ? '已开启打卡' : '已关闭打卡',
-        icon: 'none',
-        duration: 1000
-      });
+      const _ = db.command;
+      const now = new Date();
+      const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+
+      // 4. 云端更新：定位到今日记录，并修改 checkList 数组中对应 flagId 的项
+      // 使用查询条件定位记录，然后使用 'checkList.index.isOpen' 的方式更新（如果云端支持）
+      // 或者直接全量更新 checkList（最稳妥）
+      
+      const dayRes = await db.collection('dayFlags').where({ date: todayStr }).get();
+      if (dayRes.data.length > 0) {
+        const docId = dayRes.data[0]._id;
+        const updatedList = [...this.data.checkItems];
+        
+        await db.collection('dayFlags').doc(docId).update({
+          data: {
+            checkList: updatedList
+          }
+        });
+
+        // 5. 同步全局数据
+        getApp().globalData.todayCheckList = updatedList;
+        
+        wx.showToast({ 
+          title: newStatus ? '已开启' : '已关闭', 
+          icon: 'none' 
+        });
+      }
     } catch (err) {
-      console.error('更新开关状态失败:', err);
-      // 如果失败，回滚本地状态
-      this.setData({ [updateKey]: !newOpenStatus });
+      console.error('切换状态失败', err);
+      // 失败回滚
+      this.setData({ [updateKey]: !newStatus });
       wx.showToast({ title: '操作失败', icon: 'none' });
     }
   },

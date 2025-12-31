@@ -18,6 +18,7 @@ App({
     // 2. 调用读取数据的函数
     this.fetchGlobalCategories();
     this.fetchGlobalFlags(); // 新增：初始化时读取打卡配置
+    this.initTodayData();
     // const that = this;
     // if (!wx.cloud) {
     //   console.error('请使用 2.2.3 或以上的基础库以使用云能力');
@@ -130,6 +131,53 @@ App({
       console.log('全局分类初始化成功:', res.data);
     } catch (err) {
       console.error('全局分类初始化失败:', err);
+    }
+  },
+  async initTodayData() {
+    const db = wx.cloud.database();
+    const now = new Date();
+    // 保持格式一致：YYYY-M-D
+    const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+
+    try {
+      // 1. 检查今日是否已有记录
+      const res = await db.collection('dayFlags').where({ date: todayStr }).get();
+
+      if (res.data.length > 0) {
+        // 已有记录，直接存入全局
+        this.globalData.todayCheckList = res.data[0].checkList;
+      } else {
+        // 2. 跨天了/初次使用，从 flags 模板中抓取 status 为 true 的项目
+        const flagsRes = await db.collection('flags').where({
+          status: true,
+          isOpen: true // 只有开启状态的项目才初始化到今日
+        }).get();
+
+        const initialCheckList = flagsRes.data.map(f => ({
+          flagId: f._id,
+          name: f.name,
+          iconName: f.iconName,
+          isCompleted: false
+        }));
+
+        // 3. 写入 dayFlags 集合
+        await db.collection('dayFlags').add({
+          data: {
+            date: todayStr,
+            checkList: initialCheckList,
+            createTime: db.serverDate()
+          }
+        });
+
+        this.globalData.todayCheckList = initialCheckList;
+      }
+
+      // 4. 通知页面数据已准备好
+      if (this.todayFlagsReadyCallback) {
+        this.todayFlagsReadyCallback(this.globalData.todayCheckList);
+      }
+    } catch (e) {
+      console.error("初始化每日打卡失败", e);
     }
   },
 
@@ -298,6 +346,7 @@ App({
     ,
     categories:[],
     flags: [],
+    todayCheckList: []
   },
   // lazy loading openid
   getUserOpenId(callback) {

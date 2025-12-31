@@ -77,10 +77,10 @@
           </view>
 
           <view class="category-actions">
-            <view class="action-btn" hover-class="btn-hover" bindtap="onCheckEdit" data-id="{{item._id}}">
+            <view class="action-btn" hover-class="btn-hover" bindtap="onCheckEdit" data-id="{{item.flagId}}">
               <image class="action-icon" src="./resources/icon/edit.png" mode="aspectFit" />
             </view>
-            <view class="switch-wrap" bindtap="onToggleCheck" data-id="{{item._id}}">
+            <view class="switch-wrap" bindtap="onToggleCheck" data-id="{{item.flagId}}">
               <view class="switch-bg theme-switch {{item.isOpen ? 'on' : 'off'}}">
                 <view class="switch-dot"></view>
               </view>
