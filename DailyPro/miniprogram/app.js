@@ -5,7 +5,7 @@ const util = require('./util/util.js');
 App({
 
   onLaunch: function (opts, data) {
-    const that = this;
+    // 1. 初始化云开发环境（如果尚未初始化）
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力');
     } else {
@@ -14,74 +14,123 @@ App({
         traceUser: true,
       });
     }
-    // this.getUserOpenId();
+
+    // 2. 调用读取数据的函数
+    this.fetchGlobalCategories();
+    this.fetchGlobalFlags(); // 新增：初始化时读取打卡配置
+    // const that = this;
+    // if (!wx.cloud) {
+    //   console.error('请使用 2.2.3 或以上的基础库以使用云能力');
+    // } else {
+    //   wx.cloud.init({
+    //     env: config.envId,
+    //     traceUser: true,
+    //   });
+    // }
+    // // this.getUserOpenId();
     
-    // 获取数据库引用
+    // // 获取数据库引用
+    // const db = wx.cloud.database();
+    // var day = util.dateFormat('yyyy-MM-dd', new Date());
+    // // 获取集合的引用
+    // const userInfoCollection = db.collection('userInfo');
+    // const events = db.collection('events');
+    // const slots = db.collection('slots'); 
+    // const typeInfo = db.collection('typeInfo'); 
+
+    // // 用于跟踪数据加载状态
+    // this.dataLoadStatus = {
+    //   userInfoLoaded: false,
+    //   eventsLoaded: false,
+    //   typeInfoLoaded:false
+    // };
+
+    // // 查询数据
+    // userInfoCollection.get().then(res => {
+    //   // 查询成功，res.data 包含了查询结果
+    //   if (res.data[0]) this.globalData.userInfo = res.data[0];
+    //   this.dataLoadStatus.userInfoLoaded = true;
+    //   this.checkDataReady();
+    //   if(!res.data || res.data.length==0)return;
+    //   //查询userinfo以后才查询对应的数据
+    //   //events事件
+    //   events.where({
+    //     eventtime: day,
+    //     user_id:this.globalData.userInfo._openid
+    //   }).get().then(res => {
+    //     if (res.data) {
+    //       that.globalData.events = res.data;
+    //     }
+    //     this.dataLoadStatus.eventsLoaded = true;
+    //     this.checkDataReady();
+    //   }).catch(err => {
+    //     console.error('查询失败:', err);
+    //   });
+    //   //slots时间
+    //   slots.where({
+    //     datetime: day,
+    //     user_id:this.globalData.userInfo._openid
+    //   }).get().then(res => {
+    //     if (res.data) {
+    //       that.globalData.slots = res.data;
+    //     }
+    //     this.dataLoadStatus.slotsLoaded = true;
+    //     this.checkDataReady();
+    //   }).catch(err => {
+    //     console.error('查询失败:', err);
+    //   });
+    //   //typeInfo
+    //   typeInfo.where({
+    //     user_id:this.globalData.userInfo._openid
+    //   }).get().then(res => {
+    //     if (res.data) {
+    //       that.globalData.typeInfo = res.data;
+    //     }
+    //     this.dataLoadStatus.typeInfoLoaded = true;
+    //     this.checkDataReady();
+    //   }).catch(err => {
+    //     console.error('查询失败:', err);
+    //   });
+    // }).catch(err => {
+    //   console.error('查询失败:', err);
+    // });
+
+  },
+  // 读取打卡项目配置 (flags集合)
+  // app.js
+  async fetchGlobalFlags() {
     const db = wx.cloud.database();
-    var day = util.dateFormat('yyyy-MM-dd', new Date());
-    // 获取集合的引用
-    const userInfoCollection = db.collection('userInfo');
-    const events = db.collection('events');
-    const slots = db.collection('slots'); 
-    const typeInfo = db.collection('typeInfo'); 
-
-    // 用于跟踪数据加载状态
-    this.dataLoadStatus = {
-      userInfoLoaded: false,
-      eventsLoaded: false,
-      typeInfoLoaded:false
-    };
-
-    // 查询数据
-    userInfoCollection.get().then(res => {
-      // 查询成功，res.data 包含了查询结果
-      if (res.data[0]) this.globalData.userInfo = res.data[0];
-      this.dataLoadStatus.userInfoLoaded = true;
-      this.checkDataReady();
-      if(!res.data || res.data.length==0)return;
-      //查询userinfo以后才查询对应的数据
-      //events事件
-      events.where({
-        eventtime: day,
-        user_id:this.globalData.userInfo._openid
-      }).get().then(res => {
-        if (res.data) {
-          that.globalData.events = res.data;
-        }
-        this.dataLoadStatus.eventsLoaded = true;
-        this.checkDataReady();
-      }).catch(err => {
-        console.error('查询失败:', err);
-      });
-      //slots时间
-      slots.where({
-        datetime: day,
-        user_id:this.globalData.userInfo._openid
-      }).get().then(res => {
-        if (res.data) {
-          that.globalData.slots = res.data;
-        }
-        this.dataLoadStatus.slotsLoaded = true;
-        this.checkDataReady();
-      }).catch(err => {
-        console.error('查询失败:', err);
-      });
-      //typeInfo
-      typeInfo.where({
-        user_id:this.globalData.userInfo._openid
-      }).get().then(res => {
-        if (res.data) {
-          that.globalData.typeInfo = res.data;
-        }
-        this.dataLoadStatus.typeInfoLoaded = true;
-        this.checkDataReady();
-      }).catch(err => {
-        console.error('查询失败:', err);
-      });
-    }).catch(err => {
-      console.error('查询失败:', err);
-    });
-
+    try {
+      // 关键点：只查询 status 为 true 的数据
+      const res = await db.collection('flags')
+        .where({ 
+          _openid: '{openid}', // 云开发会自动处理，如果是客户端调用可省略
+          status: true 
+        })
+        .get();
+        
+      this.globalData.flags = res.data;
+      if (this.flagsReadyCallback) {
+        this.flagsReadyCallback(res.data);
+      }
+    } catch (err) {
+      console.error('读取Flags失败:', err);
+    }
+  },
+  async fetchGlobalCategories() {
+    const db = wx.cloud.database();
+    try {
+      const res = await db.collection('types').where({ status: true }).get();
+      this.globalData.categories = res.data;
+      
+      // 如果页面已经加载完成，但数据才刚回来，可以通过回调或事件通知页面
+      if (this.categoriesReadyCallback) {
+        this.categoriesReadyCallback(res.data);
+      }
+      console.log('全局分类初始化成功:', res.data);
+    } catch (err) {
+      console.error('全局分类初始化失败:', err);
+    }
   },
 
   checkDataReady: function () {
@@ -188,7 +237,67 @@ App({
       "jiudian.png",
       "jiushui.png",
       "shopping.png"
+    ],
+    icons: [
+      // 作息 / 时间
+      { name: '阅读', class: 'icon-book' },
+      { name: '运动', class: 'icon-run' },
+      { name: '健身', class: 'icon-sport' },
+      { name: '做饭', class: 'icon-cook' },
+      { name: '吃饭', class: 'icon-eat' },
+      { name: '咖啡', class: 'icon-coffee' },
+      { name: '音乐', class: 'icon-music' },
+      { name: '工作', class: 'icon-work' },
+      { name: '学习', class: 'icon-study' },
+      { name: '购物', class: 'icon-shopping' },
+      { name: '时间', class: 'icon-alarm' },
+      { name: '睡觉', class: 'icon-sleep' },
+      { name: '专注', class: 'icon-focus' },
+      { name: '冥想', class: 'icon-meditation' },
+      { name: '聚会', class: 'icon-together' },
+      { name: '出行', class: 'icon-car' },
+      { name: '打扫', class: 'icon-clean' },
+      { name: '宠物', class: 'icon-pet' },
+      { name: '医疗', class: 'icon-hospital' },
+      { name: '丽人', class: 'icon-lipstick' },
+      { name: '玩具', class: 'icon-play' },
+      { name: '旅游', class: 'icon-trip' },
+      { name: '人', class: 'icon-person' },
+      { name: '一般', class: 'icon-star' },
+    ],
+    checkIcons: [
+      "changge",
+      "chenxi",
+      "chishucai",
+      "chishuiguo",
+      "chizaocan",
+      "chouyan",
+      "dadianhua",
+      "hejiu",
+      "heshui",
+      "huahua",
+      "jianfei",
+      "jianshen",
+      "jiejiu",
+      "jieyan",
+      "kanshu",
+      "kaoyan",
+      "lianzi",
+      "licai",
+      "paobu",
+      "peihaizi",
+      "sheying",
+      "shuaya",
+      "tingge",
+      "weixiao",
+      "yingyu",
+      "zaoqi",
+      "zaoshui",
+      "zuofan"
     ]
+    ,
+    categories:[],
+    flags: [],
   },
   // lazy loading openid
   getUserOpenId(callback) {

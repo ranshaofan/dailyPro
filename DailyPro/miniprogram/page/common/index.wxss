@@ -210,3 +210,65 @@
   width: 26px;
   height: 26px;
 }
+.icon-run {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -960 960 960' width='24px'%3E%3Cpath d='M520-40v-240l-84-80-40 176-276-56 16-80 192 40 64-324-72 28v136h-80v-188l158-68q35-15 51.5-19.5T480-720q21 0 39 11t29 29l40 64q26 42 70.5 69T760-520v80q-66 0-123.5-27.5T540-540l-24 120 84 80v300h-80Zm20-700q-33 0-56.5-23.5T460-820q0-33 23.5-56.5T540-900q33 0 56.5 23.5T620-820q0 33-23.5 56.5T540-740Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -960 960 960' width='24px'%3E%3Cpath d='M520-40v-240l-84-80-40 176-276-56 16-80 192 40 64-324-72 28v136h-80v-188l158-68q35-15 51.5-19.5T480-720q21 0 39 11t29 29l40 64q26 42 70.5 69T760-520v80q-66 0-123.5-27.5T540-540l-24 120 84 80v300h-80Zm20-700q-33 0-56.5-23.5T460-820q0-33 23.5-56.5T540-900q33 0 56.5 23.5T620-820q0 33-23.5 56.5T540-740Z'/%3E%3C/svg%3E");
+}
+/* 睡眠 (Bedtime) */
+.icon-bedtime {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -960 960 960' width='24px'%3E%3Cpath d='M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65 74.5T444-660q0 124 86 210t210 86q51 0 96.5-24t74.5-65q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z'/%3E%3C/svg%3E");
+}
+
+/* 情绪 (Sentiment Satisfied) */
+.icon-mood {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -960 960 960' width='24px'%3E%3Cpath d='M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 240q70 0 124.5-38.5T682-580H278q23 62 77.5 100.5T480-440Zm-160-200q25 0 42.5-17.5T380-700q0-25-17.5-42.5T320-760q-25 0-42.5 17.5T260-700q0 25 17.5 42.5T320-640Zm320 0q25 0 42.5-17.5T700-700q0-25-17.5-42.5T640-760q-25 0-42.5 17.5T580-700q0 25 17.5 42.5T640-640Z'/%3E%3C/svg%3E");
+}
+
+/* 喝水 (Local Drink) */
+.icon-drink {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -960 960 960' width='24px'%3E%3Cpath d='M280-80q-33 0-56.5-23.5T200-160v-520h-40v-80h640v80h-40v520q0 33-23.5 56.5T680-80H280Zm400-600H280v520h400v-520Zm-320 80h80v200l120-120 56 56-216 216-216-216 56-56 120 120v-200Z'/%3E%3C/svg%3E");
+}
+/* 读书 (menu_book) */
+.icon-book {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M560-120v-480q33 0 63.5 13t56.5 37l120 120v400l-120-120q-26-26-56.5-38t-63.5-12Zm-320 0q33 0 63.5 12t56.5 38l120 120v-400l-120-120q-26-24-56.5-37T320-600v480Zm-80 80q-33 0-56.5-23.5T80-120v-560q0-33 23.5-56.5T160-760q33 0 63.5 13t56.5 37l120 120 120-120q26-24 56.5-37T640-760q33 0 56.5 23.5T720-680v560q0 33-23.5 56.5T640-40q-33 0-63.5-12T520-90L400-210 280-90q-26 26-56.5 38T160-40Z'/%3E%3C/svg%3E");
+}
+
+/* 健身 (fitness_center) */
+.icon-fitness {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M200-120v-160q-50 0-85-35t-35-85q0-50 35-85t85-35v-160h120v160h240v-160h120v160q50 0 85 35t35 85q0 50-35 85t-85 35v160H640v-160H400v160H280Z'/%3E%3C/svg%3E");
+}
+
+/* 学习/工作 (computer) */
+.icon-computer {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-400H160v400Zm320-40q33 0 56.5-23.5T560-280q0-33-23.5-56.5T480-360q-33 0-56.5 23.5T400-280q0 33 23.5 56.5T480-200Z'/%3E%3C/svg%3E");
+}
+
+/* 餐饮 (restaurant) */
+.icon-food {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M280-80v-366q-51-14-85.5-56T160-600v-280h80v280h40v-280h80v280h40v-280h80v280q0 56-34.5 98T360-446v366h-80Zm400 0v-320H560v-280q0-83 58.5-141.5T760-880v800h-80Z'/%3E%3C/svg%3E");
+}
+
+/* 游戏 (videogame_asset) */
+.icon-game {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M160-240q-33 0-56.5-23.5T80-320v-320q0-33 23.5-56.5T160-720h640q33 0 56.5 23.5T880-640v320q0 33-23.5 56.5T800-240H160Zm0-80h640v-320H160v320Zm140-40h60v-60h60v-60h-60v-60h-60v60h-60v60h60v60Zm380-60q25 0 42.5-17.5T740-500q0-25-17.5-42.5T680-560q-25 0-42.5 17.5T620-500q0 25 17.5 42.5T680-420Zm-100-100q25 0 42.5-17.5T640-600q0-25-17.5-42.5T580-660q-25 0-42.5 17.5T520-600q0 25 17.5 42.5T580-520Z'/%3E%3C/svg%3E");
+}
+
+/* 旅行 (flight) */
+.icon-travel {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M440-40v-165L180-370l-20-60 280 80v-290l-120-90v-60l160 40 160-40v60l-120 90v290l280-80-20 60-260 165v165h-80Z'/%3E%3C/svg%3E");
+}
+
+/* 购物 (shopping_bag) */
+.icon-shop {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M240-160q-33 0-56.5-23.5T160-240v-400q0-33 23.5-56.5T240-720h80q0-66 47-113t113-47q66 0 113 47t47 113h80q33 0 56.5 23.5T800-640v400q0 33-23.5 56.5T720-160H240Zm0-80h480v-400H240v400Zm160-400h160q0-33-23.5-56.5T480-740q-33 0-56.5 23.5T400-640Z'/%3E%3C/svg%3E");
+}
+
+/* 艺术 (palette) */
+.icon-art {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q17 0 28.5 11.5T520-120q0 17-11.5 28.5T480-80Zm160-200q-25 0-42.5-17.5T580-340q0-25 17.5-42.5T640-400q25 0 42.5 17.5T700-340q0 25-17.5 42.5T640-280Zm120-160q-25 0-42.5-17.5T700-500q0-25 17.5-42.5T760-560q25 0 42.5 17.5T820-500q0 25-17.5 42.5T760-440Zm-120-160q-25 0-42.5-17.5T580-660q0-25 17.5-42.5T640-720q25 0 42.5 17.5T700-660q0 25-17.5 42.5T640-600Z'/%3E%3C/svg%3E");
+}
+
+/* 冥想/健康 (spa) */
+.icon-spa {
+  -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M480-80q-113 0-205-72.5T144-340q56 0 106-21.5t88-59.5q38 38 88 59.5t106 21.5q56 0 106-21.5t88-59.5q38 38 88 59.5t106 21.5q-39 115-131 187.5T480-80Zm0-320q-48 0-91.5-18T312-472q25-30 38.5-67.5T364-620q0-63-25-119.5T268-840q42 0 81 14.5t71 43.5q32-29 71-43.5t81-14.5q-46 44-71 100.5T476-620q0 42 13.5 79.5T528-472q-33 34-76.5 52T360-400Z'/%3E%3C/svg%3E");
+}

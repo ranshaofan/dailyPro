@@ -1,4 +1,6 @@
 // page/index/index.js
+const util = require('../../util/util.js');
+const app = getApp();
 Page({
 
   /**
@@ -12,6 +14,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    let today = util.getTodayDateString();
     const currentHour = new Date().getHours();
     let sayhello;
     let helloPic = "";
@@ -26,7 +29,7 @@ Page({
       helloPic = "moon";
     }
     this.setData({
-      sayhello,
+      sayhello,today,
       helloPic
       // currentDate: dateFormat('MM月dd日', new Date())
     });

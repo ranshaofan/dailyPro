@@ -5,7 +5,7 @@
       <view class="date-info">
         <view class="title-row">
           <text class="title-main">今天</text>
-          <text class="title-sub">10月24日</text>
+          <text class="title-sub">{{today}}</text>
         </view>
         <view class="status-badge">
           <text class="icon-small">☀️</text>
@@ -32,7 +32,7 @@
 
   <scroll-view scroll-y class="content-scroll">
     <view class="status-section">
-      <text class="section-label">当前状态</text>
+      <text class="section-label">今日打卡</text>
       <scroll-view scroll-x class="status-tags-scroll" enable-flex>
         <view class="status-tag active">
           <text class="tag-emoji">🏃</text>

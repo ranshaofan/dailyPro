@@ -1,6 +1,6 @@
-/* page/cateGory/cateGory.wxss */
 @import "../common/util.wxss";
-/* 基础容器 */
+
+/* 1. 基础容器与装饰 */
 .container {
   min-height: 100vh;
   background-color: #FAFAF9;
@@ -10,7 +10,6 @@
   overflow-x: hidden;
 }
 
-/* 装饰背景 */
 .bg-decoration {
   position: fixed;
   border-radius: 50%;
@@ -23,45 +22,14 @@
 .bg-blue { top: 20%; left: -20%; width: 350rpx; height: 350rpx; background: #e0f2fe; }
 .bg-rose { bottom: -10%; right: 10%; width: 300rpx; height: 300rpx; background: #ffe4e6; }
 
-/* 导航栏 */
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(250, 250, 249, 0.9);
-  backdrop-filter: blur(12px);
-}
-.safe-top { height: env(safe-area-inset-top); }
-.nav-bar {
-  height: 100rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40rpx;
-}
-.nav-back-wrap {
-  width: 88rpx;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-}
-.nav-title {
-  font-size: 36rpx;
-  font-weight: bold;
-  letter-spacing: -1rpx;
-}
-.nav-placeholder { width: 88rpx; }
-
-/* 主体内容 */
+/* 2. 主体内容布局 */
 .main-content {
-  box-sizing: border-box; /* 必须加这一句 */
+  box-sizing: border-box;
   flex: 1;
   padding: 0 40rpx 80rpx;
   position: relative;
   z-index: 1;
-  width: 100vw; /* 显式指定宽度为屏幕宽度 */
+  width: 100vw;
 }
 
 .tip-section {
@@ -74,7 +42,6 @@
   line-height: 1.6;
 }
 
-/* 区域标题 */
 .section-header {
   display: flex;
   align-items: center;
@@ -85,16 +52,14 @@
   display: flex;
   align-items: center;
   gap: 12rpx;
-  justify-content: flex-start;
   font-size: 30rpx;
   font-weight: bold;
   color: #475569;
 }
-.section-title image,.btn-add image,.action-btn image{
-  width: 36rpx;
-  height: 36rpx;
+.section-title image, .icon-add, .action-icon {
+  width: 38rpx;
+  height: 38rpx;
 }
-.icon-label { font-size: 40rpx; color: #94a3b8; }
 
 .btn-add {
   background: #ffffff;
@@ -106,362 +71,449 @@
   display: flex;
   align-items: center;
   gap: 8rpx;
-  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.02);
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.03);
 }
-.icon-add { font-size: 32rpx; }
 
-/* 列表项 */
-/* 修改 列表项 样式 */
+/* 3. 列表项通用样式 */
 .category-item {
   background: #ffffff;
-  padding: 24rpx;
-  padding-right: 32rpx;
-  border-radius: 48rpx;
+  padding: 30rpx;
+  border-radius: 40rpx;
   display: flex;
   align-items: center;
-  gap: 30rpx;
-  margin-bottom: 30rpx;
-  border: 1rpx solid #f1f5f9;
-  box-shadow: 0 8rpx 30rpx -6rpx rgba(0,0,0,0.04);
-  
-  /* --- 添加以下属性 --- */
-  box-sizing: border-box; /* 确保 padding 不会增加总宽度 */
-  width: 100%;           /* 占据父容器全宽 */
+  gap: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
 }
 
-/* 确保中间信息区域能正确收缩 */
+.category-icon-wrap {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.category-icon-wrap.circle {
+  border-radius: 50% !important;
+}
+
+.category-img {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+/* 信息展示 */
 .category-info {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8rpx;
-  min-width: 0; /* 关键：防止长文本撑开 flex 子元素 */
+  min-width: 0;
 }
-
-.category-icon-wrap {
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 40rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .category-name {
-  font-size: 34rpx;
+  font-size: 32rpx;
   font-weight: bold;
-  letter-spacing: -0.5rpx;
+  color: #1e293b;
 }
 .category-count {
   display: flex;
   align-items: center;
-  gap: 12rpx;
   font-size: 26rpx;
   color: #94a3b8;
 }
-.count-dot { width: 12rpx; height: 12rpx; border-radius: 50%; }
+.count-dot { width: 12rpx; height: 12rpx; border-radius: 50%; margin-right: 12rpx; }
+.mini-icon-img { width: 28rpx; height: 28rpx; margin-right: 8rpx; }
 
-/* 动作按钮 */
+/* 动作反馈 */
 .category-actions {
   display: flex;
   align-items: center;
-  gap: 8rpx;
+  gap: 16rpx;
 }
 .action-btn {
-  width: 80rpx;
-  height: 80rpx;
+  width: 70rpx;
+  height: 70rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
+}
+.action-icon { opacity: 0.4; }
+
+.check-toggle {
+  width: 52rpx;
+  height: 52rpx;
   border-radius: 50%;
+  border: 4rpx solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
-.drag-handle { color: #cbd5e1; }
+.is-hidden { border-color: #e2e8f0; }
 
-/* 禁用状态 */
-.category-item.disabled {
-  background: rgba(241, 245, 249, 0.8);
-  border: 2rpx dashed #cbd5e1;
-  opacity: 0.7;
-}
-.line-through { text-decoration: line-through; color: #94a3b8; }
-.category-status { font-size: 26rpx; color: #94a3b8; }
-.btn-enable {
-  background: #fff;
-  border: 1rpx solid #e2e8f0;
-  padding: 16rpx 40rpx;
-  border-radius: 100rpx;
-  font-size: 26rpx;
-  font-weight: bold;
-}
-
-/* 自定义开关按钮 */
-.switch-wrap {
-  padding: 0 8rpx;
-}
 .switch-bg {
   width: 80rpx;
-  height: 48rpx;
+  height: 46rpx;
   border-radius: 100rpx;
   position: relative;
-  transition: all 0.3s;
+  transition: 0.3s;
 }
 .switch-bg.on { background: #3b82f6; }
 .switch-bg.off { background: #e2e8f0; }
 .switch-dot {
-  width: 32rpx;
-  height: 32rpx;
+  width: 34rpx;
+  height: 34rpx;
   background: #fff;
   border-radius: 50%;
   position: absolute;
-  top: 8rpx;
-  transition: all 0.3s;
+  top: 6rpx;
+  transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.switch-bg.on .switch-dot { right: 8rpx; }
-.switch-bg.off .switch-dot { left: 8rpx; }
+.switch-bg.on .switch-dot { left: 40rpx; }
+.switch-bg.off .switch-dot { left: 6rpx; }
 
-/* 分隔线 */
-.divider {
-  height: 2rpx;
-  margin: 60rpx 0;
-  background: linear-gradient(to right, transparent, #e2e8f0, transparent);
-}
-
-/* 颜色类 */
-.bg-indigo-soft { background: #eef2ff; }
-.text-indigo { color: #6366f1; }
-.bg-indigo { background: #6366f1; }
-.bg-teal-soft { background: #f0fdfa; }
-.text-teal { color: #14b8a6; }
-.bg-teal { background: #14b8a6; }
-.bg-yellow-soft { background: #fffbeb; }
-.text-yellow { color: #d97706; }
-.bg-blue-soft { background: #eff6ff; }
-.text-blue { color: #3b82f6; }
-.bg-slate-soft { background: #f1f5f9; }
-.text-slate { color: #94a3b8; }
-
-/* 动画 */
-.fade-in-up {
-  opacity: 0;
-  transform: translateY(30rpx);
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
-.delay-400 { animation-delay: 0.4s; }
-.delay-500 { animation-delay: 0.5s; }
-
-.btn-hover { opacity: 0.7; transform: scale(0.96); }
-
-/* 图标字体占位 */
-.material-icons {
-  font-family: 'Material Icons'; /* 请确保在 app.wxss 引入了图标字体，或者替换为 image */
-  font-size: 44rpx;
-  font-style: normal;
-  display: inline-block;
-  vertical-align: middle;
-}
-.mini-icon { font-size: 28rpx; margin-right: 4rpx; }
-
-/**图片*/
-/* 图标基础类 */
-.icon-svg {
-  display: inline-block;
-  width: 56rpx;
-  height: 56rpx;
-  background-color: currentColor; /* 关键：这让图标颜色跟随父级的 color 属性 */
-  mask-repeat: no-repeat;
-  mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-}
-/* 弹窗 */
-/* 遮罩层 */
+/* 4. 弹窗样式 (修复重点) */
 .modal-mask {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0,0,0,0.4);
   z-index: 1000;
   visibility: hidden;
   opacity: 0;
-  transition: all 0.3s ease;
+  transition: 0.3s;
   display: flex;
   align-items: flex-end;
 }
-.modal-mask.show {
-  visibility: visible;
-  opacity: 1;
-}
+.modal-mask.show { visibility: visible; opacity: 1; }
 
-/* 弹窗主体 */
 .modal-container {
   width: 100%;
   background: #f8fafc;
   border-radius: 48rpx 48rpx 0 0;
   transform: translateY(100%);
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-}
-.modal-container.enter {
-  transform: translateY(0);
-}
-
-/* 装饰条 */
-.drag-bar-wrap {
-  padding: 24rpx 0 12rpx;
-  display: flex;
-  justify-content: center;
-}
-.drag-bar {
-  width: 96rpx;
-  height: 10rpx;
-  background: #e2e8f0;
-  border-radius: 100rpx;
+  transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  
+  /* 核心修改：高度设为自适应 */
+  height: auto; 
+  max-height: 97vh; /* 依然保留最大高度防止溢出屏幕 */
+  display: block;   /* 改为块级布局，不再使用 flex 控制子元素高度 */
 }
 
-/* 头部 */
+.modal-content {
+  width: 100%;
+  padding: 0 40rpx;
+  box-sizing: border-box;
+  
+  /* 核心修改 */
+  height: auto; 
+  /* max-height: 75vh; */
+  display: block;
+}
+.modal-container.enter { transform: translateY(0); }
+
+.drag-bar-wrap { padding: 20rpx 0; display: flex; justify-content: center; }
+.drag-bar { width: 80rpx; height: 8rpx; background: #e2e8f0; border-radius: 10rpx; }
+
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20rpx 40rpx 30rpx;
-  border-bottom: 1rpx solid #f1f5f9;
 }
-.modal-title {
-  font-size: 34rpx;
-  font-weight: 800;
-  color: #1e293b;
-}
-.btn-cancel {
-  font-size: 30rpx;
-  color: #64748b;
-  padding: 10rpx 20rpx;
-}
+.btn-cancel { color: #64748b; font-size: 30rpx; }
+.modal-title { font-weight: bold; font-size: 34rpx; }
 .btn-save {
   background: #D99379;
   color: #fff;
-  font-size: 28rpx;
-  font-weight: bold;
-  padding: 16rpx 48rpx;
+  padding: 14rpx 44rpx;
   border-radius: 100rpx;
-  box-shadow: 0 10rpx 20rpx rgba(217, 147, 121, 0.3);
+  font-weight: bold;
 }
 
-/* 内容卡片通用样式 */
-.card {
-  background: #ffffff;
-  border-radius: 32rpx;
-  padding: 30rpx;
-  border: 1rpx solid #f1f5f9;
-}
-
-.modal-content {
-  flex: 1;
-  padding: 30rpx 40rpx;
-  box-sizing: border-box;
-}
-
-/* 输入框区域 */
+/* 输入区预览 */
 .input-card {
   display: flex;
   align-items: center;
   background: #fff;
   padding: 30rpx;
-  border-radius: 32rpx;
+  border-radius: 40rpx;
   gap: 24rpx;
   margin-bottom: 40rpx;
-  border: 1rpx solid #f1f5f9;
+  border: 2rpx solid #f1f5f9;
 }
 .icon-preview {
-  width: 96rpx;
-  height: 96rpx;
+  width: 90rpx;
+  height: 90rpx;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s;
+  flex-shrink: 0;
 }
-.name-input {
-  flex: 1;
-  font-size: 36rpx;
-  font-weight: bold;
-}
+.name-input { flex: 1; font-size: 34rpx; font-weight: bold; }
 
-/* 图标网格 */
-.section-group {
-  margin-bottom: 40rpx;
-}
+/* 选择网格修复 */
 .section-label {
   font-size: 28rpx;
   font-weight: bold;
   color: #64748b;
   margin-bottom: 20rpx;
-  padding-left: 10rpx;
 }
 .grid-container {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 20rpx;
+  background: #fff;
+  padding: 30rpx;
+  border-radius: 32rpx;
+  margin-bottom: 40rpx;
+  overflow: scroll;
+  height: 333rpx;
 }
 .grid-item {
   aspect-ratio: 1;
-  background: #f8fafc;
-  border-radius: 20rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
-  border: 4rpx solid transparent;
-  transition: all 0.2s;
+  border-radius: 20rpx;
+  color: #475569;
+  transition: 0.2s;
 }
 .grid-item.active {
-  background: rgba(217, 147, 121, 0.1);
+  background: #fef2f2;
   color: #D99379;
-  border-color: rgba(217, 147, 121, 0.2);
+  box-shadow: 0 0 0 2rpx #D99379 inset;
 }
 
-/* 颜色选择 */
+/* 颜色选择修复 */
 .color-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 20rpx;
+  gap: 24rpx;
+  background: #fff;
+  padding: 30rpx;
+  border-radius: 32rpx;
+  margin-bottom: 60rpx;
 }
 .color-item {
-  width: 88rpx;
-  height: 88rpx;
+  width: 76rpx;
+  height: 76rpx;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 6rpx solid transparent;
+  position: relative;
 }
 .color-item.active {
-  border-color: #D99379;
-  transform: scale(1.1);
+  box-shadow: 0 0 0 4rpx #fff, 0 0 0 8rpx #D99379;
 }
 .check-mark {
-  color: rgba(0,0,0,0.3);
+  color: rgba(0,0,0,0.4);
   font-weight: bold;
-  transform: rotate(45deg) scaleX(-1); /* 简单的对勾模拟 */
+  font-size: 24rpx;
 }
 
-.safe-area-inset {
-  height: env(safe-area-inset-bottom);
-  padding-bottom: 40rpx;
+/* 5. 动画与辅助 */
+.fade-in-up { opacity: 0; transform: translateY(30rpx); animation: fadeInUp 0.6s ease-out forwards; }
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+.delay-100 { animation-delay: 0.1s; }
+.delay-300 { animation-delay: 0.3s; }
+.safe-area-inset { 
+  /* height: env(safe-area-inset-bottom);  */
+  padding-bottom: 40rpx; }
+
+/* 已隐藏状态的文字样式：浅灰色 + 抹掉的横线 */
+.gray-line {
+  color: #a6a7a8 !important; /* 浅灰色 */
+  text-decoration: line-through; /* 中划线 */
+  transition: all 0.3s ease;
 }
 
+/* 整体卡片的微调（可选）：隐藏时让背景更淡 */
+.is-disabled {
+  background-color: #fcfcfc !important;
+  box-shadow: none !important;
+  border: 1rpx dashed #f1f5f9; /* 增加虚线边框感 */
+}
+
+/* 状态文字样式 */
+.category-status {
+  font-size: 24rpx;
+  color: #cbd5e1;
+}
+
+/* 1. 整体色调微调 */
+.bg-warm-soft {
+  background-color: #FDF4E9 !important; /* 奶油色背景 */
+}
+
+.theme-text {
+  color: #D99379 !important; /* 主题肉桂粉色 */
+}
+
+.warm-subtext {
+  color: #BDB2A7; /* 温暖的灰色文字 */
+  font-size: 24rpx;
+}
+
+/* 2. 自定义开关样式修复 */
+.switch-wrap {
+  padding: 10rpx;
+}
+
+.theme-switch {
+  width: 90rpx;      /* 稍微加宽一点，更有质感 */
+  height: 50rpx;
+  border-radius: 100rpx;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2rpx solid transparent;
+}
+
+/* 开启状态：使用你的主题肉桂色 #D99379 */
+.theme-switch.on {
+  background-color: #D99379; 
+  box-shadow: 0 4rpx 12rpx rgba(217, 147, 121, 0.3);
+}
+
+.switch-dot {
+  width: 38rpx;
+  height: 38rpx;
+  background: #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  top: 6rpx;
+  /* 增加一点点阴影让它浮起来 */
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* 增加一点点回弹动画 */
+}
+
+/* 开启时滑块的位置 */
+.theme-switch.on .switch-dot {
+  left: 46rpx;
+}
+
+/* 关闭时滑块的位置 */
+.theme-switch.off .switch-dot {
+  left: 6rpx;
+}
+
+/* 悬浮反馈 */
 .btn-hover {
   opacity: 0.8;
+  transform: scale(0.97);
+}
+
+/* 删除区域 */
+.delete-section {
+  margin-top: 60rpx;
+  padding: 0 10rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-delete {
+  width: 100%;
+    height: 93rpx;
+    background-color: #f3e3dd;
+    border-radius: 32rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12rpx;
+    border: 2rpx solid #b76231;
+    color: #b76231;
+    font-weight: bold;
+    font-size: 30rpx;
+}
+
+.btn-delete-hover {
+  background-color: #ffccc7;
   transform: scale(0.98);
+}
+
+.icon-delete {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.delete-tip {
+  font-size: 24rpx;
+  color: #94a3b8;
+  margin-top: 20rpx;
+  text-align: center;
+}
+/* --- 打卡弹窗专项修正：确保高度自适应且预览图尺寸正确 --- */
+
+/* 1. 彻底隔离打卡弹窗容器，确保自适应高度 */
+.check-modal-style {
+  height: auto !important; 
+  max-height: 95vh !important;
+  display: block !important;
+}
+
+/* 2. 修正左上角预览图容器：防止图片巨大化 */
+.check-modal-style .image-preview {
+  width: 90rpx !important;    /* 限制容器宽度 */
+  height: 90rpx !important;   /* 限制容器高度 */
+  background: #F8FAF9;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;            /* 防止被右侧输入框挤压 */
+  overflow: hidden;          /* 关键：裁掉超出容器的图片部分 */
+}
+
+/* 3. 修正预览图内部 Image 标签：强制适应容器 */
+.check-modal-style .check-icon-img {
+  width: 70rpx !important;    /* 缩小表情图标 */
+  height: 70rpx !important;
+  display: block;
+}
+
+/* 4. 修复打卡弹窗内部 Grid 布局：撤销分类弹窗的固定高度 */
+.check-modal-style .check-grid {
+  height: auto !important;      
+  max-height: 500rpx;           
+  overflow-y: auto !important;
+  display: grid !important;     /* 确保维持网格布局 */
+  grid-template-columns: repeat(5, 1fr) !important; /* 5列排布，视觉更平衡 */
+  padding: 30rpx 20rpx !important;
+  gap: 20rpx !important;
+}
+
+/* 5. 针对打卡图标格子的尺寸微调 */
+.check-modal-style .grid-item {
+  aspect-ratio: 1 / 1 !important;
+  height: 100rpx !important;     /* 修正格子大小，防止过大 */
+  width: 100rpx !important;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 6. 打卡弹窗内 Grid 里的图标大小 */
+.check-modal-style .grid-icon-img {
+  width: 66rpx !important;
+  height: 66rpx !important;
+}
+
+/* 7. 激活状态效果（肉桂粉色主题） */
+.check-modal-style .grid-item.active {
+  background: #FFF5F1 !important;
+  box-shadow: 0 0 0 2rpx #D99379 inset !important;
+}
+
+/* 8. 文本域间距修正：防止文字贴着图片 */
+.check-modal-style .content-textarea {
+  flex: 1;
+  margin-left: 20rpx;
+  font-size: 28rpx;
+  min-height: 100rpx;
 }
