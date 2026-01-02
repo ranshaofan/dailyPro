@@ -19,13 +19,13 @@
 
     <view class="stats-card shadow-card">
       <view class="stat-item">
-        <text class="stat-value">4</text>
+        <text class="stat-value">{{totalCount}}</text>
         <text class="stat-label">记录片段</text>
       </view>
       <view class="divider-v"></view>
       <view class="stat-item">
-        <text class="stat-value">6.5</text>
-        <text class="stat-label">专注时长</text>
+        <text class="stat-value">{{totalDuration}}</text>
+        <text class="stat-label">共记时长</text>
       </view>
     </view>
   </view>
@@ -48,66 +48,53 @@
       </view>
     </scroll-view>
   </view>
+  <view class="section-label2">时光流水</view>
   <scroll-view scroll-y class="content-scroll">
     <view class="timeline-main">
       <view class="timeline-line"></view>
 
-      <view class="timeline-item">
-        <view class="timeline-icon-wrap">
-          <view class="timeline-icon bg-orange">
-            <text class="material-icons text-orange">directions_car</text>
-          </view>
-        </view>
-        <view class="event-card shadow-card">
-          <view class="card-header">
-            <text class="time-range">08:00 - 09:00</text>
-            <view class="category-badge bg-orange-soft">
-              <view class="dot bg-orange"></view>
-              <text>生活</text>
+      <block wx:for="{{timelineList}}" wx:key="index">
+        
+        <view class="timeline-item" wx:if="{{!item.isGap}}">
+          <view class="timeline-icon-wrap">
+            <view class="timeline-icon" style="background-color: {{item.typeColor}}20;">
+              <text class="material-icons {{item.typeClass}}" style="width: 50rpx;height:50rpx;background-color: {{item.typeColor}};margin:0;"></text>
             </view>
           </view>
-          <text class="event-title">交通通勤</text>
-          <text class="event-desc">听播客：设计心理学第二章，关于用户体验的思考。</text>
-        </view>
-      </view>
+          <view class="event-card shadow-card">
+            <view class="card-header">
+              <text class="time-range">{{item.startTime}} - {{item.endTime}}</text>
+              <view class="category-badge" style="background-color: {{item.typeColor}}20;">
+                <view class="dot" style="background-color: {{item.typeColor}};"></view>
+                <text style="color: {{item.typeColor}};font-size: 28rpx;font-weight: 400;">{{item.typeName}}</text>
+              </view>
+            </view>
+            <text class="event-title">{{item.textInfo}}</text>
+            <view class="action-btn" hover-class="btn-hover" bindtap="onEdit" data-index="{{index}}">
+              <text class="icon-edit"></text>
+            </view>
+            </view>
+          </view>
 
-      <view class="timeline-item">
-        <view class="timeline-dot-wrap">
-          <view class="timeline-dot-small"></view>
-        </view>
-        <view class="gap-button">
-          <view class="gap-info">
-            <view class="gap-header">
-              <text class="time-range">09:00 - 09:30</text>
-              <text class="gap-label">空闲</text>
-            </view>
-            <text class="gap-action">补记这段时间</text>
+        <view class="timeline-item" wx:else>
+          <view class="timeline-dot-wrap">
+            <view class="timeline-dot-small"></view>
           </view>
-          <text class="material-icons add-icon">add_circle</text>
+          <view class="gap-button" bindtap="onGapClick" data-start="{{item.startTime}}" data-end="{{item.endTime}}">
+            <view class="gap-info">
+              <view class="gap-header">
+                <text class="time-range">{{item.startTime}} - {{item.endTime}}</text>
+                <text class="gap-label">空闲</text>
+              </view>
+              <text class="gap-action">补记这段时间</text>
+            </view>
+            <view class="kongxianadd">
+              <text class="material-icons icon-add add-icon"></text>
+            </view>
+          </view>
         </view>
-      </view>
 
-      <view class="timeline-item">
-        <view class="timeline-icon-wrap">
-          <view class="timeline-icon bg-blue">
-            <text class="material-icons text-blue">laptop_mac</text>
-          </view>
-        </view>
-        <view class="event-card shadow-card">
-          <view class="card-header">
-            <text class="time-range">09:30 - 12:00</text>
-            <view class="category-badge bg-blue-soft">
-              <view class="dot bg-blue"></view>
-              <text>工作</text>
-            </view>
-          </view>
-          <text class="event-title">深度工作：产品设计</text>
-          <view class="tag-container">
-            <text class="mini-tag">#项目开发</text>
-            <text class="mini-tag">#UI视觉</text>
-          </view>
-        </view>
-      </view>
+      </block>
     </view>
   </scroll-view>
 
@@ -134,7 +121,7 @@
       </view>
     </view>
 
-    <view class="standalone-add-btn" bindtap="onAddTimeline">
+    <view class="standalone-add-btn" bindtap="onAddTimelineShow">
       <text class="material-icons icon-add"></text>
     </view>
   </view>
@@ -142,16 +129,13 @@
 <!-- 弹窗 -->
 <view class="modal-mask {{showModal ? 'show' : ''}}" bindtap="hideModal">
   <view class="modal-content" catchtap="stopBubble">
-    
     <view class="modal-handle"></view>
-
     <view class="modal-header">
-      <text class="modal-title">确认内容</text>
+      <text class="modal-title">{{isEditMode ? '编辑内容' : '新增记录'}}</text>
       <view class="close-btn" bindtap="hideModal">
-        <text class="icon-close">close</text>
+        <text class="icon-close"></text>
       </view>
     </view>
-
     <scroll-view scroll-y class="modal-body">
       <view class="info-section">
         <view class="section-row">
@@ -161,14 +145,36 @@
         <view class="info-cards">
           <view class="time-card">
             <view class="time-box">
-              <text class="time-val">14:00</text>
-              <!-- <image class="arrow-icon" src="/assets/arrow_right.png" mode="aspectFit"></image> -->
-              <text class="time-val">14:45</text>
+              <picker mode="time" value="{{startTime}}" bindchange="handleStartTimeChange">
+                <text class="time-val">{{startTime}}</text>
+              </picker>
+              <text class="icon-arrow"></text>
+
+              <picker mode="time" value="{{endTime}}" bindchange="handleEndTimeChange">
+                <text class="time-val">{{endTime}}</text>
+              </picker>
             </view>
           </view>
-          <view class="category-tag-large">
-            <text class="material-icons" style="font-size: 32rpx;">school</text>
-            <text>学习</text>
+          <view class="category-selection-container">
+            <view class="category-tag-large" bindtap="toggleTypePicker">
+              <text class="material-icons {{selectedType.class || 'icon-book'}}" style="width: 35rpx;height: 32rpx;margin-right:10rpx;background-color: {{selectedType.color||'rgba(255, 255, 255, 0.7)'}};"></text>
+              <text>{{selectedType.name || '选择分类'}}</text>
+              <text class="material-icons arrow-down {{showTypePicker ? 'rotate' : ''}}"></text>
+            </view>
+
+            <view class="type-dropdown-list {{showTypePicker ? 'show' : ''}}" catchtap="stopBubble">
+              <scroll-view scroll-y class="dropdown-scroll">
+                <block wx:for="{{categories}}" wx:key="_id">
+                  <view class="dropdown-item" wx:if="{{!item.isHidden}}" bindtap="selectType" data-item="{{item}}">
+                    <view class="item-icon-circle" style="background: {{item.color}}20;">
+                      <text class="material-icons iconCateWidth {{item.class}}" style="background: {{item.color}};color:{{item.color}};"></text>
+                    </view>
+                    <text class="item-name">{{item.name}}</text>
+                    <text class="material-icons check-mark" wx:if="{{selectedType._id === item._id}}"></text>
+                  </view>
+                </block>
+              </scroll-view>
+            </view>
           </view>
         </view>
       </view>
@@ -176,12 +182,10 @@
       <view class="content-section">
         <text class="section-label">记录内容</text>
         <view class="text-area-container">
-          <textarea 
-            class="content-textarea" 
-            value="阅读《简约至上》，整理关于交互设计的笔记，思考如何简化用户流程。" 
-            maxlength="500" 
-            auto-height
-          />
+          <textarea class="content-textarea" value="" bindinput="onTextInput" maxlength="500" auto-height />
+          <view class="drivelineWrap">
+            <view class="driveline"></view>
+          </view>
           <view class="textarea-footer">
             <view class="word-count">28 字</view>
             <view class="mic-circle">
@@ -193,11 +197,13 @@
     </scroll-view>
 
     <view class="modal-footer">
-      <view class="delete-btn">
+      <view class="delete-btn" bind:tap="onDel" wx:if="{{isEditMode}}">
         <text class="icon-del"></text>
       </view>
-      <view class="confirm-btn">
-        <text class="material-icons" style="margin-right: 12rpx;">check_circle</text>
+      <view class="confirm-btn" bind:tap="onAddTimeline">
+        <view class="rightWrap">
+          <text class="material-icons icon-right"></text>
+        </view>
         <text>完成</text>
       </view>
     </view>

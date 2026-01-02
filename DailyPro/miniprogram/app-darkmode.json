@@ -1,8 +1,8 @@
 {
   "window": {
     "navigationBarTextStyle": "white",
-    "navigationBarBackgroundColor": "#fff",
-    "backgroundColor": "#fff"
+    "navigationBarBackgroundColor": "#FAFAF9",
+    "backgroundColor": "#FAFAF9"
   },
   "tabBar": {
     "color": "#fff",

@@ -85,7 +85,41 @@
   -webkit-mask-position: center;
   -webkit-mask-size: contain;
 }
+.icon-right{
+  width: 40rpx;
+  height: 40rpx;
+  display: inline-block;
+  background-color: #A98467;
+}
+.icon-book{
+  background-color: rgba(255, 255, 255, 0.7);
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 12rpx;
+}
+.icon-arrow{
+  /* ===== 可配置参数 ===== */
+  width: 50rpx;
+  height: 50rpx;
+  display: inline-block;
+  background-color: rgb(230, 230, 230);
+}
+.icon-edit{
+  width:32rpx;
+  height: 32rpx;
+  background-color: rgb(148, 148, 148);
+}
 
+.rightWrap{
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 50rpx;
+  height: 50rpx;
+  margin-right: 12rpx;
+}
 
 page {
   background-color: #FAFAF9;
@@ -110,7 +144,7 @@ page {
 
 /* Header - 整体上移：减少顶部 padding */
 .header {
-  padding: 40rpx 40rpx 20rpx; /* 顶部从80rpx减为40rpx */
+  padding: 5rpx 40rpx 20rpx; /* 顶部从80rpx减为40rpx */
   background-color: rgba(250, 250, 249, 0.9);
 }
 
@@ -165,7 +199,7 @@ page {
 .stats-card {
   background: white;
   border-radius: 48rpx;
-  padding: 32rpx;
+  padding: 18rpx 40rpx;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -203,22 +237,35 @@ page {
 /* Status Section - 修复遮挡 */
 .status-section {
   padding: 20rpx 0 10rpx 40rpx;
+  height: 160rpx;
 }
-
+.section-row{
+  justify-content: space-between;
+  display: flex;
+  padding: 0px 7rpx;
+}
 .section-label {
   font-size: 24rpx;
   font-weight: 700;
   text-transform: uppercase;
   color: #A8A29E;
-  margin-bottom: 20rpx;
+  margin-bottom: 10rpx;
   display: block;
 }
+.section-label2 {
+  font-size: 24rpx;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #A8A29E;
+  display: block;
+  margin-left: 40rpx;
 
+}
 .status-tags-scroll {
   display: flex;
   flex-direction: row;
   white-space: nowrap;
-  padding-bottom: 30rpx; /* 增加底部填充确保阴影不被截断 */
+  /* padding-bottom: 10rpx;  */
   height: auto;
   min-height: 110rpx;
 }
@@ -309,7 +356,7 @@ page {
   padding-top: 8rpx;
 }
 
-.timeline-icon {
+/* .timeline-icon {
   width: 72rpx;
   height: 72rpx;
   border-radius: 50%;
@@ -318,12 +365,21 @@ page {
   justify-content: center;
   background: white;
   box-shadow: 0 0 0 16rpx #FAFAF9;
+} */
+.timeline-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 12rpx #FAFAF9; /* 稍微缩小阴影圈，让视觉更精致 */
 }
-
 .event-card {
   background: white;
   border-radius: 48rpx;
   padding: 36rpx;
+  position: relative;
 }
 
 .card-header {
@@ -334,24 +390,35 @@ page {
 }
 
 .time-range {
-  font-size: 26rpx;
+  font-size: 30rpx;
   color: #A8A29E;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .category-badge {
   display: flex;
   align-items: center;
-  gap: 8rpx;
-  padding: 4rpx 16rpx;
+  gap: 15rpx;
+  padding: 4rpx 30rpx;
   border-radius: 40rpx;
+}
+/* 确保分类标签文字和点点垂直对齐 */
+.category-badge text {
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+/* 让空隙按钮点击时有缩放效果 */
+.gap-button:active {
+  transform: scale(0.98);
+  background-color: #F5F5F4;
 }
 
 .dot { width: 16rpx; height: 16rpx; border-radius: 50%; }
 
 .event-title {
   font-size: 34rpx;
-  font-weight: 700;
+  /* font-weight: 700; */
   margin-bottom: 12rpx;
   display: block;
 }
@@ -399,9 +466,47 @@ page {
   font-size: 28rpx;
   color: #A8A29E;
   font-weight: 600;
+  letter-spacing: 4rpx;
 }
-
-.add-icon { color: #E7E5E4; font-size: 48rpx; }
+.gap-label{
+  background-color: #f0f0f0;
+  width: 80rpx;
+  height: 50rpx;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30%;
+  margin-left: 20rpx;
+  color: #969290;
+  font-size: 25rpx;
+  letter-spacing: 4rpx;
+}
+.kongxianadd{
+  background-color: #E7E5E4;
+  border-radius: 50%;
+  width: 70rpx;
+  height: 70rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.add-icon { background-color: #fff; width: 50rpx; }
+.action-btn {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  /* background-color: #ccc; */
+  /* border-radius: 50%; */
+  right: 30rpx;
+  bottom: 38rpx;
+}
+.btn-hover {
+  opacity: 0.8;
+  transform: scale(0.97);
+}
 
 /* Floating Action Button */
 .fab-button {
@@ -422,6 +527,11 @@ page {
 
 .material-icons {
   font-size: 44rpx;
+}
+.iconCateWidth{
+  width: 30rpx;
+  height: 30rpx;
+  margin: 0;
 }
 
 /* page/index/index.wxss */
@@ -573,7 +683,7 @@ page {
   background: #FFFFFF;
   border-top-left-radius: 64rpx;
   border-top-right-radius: 64rpx;
-  padding: 20rpx 40rpx 60rpx;
+  padding: 40rpx 60rpx 60rpx;
   max-height: 85vh;
   position: relative;
   
@@ -604,3 +714,131 @@ page {
 .modal-footer { display: flex; gap: 24rpx; margin-top: 60rpx; }
 .delete-btn { width: 120rpx; height: 120rpx; background: #F8F7F5; border-radius: 40rpx; display: flex; align-items: center; justify-content: center; color: #A8A29E; }
 .confirm-btn { flex: 1; height: 120rpx; background: #A98467; color: #FFFFFF; border-radius: 48rpx; display: flex; align-items: center; justify-content: center; font-size: 34rpx; font-weight: 700; box-shadow: 0 15rpx 30rpx rgba(169, 132, 103, 0.3); }
+.word-count{
+  color: rgb(185, 185, 185);
+  background-color: rgb(241, 241, 241,0.7);
+  width: 80rpx;
+  padding: 0rpx 10rpx;
+  display: flex;
+  height: 60rpx;
+  border-radius: 20%;
+  justify-content: center;
+  align-items: center;
+}
+.driveline{
+  width: 100%;
+  background-color: rgb(236, 236, 236);
+  height: 2rpx;
+}
+.drivelineWrap{
+  width: 100%;
+  display: flex;
+  margin: 40rpx 0;
+  justify-content: center;
+}
+.textarea-footer{
+  display: flex;
+  justify-content: space-between;
+}
+.mic-circle{
+    width: 50rpx;
+    background-color: #f1e1d4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15rpx;
+    border-radius: 50%;
+}
+/* 分类选择面板 */
+/* 容器设置为相对定位 */
+.category-selection-container {
+  flex: 0.8;
+  position: relative; 
+  height: 120rpx;
+}
+
+.category-tag-large {
+  width: 100%;
+  height: 100%;
+  color: #FFFFFF;
+  border-radius: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  font-weight: 600;
+  box-shadow: 0 10rpx 25rpx rgba(74, 69, 62, 0.2);
+  transition: all 0.3s;
+}
+
+.arrow-down {
+  font-size: 32rpx;
+  transition: transform 0.3s;
+}
+.arrow-down.rotate { transform: rotate(180deg); }
+
+/* 下拉列表样式 */
+.type-dropdown-list {
+  position: absolute;
+  top: 130rpx; /* 距离按钮底部一点距离 */
+  left: 0;
+  width: 100%;
+  max-height: 0; /* 初始高度为0 */
+  background: #FFFFFF;
+  border-radius: 32rpx;
+  box-shadow: 0 15rpx 40rpx rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+  border: 1rpx solid #F0EEEB;
+}
+
+/* 显示状态 */
+.type-dropdown-list.show {
+  max-height: 450rpx; /* 设置最大高度，超出会滚动 */
+  opacity: 1;
+}
+
+.dropdown-scroll {
+  max-height: 450rpx;
+  padding: 10rpx 0;
+}
+
+/* 列表项：横向并排 */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 30rpx;
+  transition: background 0.2s;
+}
+
+.dropdown-item:active {
+  background-color: #F8F7F5;
+}
+
+.item-icon-circle {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 14rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.item-icon-circle .material-icons {
+  font-size: 30rpx;
+}
+
+.item-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #44403C;
+  font-weight: 500;
+}
+
+.check-mark {
+  font-size: 32rpx;
+  color: #A98467;
+}

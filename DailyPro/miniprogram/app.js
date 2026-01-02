@@ -19,82 +19,6 @@ App({
     this.fetchGlobalCategories();
     this.fetchGlobalFlags(); // 新增：初始化时读取打卡配置
     this.initTodayData();
-    // const that = this;
-    // if (!wx.cloud) {
-    //   console.error('请使用 2.2.3 或以上的基础库以使用云能力');
-    // } else {
-    //   wx.cloud.init({
-    //     env: config.envId,
-    //     traceUser: true,
-    //   });
-    // }
-    // // this.getUserOpenId();
-    
-    // // 获取数据库引用
-    // const db = wx.cloud.database();
-    // var day = util.dateFormat('yyyy-MM-dd', new Date());
-    // // 获取集合的引用
-    // const userInfoCollection = db.collection('userInfo');
-    // const events = db.collection('events');
-    // const slots = db.collection('slots'); 
-    // const typeInfo = db.collection('typeInfo'); 
-
-    // // 用于跟踪数据加载状态
-    // this.dataLoadStatus = {
-    //   userInfoLoaded: false,
-    //   eventsLoaded: false,
-    //   typeInfoLoaded:false
-    // };
-
-    // // 查询数据
-    // userInfoCollection.get().then(res => {
-    //   // 查询成功，res.data 包含了查询结果
-    //   if (res.data[0]) this.globalData.userInfo = res.data[0];
-    //   this.dataLoadStatus.userInfoLoaded = true;
-    //   this.checkDataReady();
-    //   if(!res.data || res.data.length==0)return;
-    //   //查询userinfo以后才查询对应的数据
-    //   //events事件
-    //   events.where({
-    //     eventtime: day,
-    //     user_id:this.globalData.userInfo._openid
-    //   }).get().then(res => {
-    //     if (res.data) {
-    //       that.globalData.events = res.data;
-    //     }
-    //     this.dataLoadStatus.eventsLoaded = true;
-    //     this.checkDataReady();
-    //   }).catch(err => {
-    //     console.error('查询失败:', err);
-    //   });
-    //   //slots时间
-    //   slots.where({
-    //     datetime: day,
-    //     user_id:this.globalData.userInfo._openid
-    //   }).get().then(res => {
-    //     if (res.data) {
-    //       that.globalData.slots = res.data;
-    //     }
-    //     this.dataLoadStatus.slotsLoaded = true;
-    //     this.checkDataReady();
-    //   }).catch(err => {
-    //     console.error('查询失败:', err);
-    //   });
-    //   //typeInfo
-    //   typeInfo.where({
-    //     user_id:this.globalData.userInfo._openid
-    //   }).get().then(res => {
-    //     if (res.data) {
-    //       that.globalData.typeInfo = res.data;
-    //     }
-    //     this.dataLoadStatus.typeInfoLoaded = true;
-    //     this.checkDataReady();
-    //   }).catch(err => {
-    //     console.error('查询失败:', err);
-    //   });
-    // }).catch(err => {
-    //   console.error('查询失败:', err);
-    // });
 
   },
   // 读取打卡项目配置 (flags集合)
@@ -133,53 +57,58 @@ App({
       console.error('全局分类初始化失败:', err);
     }
   },
-  async initTodayData() {
-    const db = wx.cloud.database();
-    const now = new Date();
-    // 保持格式一致：YYYY-M-D
-    const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+  // app.js
 
-    try {
-      // 1. 检查今日是否已有记录
-      const res = await db.collection('dayFlags').where({ date: todayStr }).get();
+// 抽取一个公共函数保证全应用日期格式统一
+getTodayStr() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+},
 
-      if (res.data.length > 0) {
-        // 已有记录，直接存入全局
-        this.globalData.todayCheckList = res.data[0].checkList;
-      } else {
-        // 2. 跨天了/初次使用，从 flags 模板中抓取 status 为 true 的项目
-        const flagsRes = await db.collection('flags').where({
-          status: true,
-          isOpen: true // 只有开启状态的项目才初始化到今日
-        }).get();
+async initTodayData() {
+  const db = wx.cloud.database();
+  const todayStr = this.getTodayStr(); // 使用统一格式：YYYY-MM-DD
 
-        const initialCheckList = flagsRes.data.map(f => ({
-          flagId: f._id,
-          name: f.name,
-          iconName: f.iconName,
-          isCompleted: false
-        }));
-
-        // 3. 写入 dayFlags 集合
-        await db.collection('dayFlags').add({
-          data: {
-            date: todayStr,
-            checkList: initialCheckList,
-            createTime: db.serverDate()
-          }
-        });
-
-        this.globalData.todayCheckList = initialCheckList;
-      }
-
-      // 4. 通知页面数据已准备好
-      if (this.todayFlagsReadyCallback) {
-        this.todayFlagsReadyCallback(this.globalData.todayCheckList);
-      }
-    } catch (e) {
-      console.error("初始化每日打卡失败", e);
+  try {
+    // 1. 加载打卡数据 (dayFlags)
+    const res = await db.collection('dayFlags').where({ date: todayStr }).get();
+    if (res.data.length > 0) {
+      this.globalData.todayCheckList = res.data[0].checkList;
+    } else {
+      // 初始化逻辑... (保持你原来的 map 逻辑，但确保 date 使用 todayStr)
+      const flagsRes = await db.collection('flags').where({ status: true, isOpen: true }).get();
+      const initialCheckList = flagsRes.data.map(f => ({
+        flagId: f._id, name: f.name, iconName: f.iconName, isCompleted: false
+      }));
+      await db.collection('dayFlags').add({
+        data: { date: todayStr, checkList: initialCheckList, createTime: db.serverDate() }
+      });
+      this.globalData.todayCheckList = initialCheckList;
     }
-  },
+
+    // 2. 新增：加载流水数据 (daysFlow) 存入全局
+    await this.fetchTodayFlow();
+
+    // 3. 统一通知页面
+    if (this.todayDataReadyCallback) {
+      this.todayDataReadyCallback();
+    }
+  } catch (e) {
+    console.error("初始化每日数据失败", e);
+  }
+},
+
+async fetchTodayFlow() {
+  const db = wx.cloud.database();
+  const todayStr = this.getTodayStr();
+  try {
+    const res = await db.collection('daysFlow').where({ date: todayStr }).get();
+    this.globalData.todayFlowList = res.data.length > 0 ? res.data[0].flowList : [];
+    console.log('全局流水加载成功');
+  } catch (err) {
+    console.error('获取全局流水失败', err);
+  }
+},
 
   checkDataReady: function () {
     if (this.dataLoadStatus.userInfoLoaded && this.dataLoadStatus.eventsLoaded && this.dataLoadStatus.typeInfoLoaded) {
