@@ -109,6 +109,13 @@
   height: 32rpx;
   background-color: rgb(148, 148, 148);
 }
+.icon-chose{
+  width: 40rpx !important;
+  height: 40rpx !important;
+  display: inline-block;
+  background-color: #fff !important;
+  margin-right: 0 !important;
+}
 
 .rightWrap{
   background-color: #fff;

@@ -157,7 +157,7 @@
           </view>
           <view class="category-selection-container">
             <view class="category-tag-large" bindtap="toggleTypePicker">
-              <text class="material-icons {{selectedType.class || 'icon-book'}}" style="width: 35rpx;height: 32rpx;margin-right:10rpx;background-color: {{selectedType.color||'rgba(255, 255, 255, 0.7)'}};"></text>
+              <text class="material-icons {{selectedType.class || 'icon-chose'}}" style="width: 46rpx;height: 46rpx;margin-right:10rpx;background-color: {{selectedType.color||'#A98467'}};"></text>
               <text>{{selectedType.name || '选择分类'}}</text>
               <text class="material-icons arrow-down {{showTypePicker ? 'rotate' : ''}}"></text>
             </view>

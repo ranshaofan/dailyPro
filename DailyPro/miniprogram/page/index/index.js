@@ -74,14 +74,14 @@ Page({
     const availableCategories = allCategories.filter(item => !item.isHidden);
     if (availableCategories.length > 0) {
       this.setData({
-        selectedType: availableCategories[0],
+        // selectedType: availableCategories[0],
         categories: availableCategories
       });
     } else {
       // 如果还没加载好，也加个回调
       app.categoriesReadyCallback = (cats) => {
         const avail = cats.filter(item => !item.isHidden);
-        this.setData({ categories: avail, selectedType: avail[0] });
+        this.setData({ categories: avail });
       };
     }
   },
@@ -378,13 +378,47 @@ Page({
   stopRecording() {
     this.setData({ isRecording: false });
   },
+  // 将分钟数转回 HH:mm 格式 (例如 840 -> "14:00")
+  minutesToTime(mins) {
+    if (mins < 0) mins += 1440;
+    if (mins >= 1440) mins -= 1440;
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  },
 
   onAddTimelineShow() {
     const now = new Date();
-    const lockedDate = this.getTodayDateString();
-    this.setData({ showModal: true,isEditMode: false, // 核心：新增模式下不显示删除按钮
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentTimeStr = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
+    const currentTotalMins = currentHour * 60 + currentMinute;
+  
+    let finalStartTime = "";
+    const flowList = app.globalData.todayFlowList || [];
+  
+    if (flowList.length === 0) {
+      // 场景 A：还没有任何记录，开始时间 = 当前时间 - 60分钟
+      finalStartTime = this.minutesToTime(currentTotalMins - 60);
+    } else {
+      // 场景 B：已有记录，开始时间 = 最后一项记录的结束时间
+      // 先按时间排个序确保拿到的是最后一段
+      const sorted = [...flowList].sort((a, b) => 
+        this.timeToMinutes(a.startTime) - this.timeToMinutes(b.startTime)
+      );
+      finalStartTime = sorted[sorted.length - 1].endTime;
+    }
+  
+    this.setData({
+      showModal: true,
+      isEditMode: false,
+      selectedType:'',
       editingIndex: -1,
-      textInfo: '', recordDate: lockedDate });
+      textInfo: '',
+      recordDate: this.getTodayDateString(),
+      startTime: finalStartTime, // 动态计算的开始时间
+      endTime: currentTimeStr    // 默认当前时间
+    });
   },
 
   onGapClick(e) {
